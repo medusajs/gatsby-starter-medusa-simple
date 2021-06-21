@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "description": "gatsby-starter-medusa",
-  "author": "Sebastian Rindom",
+  "author": "Kasper Fabricius Kristensen <kasper@medusa-commerce.com> (https://www.medusa-commerce.com)",
   "keywords": [
-    "gatsby"
+    "gatsby",
+    "medusajs",
+    "e-commerce"
   ],
   "scripts": {
     "develop": "gatsby develop",
@@ -15,6 +17,8 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "@stripe/react-stripe-js": "^1.4.1",
+    "@stripe/stripe-js": "^1.15.0",
     "axios": "^0.21.1",
     "gatsby": "^3.6.2",
     "gatsby-plugin-image": "^1.6.0",
@@ -24,6 +28,7 @@
     "gatsby-transformer-sharp": "^3.6.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-helmet": "^6.1.0"
+    "react-helmet": "^6.1.0",
+    "react-icons": "^4.2.0"
   }
 }

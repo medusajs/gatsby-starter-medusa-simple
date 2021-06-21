@@ -1,39 +1,53 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
 <h1 align="center">
-  Gatsby minimal starter
+  Medusa + Gatsby Starter 🚀
 </h1>
 
-## 🚀 Quick start
+## Quick start
 
-1.  **Create a Gatsby site.**
+1. **Setting up the enviroment variables**
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
-
-    ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
-    ```
-
-2.  **Start developing.**
-
-    Navigate into your new site’s directory and start it up.
+    Get your enviroment variables ready:
 
     ```shell
-    cd my-gatsby-site/
-    npm run develop
+    mv .env.template .env.development
     ```
 
-3.  **Open the code and start customizing!**
+    Add your Stripe API key to your `.env.development`
+
+    ```
+    GATSBY_STRIPE_KEY=pk_test_something
+    ```
+
+2.  **Install dependencies**
+
+    Use Yarn to install all dependencies.
+
+    ```shell
+    yarn
+    ```
+
+3.  **Start developing.**
+
+    Navigate into your projects directory and start it up.
+
+    ```shell
+    cd gatsby-medusa-starter/
+    yarn start
+    ```
+
+4.  **Open the code and start customizing!**
 
     Your site is now running at http://localhost:8000!
 
     Edit `src/pages/index.js` to see your site update in real-time!
 
-4.  **Learn more**
+5.  **Learn more about Medusa**
+
+    - [Website](https://www.medusa-commerce.com/)
+    - [GitHub](https://github.com/medusajs)
+    - [Documentation](https://docs.medusa-commerce.com/)
+
+6.  **Learn more about Gatsby**
 
     - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
 
@@ -46,9 +60,3 @@
     - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
 
     - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-## 🚀 Quick start (Gatsby Cloud)
-
-Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
-
-[<img src="https://www.gatsbyjs.com/deploynow.svg" alt="Deploy to Gatsby Cloud">](https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-minimal)
