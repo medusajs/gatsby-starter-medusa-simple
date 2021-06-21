@@ -1,6 +1,9 @@
 <h1 align="center">
   Medusa + Gatsby Starter 🚀
 </h1>
+<div align="center">
+  <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/medusajs/gatsby-starter-medusa?label=Version">
+</div>
 
 ## Quick start
 
@@ -31,7 +34,7 @@
     Navigate into your projects directory and start it up.
 
     ```shell
-    cd gatsby-medusa-starter/
+    cd gatsby-starter-medusa/
     yarn start
     ```
 
