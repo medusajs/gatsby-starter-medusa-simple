@@ -1,6 +1,6 @@
 import medusaRequest from "./request";
 
-export default {
+const medusa = {
   newsletter: {
     signup(data) {
       const path = `/newsletter-signup`;
@@ -60,7 +60,9 @@ export default {
 
     resetPasswordToken(email) {
       const path = `/store/customers/password-token`;
-      return medusaRequest("POST", path, { email });
+      return medusaRequest("POST", path, {
+        email
+      });
     },
 
     removeFromWishList(id, payload) {
@@ -83,12 +85,16 @@ export default {
     addresses: {
       create(id, address) {
         const path = `/store/customers/${id}/addresses`;
-        return medusaRequest("POST", path, { address });
+        return medusaRequest("POST", path, {
+          address
+        });
       },
 
       update(id, addressId, address) {
         const path = `/store/customers/${id}/addresses/${addressId}`;
-        return medusaRequest("POST", path, { address });
+        return medusaRequest("POST", path, {
+          address
+        });
       },
 
       delete(id, addressId) {
@@ -179,7 +185,9 @@ export default {
 
     setPaymentSession(cartId, providerId) {
       const path = `/store/carts/${cartId}/payment-session`;
-      return medusaRequest("POST", path, { provider_id: providerId });
+      return medusaRequest("POST", path, {
+        provider_id: providerId
+      });
     },
 
     clearPaymentSession(cartId, providerId) {
@@ -287,7 +295,7 @@ export default {
       return medusaRequest("POST", path, {});
     },
 
-    return(orderId, items) {
+    return (orderId, items) {
       const path = `/admin/orders/${orderId}/return`;
       return medusaRequest("POST", path, items);
     },
@@ -386,7 +394,9 @@ export default {
 
     applePaySession(url) {
       const path = `/adyen/apple-pay-session`;
-      return medusaRequest("POST", path, { validation_url: url });
+      return medusaRequest("POST", path, {
+        validation_url: url
+      });
     },
   },
 
@@ -400,7 +410,11 @@ export default {
   restock: {
     signUp(variantId, email) {
       const path = `/restock-notifications/variants/${variantId}`;
-      return medusaRequest("POST", path, { email: email });
+      return medusaRequest("POST", path, {
+        email: email
+      });
     },
   },
-};
+}
+
+export default medusa;
