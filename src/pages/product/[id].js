@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { BiShoppingBag } from "react-icons/bi";
 import StoreContext from "../../context/store-context";
 import { getSlug, resetOptions } from "../../utils/helper-functions";
-import * as styles from "../../styles/Product.module.css";
+import * as styles from "../../styles/product.module.css";
 import { createClient } from "../../utils/client";
 
 const Product = ({ location }) => {

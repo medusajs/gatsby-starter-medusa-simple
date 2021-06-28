@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import PuffLoader from "react-spinners/PuffLoader";
-import * as styles from "../../styles/InformationStep.module.css";
+import * as styles from "../../styles/information-step.module.css";
 import InputField from "./input-field";
 import StoreContext from "../../context/store-context";
 import SelectField from "./select-field";

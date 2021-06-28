@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { FaGithub } from "react-icons/fa";
 import StoreContext from "../context/store-context";
 import { graphql } from "gatsby";
-import * as styles from "../styles/Home.module.css";
+import * as styles from "../styles/home.module.css";
 import { Link } from "gatsby";
 
 // markup

@@ -1,5 +1,5 @@
 import React from "react";
-import * as styles from "../../styles/ShippingMethod.module.css";
+import * as styles from "../../styles/shipping-method.module.css";
 import { formatPrice } from "../../utils/helper-functions";
 
 const ShippingMethod = ({ handleOption, option, chosen }) => {

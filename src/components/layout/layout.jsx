@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import NavBar from "./nav-bar";
 import Blur from "./blur";
-import CartView from "../cartView/cart-view";
+import CartView from "../cart-view/cart-view";
 import DisplayContext from "../../context/display-context";
-import * as styles from "../../styles/Layout.module.css";
+import * as styles from "../../styles/layout.module.css";
 import "../../styles/globals.css";
 
 const Layout = ({ location, children }) => {

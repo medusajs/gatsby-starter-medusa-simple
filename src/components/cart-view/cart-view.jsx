@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import DisplayContext from "../../context/display-context";
 import StoreContext from "../../context/store-context";
 import { Link, navigate } from "gatsby";
-import * as styles from "../../styles/CartView.module.css";
+import * as styles from "../../styles/cart-view.module.css";
 import { quantity, sum, formatPrice } from "../../utils/helper-functions";
 
 const CartView = () => {

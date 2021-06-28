@@ -4,7 +4,7 @@ import DisplayContext from "../../context/display-context";
 import StoreContext from "../../context/store-context";
 import { quantity, sum } from "../../utils/helper-functions";
 import { BiShoppingBag } from "react-icons/bi";
-import * as styles from "../../styles/NavBar.module.css";
+import * as styles from "../../styles/nav-bar.module.css";
 
 const NavBar = ({ isCheckout }) => {
   const { updateCartViewDisplay } = useContext(DisplayContext);

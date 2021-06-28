@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { PuffLoader } from "react-spinners";
-import * as styles from "../../styles/CheckoutSummary.module.css";
-import * as itemStyles from "../../styles/CartView.module.css";
+import * as styles from "../../styles/checkout-summary.module.css";
+import * as itemStyles from "../../styles/cart-view.module.css";
 import { Link } from "gatsby";
 import { formatPrice } from "../../utils/helper-functions";
 import { sum, quantity } from "../../utils/helper-functions";

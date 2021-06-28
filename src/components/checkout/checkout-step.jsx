@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import DisplayContext from "../../context/display-context";
 import StoreContext from "../../context/store-context";
-import * as styles from "../../styles/CheckoutStep.module.css";
+import * as styles from "../../styles/checkout-step.module.css";
 import CheckoutSummary from "./checkout-summary";
 import InformationStep from "./information-step";
 import PaymentStep from "./payment-step";

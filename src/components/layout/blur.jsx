@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import DisplayContext from "../../context/display-context";
-import * as styles from "../../styles/Blur.module.css";
+import * as styles from "../../styles/blur.module.css";
 
 const Blur = () => {
   const { cartView, updateCartViewDisplay } = useContext(DisplayContext);
