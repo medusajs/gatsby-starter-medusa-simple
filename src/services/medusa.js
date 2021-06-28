@@ -1,6 +1,6 @@
 import medusaRequest from "./request";
 
-export default {
+const medusa = {
   newsletter: {
     signup(data) {
       const path = `/newsletter-signup`;
@@ -404,3 +404,5 @@ export default {
     },
   },
 };
+
+export default medusa;

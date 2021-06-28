@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import StoreContext from "../../../context/store-context";
-import DisplayContext from "../../../context/display-context";
 import { navigate } from "gatsby";
+import StoreContext from "../../context/store-context";
+import DisplayContext from "../../context/display-context";
+import * as styles from "../../styles/InjectableCardForm.module.css";
+import { BiLeftArrowAlt } from "react-icons/bi";
 
 const InjectableCardForm = () => {
   const stripe = useStripe();
@@ -11,7 +13,7 @@ const InjectableCardForm = () => {
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState("");
   const [disabled, setDisabled] = useState(true);
-  const { cart, completeCart } = useContext(StoreContext);
+  const { cart } = useContext(StoreContext);
   const { updateCheckoutStep } = useContext(DisplayContext);
 
   const handleChange = async (event) => {
@@ -37,16 +39,14 @@ const InjectableCardForm = () => {
       setError(null);
       setProcessing(false);
       setSucceeded(true);
-      completeCart().then((order) => {
-        navigate(`/order/${order.id}`);
-      });
+      navigate(`/payment`);
     }
   };
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
       <CardElement
-        className="card-form"
+        className={styles.cardForm}
         id="card-element"
         onChange={handleChange}
       />
@@ -56,12 +56,15 @@ const InjectableCardForm = () => {
           {error}
         </div>
       )}
-      <div className="flex-row justify-between checkout-controls">
-        <button className="step-back" onClick={() => updateCheckoutStep(2)}>
-          Back to shipping method
+      <div className={styles.controls}>
+        <button
+          className={styles.stepBack}
+          onClick={() => updateCheckoutStep(2)}
+        >
+          <BiLeftArrowAlt /> Back to shipping method
         </button>
         <button
-          className="big-btn"
+          className={styles.payBtn}
           disabled={processing || disabled || succeeded}
           id="submit"
         >

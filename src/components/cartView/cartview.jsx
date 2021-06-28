@@ -1,80 +1,124 @@
 import React, { useContext } from "react";
 import DisplayContext from "../../context/display-context";
 import StoreContext from "../../context/store-context";
-import { formatPrice } from "../../utils/helperFunctions";
-import CartViewItem from "./cartViewItem";
-import { FaCcMastercard, FaCcVisa } from "react-icons/fa";
-import { navigate } from "gatsby";
+import { Link, navigate } from "gatsby";
+import * as styles from "../../styles/CartView.module.css";
+import { quantity, sum, formatPrice } from "../../utils/helperFunctions";
 
 const CartView = () => {
   const { cartView, updateCartViewDisplay, updateCheckoutStep } =
     useContext(DisplayContext);
-  const { cart, currencyCode } = useContext(StoreContext);
+  const { cart, currencyCode, updateLineItem, removeLineItem } =
+    useContext(StoreContext);
 
   return (
-    <div className={`cart-view-container ${cartView ? "active" : ""}`}>
-      <div className="flex-column inner-cart-view">
-        <div className="cart-view-controls flex-row justify-between">
-          <h1>Cart</h1>
-          <button onClick={() => updateCartViewDisplay()}>Close</button>
-        </div>
-        <div className="flex-column cart-view-item-overview">
-          {cart.items.map((i) => {
+    <div className={`${styles.container} ${cartView ? styles.active : null}`}>
+      <div className={styles.top}>
+        <p>Bag</p>
+        <p>
+          {cart.items.length > 0 ? cart.items.map(quantity).reduce(sum) : 0}{" "}
+          {cart.items.length > 0 && cart.items.map(quantity).reduce(sum) === 1
+            ? "item"
+            : "items"}
+        </p>
+        <button
+          className={styles.closebtn}
+          onClick={() => updateCartViewDisplay()}
+        >
+          X
+        </button>
+      </div>
+      <div className={styles.overview}>
+        {cart.items
+          .sort((a, b) => {
+            const createdAtA = new Date(a.created_at),
+              createdAtB = new Date(b.created_at);
+
+            if (createdAtA < createdAtB) return -1;
+            if (createdAtA > createdAtB) return 1;
+            return 0;
+          })
+          .map((i) => {
             return (
-              <div key={i.id}>
-                <CartViewItem {...i} />
+              <div key={i.id} className={styles.product}>
+                <figure onClick={() => updateCartViewDisplay()}>
+                  <Link to={`/product/${i.variant.product.id}`}>
+                    {/* Replace with a product thumbnail/image */}
+                    <div className={styles.placeholder} />
+                  </Link>
+                </figure>
+                <div className={styles.controls}>
+                  <div>
+                    <div>
+                      <Link to={`/product/${i.variant.product.id}`}>
+                        {i.title}
+                      </Link>
+                      <p className={styles.size}>Size: {i.variant.title}</p>
+                      <p className={styles.size}>
+                        Price:{" "}
+                        {formatPrice(i.unit_price, cart.region.currency_code)}
+                      </p>
+                    </div>
+                    <div>
+                      <div className={styles.mid}>
+                        <div className={styles.selector}>
+                          <button
+                            className={styles.qtybtn}
+                            onClick={() =>
+                              updateLineItem({
+                                lineId: i.id,
+                                quantity: i.quantity - 1,
+                              })
+                            }
+                          >
+                            {"–"}
+                          </button>
+                          <p className={styles.ticker}>{i.quantity}</p>
+                          <button
+                            className={styles.qtybtn}
+                            onClick={() =>
+                              updateLineItem({
+                                lineId: i.id,
+                                quantity: i.quantity + 1,
+                              })
+                            }
+                          >
+                            {"+"}
+                          </button>
+                        </div>
+                      </div>
+                      <p>{}</p>
+                    </div>
+                  </div>
+                  <button
+                    className={styles.remove}
+                    onClick={() => removeLineItem(i.id)}
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
             );
           })}
-        </div>
-        <div className="cart-summery">
-          <div>
-            <div className="flex-row justify-between">
-              <p>Subtotal (incl. taxes)</p>
-              <span>
-                {cart.region ? formatPrice(cart.subtotal, currencyCode) : 0}
-              </span>
-            </div>
-          </div>
-          <div className="flex-row justify-between p-y1">
-            <p>Shipping</p>
-            <span>
-              {cart.shipping_methods && cart.shipping_methods.length > 0
-                ? formatPrice(
-                    cart.shipping_methods[0].shipping_option.amount,
-                    currencyCode
-                  )
-                : "Not selected"}
-            </span>
-          </div>
-          <div className="flex-row justify-between total p-y1">
-            <p>Total</p>
-            <span>
-              {cart.region ? formatPrice(cart.total, currencyCode) : 0}
-            </span>
-          </div>
-        </div>
-        <div className="flex-row justify-between">
-          <div className="card-icons">
-            <span className="icon">
-              <FaCcMastercard />
-            </span>
-            <span className="icon">
-              <FaCcVisa />
-            </span>
-          </div>
-          <button
-            className="big-btn"
-            onClick={() => {
-              updateCheckoutStep(1);
-              updateCartViewDisplay();
-              navigate("/checkout");
-            }}
-            disabled={cart.items.length < 1 ? true : ""}
-          >
-            Checkout
-          </button>
-        </div>
+      </div>
+      <div className={styles.subtotal}>
+        <p>Subtotal (incl. taxes)</p>
+        <span>
+          {cart.region ? formatPrice(cart.subtotal, currencyCode) : 0}
+        </span>
+      </div>
+      <div className={styles.bottom}>
+        <button
+          className={styles.checkoutbtn}
+          onClick={() => {
+            updateCheckoutStep(1);
+            updateCartViewDisplay();
+            navigate("/checkout");
+          }}
+          disabled={cart.items.length < 1 ? true : ""}
+        >
+          Checkout
+        </button>
       </div>
     </div>
   );
