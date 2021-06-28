@@ -42,7 +42,7 @@ const IndexPage = ({ data }) => {
               </div>
             </a>
             <a
-              href="https://nextjs.org/docs/getting-started"
+              href="https://www.gatsbyjs.com/docs/"
               target="_blank"
               rel="noreferrer"
               role="button"
