@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import medusa from "../../services/medusa";
 import { BiShoppingBag } from "react-icons/bi";
 import StoreContext from "../../context/store-context";
 import { getSlug, resetOptions } from "../../utils/helperFunctions";
 import * as styles from "../../styles/Product.module.css";
+import { createClient } from "../../utils/client";
 
 const Product = ({ location }) => {
   const { addVariantToCart } = useContext(StoreContext);
@@ -14,11 +14,12 @@ const Product = ({ location }) => {
   });
 
   const [product, setProduct] = useState(undefined);
+  const client = createClient();
 
   useEffect(() => {
     const getProduct = async () => {
       const slug = getSlug(location.pathname);
-      const response = await medusa.products.retrieve(slug);
+      const response = await client.products.retrieve(slug);
       setProduct(response.data.product);
     };
 

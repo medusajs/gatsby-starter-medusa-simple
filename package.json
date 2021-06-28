@@ -17,6 +17,7 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "@medusajs/medusa-js": "^1.0.1-canary.1",
     "@stripe/react-stripe-js": "^1.4.1",
     "@stripe/stripe-js": "^1.15.0",
     "axios": "^0.21.1",

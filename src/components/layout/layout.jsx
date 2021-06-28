@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import NavBar from "./navBar";
+import NavBar from "./nav-bar";
 import Blur from "./blur";
-import CartView from "../cartView/cartView";
+import CartView from "../cartView/cart-view";
 import DisplayContext from "../../context/display-context";
 import * as styles from "../../styles/Layout.module.css";
 import "../../styles/globals.css";

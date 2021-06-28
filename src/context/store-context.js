@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect, useRef } from "react";
-import Medusa from "../services/medusa";
+import { createClient } from "../utils/client";
 
 export const defaultStoreContext = {
   adding: false,
@@ -53,6 +53,8 @@ const reducer = (state, action) => {
   }
 };
 
+const client = createClient();
+
 export const StoreProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, defaultStoreContext);
   const stateCartId = useRef();
@@ -68,11 +70,11 @@ export const StoreProvider = ({ children }) => {
     }
 
     if (cartId) {
-      Medusa.cart.retrieve(cartId).then(({ data }) => {
+      client.carts.retrieve(cartId).then(({ data }) => {
         dispatch({ type: "setCart", payload: data.cart });
       });
     } else {
-      Medusa.cart.create(cartId).then(({ data }) => {
+      client.carts.create(cartId).then(({ data }) => {
         dispatch({ type: "setCart", payload: data.cart });
         if (localStorage) {
           localStorage.setItem("cart_id", data.cart.id);
@@ -80,7 +82,7 @@ export const StoreProvider = ({ children }) => {
       });
     }
 
-    Medusa.products.list().then(({ data }) => {
+    client.products.list().then(({ data }) => {
       dispatch({ type: "setProducts", payload: data.products });
     });
   }, []);
@@ -89,13 +91,13 @@ export const StoreProvider = ({ children }) => {
     if (localStorage) {
       localStorage.removeItem("cart_id");
     }
-    Medusa.cart.create().then(({ data }) => {
+    client.carts.create().then(({ data }) => {
       dispatch({ type: "setCart", payload: data.cart });
     });
   };
 
   const addVariantToCart = async ({ variantId, quantity }) => {
-    Medusa.cart.lineItems
+    client.carts.lineItems
       .create(state.cart.id, {
         variant_id: variantId,
         quantity: quantity,
@@ -106,13 +108,13 @@ export const StoreProvider = ({ children }) => {
   };
 
   const removeLineItem = async (lineId) => {
-    Medusa.cart.lineItems.delete(state.cart.id, lineId).then(({ data }) => {
+    client.carts.lineItems.delete(state.cart.id, lineId).then(({ data }) => {
       dispatch({ type: "setCart", payload: data.cart });
     });
   };
 
   const updateLineItem = async ({ lineId, quantity }) => {
-    Medusa.cart.lineItems
+    client.carts.lineItems
       .update(state.cart.id, lineId, { quantity: quantity })
       .then(({ data }) => {
         dispatch({ type: "setCart", payload: data.cart });
@@ -120,7 +122,7 @@ export const StoreProvider = ({ children }) => {
   };
 
   const getShippingOptions = async () => {
-    const data = await Medusa.shippingOptions
+    const data = await client.shippingOptions
       .list(state.cart.id)
       .then(({ data }) => data);
 
@@ -132,8 +134,8 @@ export const StoreProvider = ({ children }) => {
   };
 
   const setShippingMethod = (id) => {
-    Medusa.cart
-      .setShippingMethod(state.cart.id, {
+    client.carts
+      .addShippingMethod(state.cart.id, {
         option_id: id,
       })
       .then(({ data }) => {
@@ -142,14 +144,14 @@ export const StoreProvider = ({ children }) => {
   };
 
   const createPaymentSession = () => {
-    Medusa.cart.createPaymentSessions(state.cart.id).then(({ data }) => {
+    client.carts.createPaymentSessions(state.cart.id).then(({ data }) => {
       dispatch({ type: "setCart", payload: data.cart });
     });
   };
 
   const completeCart = async () => {
-    const data = await Medusa.cart
-      .completeCart(state.cart.id)
+    const data = await client.carts
+      .complete(state.cart.id)
       .then(({ data }) => data);
 
     if (data) {
@@ -160,7 +162,7 @@ export const StoreProvider = ({ children }) => {
   };
 
   const retrieveOrder = async (orderId) => {
-    const data = await Medusa.orders.retrieve(orderId).then(({ data }) => data);
+    const data = await client.orders.retrieve(orderId).then(({ data }) => data);
 
     if (data) {
       return data.order;
@@ -170,7 +172,7 @@ export const StoreProvider = ({ children }) => {
   };
 
   const updateAddress = (address, email) => {
-    Medusa.cart
+    client.carts
       .update(state.cart.id, {
         shipping_address: address,
         billing_address: address,
