@@ -24,3 +24,10 @@ export const resetOptions = (product) => {
     size: size,
   };
 };
+
+// export function isEmpty(obj) {
+//   return (
+//     [Object, Array].includes((obj || {}).constructor) &&
+//     !Object.entries(obj || {}).length
+//   );
+// }

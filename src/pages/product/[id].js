@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
-import "./product.css";
+import React, { useEffect, useState, useContext } from "react";
+import medusa from "../../services/medusa";
 import { BiShoppingBag } from "react-icons/bi";
-import { HiOutlineTruck } from "react-icons/hi";
 import StoreContext from "../../context/store-context";
-import { resetOptions } from "../../utils/helperFunctions";
+import { getSlug, resetOptions } from "../../utils/helperFunctions";
+import * as styles from "../../styles/Product.module.css";
 
-const ProductLayout = (props) => {
+const Product = ({ location }) => {
   const { addVariantToCart } = useContext(StoreContext);
   const [options, setOptions] = useState({
     variantId: "",
@@ -13,11 +13,23 @@ const ProductLayout = (props) => {
     size: "",
   });
 
+  const [product, setProduct] = useState(undefined);
+
   useEffect(() => {
-    if (props) {
-      setOptions(resetOptions(props));
+    const getProduct = async () => {
+      const slug = getSlug(location.pathname);
+      const response = await medusa.products.retrieve(slug);
+      setProduct(response.data.product);
+    };
+
+    getProduct();
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (product) {
+      setOptions(resetOptions(product));
     }
-  }, [props]);
+  }, [product]);
 
   const handleQtyChange = (action) => {
     if (action === "inc") {
@@ -43,32 +55,33 @@ const ProductLayout = (props) => {
       variantId: options.variantId,
       quantity: options.quantity,
     });
-    if (props) setOptions(resetOptions(props));
+    if (product) setOptions(resetOptions(product));
   };
 
-  return (
-    <div className="product-session">
-      <div className="product-image"></div>
-      <div className="product-info">
-        <div className="details">
+  return product ? (
+    <div className={styles.container}>
+      <figure className={styles.image}>
+        <div className={styles.placeholder}></div>
+      </figure>
+      <div className={styles.info}>
+        <span />
+        <div>
           <div className="title">
-            <h1>{props.title}</h1>
+            <h1>{product.title}</h1>
           </div>
-          <div className="price">
-            <span>19.50 EUR</span>
-          </div>
-          <div className="selection">
-            <p className="option-desc">Select Size</p>
+          <p className="price">19.50 EUR</p>
+          <div className={styles.selection}>
+            <p>Select Size</p>
             <div className="selectors">
-              {props.variants
+              {product.variants
                 .slice(0)
                 .reverse()
                 .map((v) => {
                   return (
                     <button
                       key={v.id}
-                      className={`size-btn btn ${
-                        v.title === options.size ? "selected" : ""
+                      className={`${styles.sizebtn} ${
+                        v.title === options.size ? styles.selected : null
                       }`}
                       onClick={() =>
                         setOptions({
@@ -84,50 +97,40 @@ const ProductLayout = (props) => {
                 })}
             </div>
           </div>
-          <div className="selection">
-            <p className="option-desc">Select Quantity</p>
-            <div className="qty-btns">
+          <div className={styles.selection}>
+            <p>Select Quantity</p>
+            <div className={styles.qty}>
               <button
-                className="qty-btn btn"
+                className={styles.qtybtn}
                 onClick={() => handleQtyChange("dec")}
               >
                 -
               </button>
-              <p className="qty">{options.quantity}</p>
+              <span className={styles.ticker}>{options.quantity}</span>
               <button
-                className="qty-btn btn"
+                className={styles.qtybtn}
                 onClick={() => handleQtyChange("inc")}
               >
                 +
               </button>
             </div>
           </div>
-          <div className="actions">
-            <button
-              className="add-to-cart checkout-btn big-btn"
-              onClick={() => handleAddToBag()}
-            >
-              <span>Add to bag</span>
-              <BiShoppingBag />
-            </button>
-          </div>
-          <div className="tabs">
+          <button className={styles.addbtn} onClick={() => handleAddToBag()}>
+            <span>Add to bag</span>
+            <BiShoppingBag />
+          </button>
+          <div className={styles.tabs}>
             <div className="tab-titles">
-              <button className="tab-title active">Product Description</button>
-              <button className="tab-title">About Designer</button>
+              <button className={styles.tabtitle}>Product Description</button>
             </div>
             <div className="tab-content">
-              <p>{props.description}</p>
+              <p>{product.description}</p>
             </div>
           </div>
-        </div>
-        <div className="returns-msg">
-          <HiOutlineTruck />
-          <p>Free returns on all orders</p>
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
-export default ProductLayout;
+export default Product;

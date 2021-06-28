@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import DisplayContext from "../../context/display-context";
+import * as styles from "../../styles/Blur.module.css";
 
 const Blur = () => {
   const { cartView, updateCartViewDisplay } = useContext(DisplayContext);
   return (
     <div
-      className={`blur ${cartView ? "active" : ""}`}
+      className={`${styles.blur} ${cartView ? styles.active : null}`}
       onClick={() => updateCartViewDisplay()}
       onKeyDown={() => updateCartViewDisplay()}
       role="button"
