@@ -1,8 +1,8 @@
 import React from "react";
-import CheckoutStepContainer from "../components/checkout/checkoutStepContainer";
+import CheckoutStep from "../components/checkout/checkout-step";
 
 const Checkout = () => {
-  return <CheckoutStepContainer />;
+  return <CheckoutStep />;
 };
 
 export default Checkout;

@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import PuffLoader from "react-spinners/PuffLoader";
 import * as styles from "../../styles/InformationStep.module.css";
-import InputField from "./inputField";
+import InputField from "./input-field";
 
 const InformationStep = ({ handleSubmit, savedValues, isProcessing }) => {
   let Schema = Yup.object().shape({

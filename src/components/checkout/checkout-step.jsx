@@ -2,13 +2,13 @@ import React, { useContext, useState } from "react";
 import DisplayContext from "../../context/display-context";
 import StoreContext from "../../context/store-context";
 import * as styles from "../../styles/CheckoutStepContainer.module.css";
-import CheckoutSummery from "./checkoutSummery";
-import InformationStep from "./informationStep";
-import PaymentStep from "./paymentStep";
-import ShippingStep from "./shippingStep";
-import StepOverview from "./stepOverview";
+import CheckoutSummery from "./checkout-summery";
+import InformationStep from "./information-step";
+import PaymentStep from "./payment-step";
+import ShippingStep from "./shipping-step";
+import StepOverview from "./step-overview";
 
-const CheckoutStepContainer = () => {
+const CheckoutStep = () => {
   const {
     checkoutStep,
     orderSummery,
@@ -105,4 +105,4 @@ const CheckoutStepContainer = () => {
   );
 };
 
-export default CheckoutStepContainer;
+export default CheckoutStep;
