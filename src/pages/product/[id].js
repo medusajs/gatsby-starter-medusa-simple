@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { BiShoppingBag } from "react-icons/bi";
 import StoreContext from "../../context/store-context";
-import { getSlug, resetOptions } from "../../utils/helperFunctions";
+import { getSlug, resetOptions } from "../../utils/helper-functions";
 import * as styles from "../../styles/Product.module.css";
 import { createClient } from "../../utils/client";
 
@@ -33,8 +33,13 @@ const Product = ({ location }) => {
   }, [product]);
 
   const handleQtyChange = (action) => {
+    console.log(product);
     if (action === "inc") {
-      if (options.quantity < 10)
+      if (
+        options.quantity <
+        product.variants.find(({ id }) => id === options.variantId)
+          .inventory_quantity
+      )
         setOptions({
           variantId: options.variantId,
           quantity: options.quantity + 1,

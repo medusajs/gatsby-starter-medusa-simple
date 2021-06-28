@@ -2,7 +2,7 @@ import { Link } from "gatsby";
 import React, { useContext } from "react";
 import DisplayContext from "../../context/display-context";
 import StoreContext from "../../context/store-context";
-import { quantity, sum } from "../../utils/helperFunctions";
+import { quantity, sum } from "../../utils/helper-functions";
 import { BiShoppingBag } from "react-icons/bi";
 import * as styles from "../../styles/NavBar.module.css";
 

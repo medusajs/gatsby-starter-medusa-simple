@@ -3,7 +3,7 @@ import StoreContext from "../context/store-context";
 import * as itemStyles from "../styles/CartView.module.css";
 import * as styles from "../styles/Payment.module.css";
 import { Link } from "gatsby";
-import { formatPrice } from "../utils/helperFunctions";
+import { formatPrice } from "../utils/helper-functions";
 
 const style = {
   height: "100vh",
@@ -35,7 +35,7 @@ const Payment = () => {
   ) : (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1>Order Summery</h1>
+        <h1>Order Summary</h1>
         <p>Thank you for your order!</p>
       </div>
       <div className={styles.items}>

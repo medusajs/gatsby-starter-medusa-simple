@@ -3,7 +3,7 @@ import DisplayContext from "../../context/display-context";
 import StoreContext from "../../context/store-context";
 import { Link, navigate } from "gatsby";
 import * as styles from "../../styles/CartView.module.css";
-import { quantity, sum, formatPrice } from "../../utils/helperFunctions";
+import { quantity, sum, formatPrice } from "../../utils/helper-functions";
 
 const CartView = () => {
   const { cartView, updateCartViewDisplay, updateCheckoutStep } =
@@ -115,7 +115,7 @@ const CartView = () => {
             updateCartViewDisplay();
             navigate("/checkout");
           }}
-          disabled={cart.items.length < 1 ? true : ""}
+          disabled={cart.items.length < 1 ? true : false}
         >
           Checkout
         </button>

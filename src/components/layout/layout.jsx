@@ -5,20 +5,21 @@ import CartView from "../cartView/cart-view";
 import DisplayContext from "../../context/display-context";
 import * as styles from "../../styles/Layout.module.css";
 import "../../styles/globals.css";
-import { globalHistory } from "@reach/router";
 
-const Layout = ({ children }) => {
+const Layout = ({ location, children }) => {
   const { cartView } = useContext(DisplayContext);
   const [isCheckout, setIsCheckout] = useState(false);
-  const path = globalHistory.location.pathname;
 
   useEffect(() => {
-    if (path === "/checkout" || path === "/payment") {
+    if (
+      location.location.pathname === "/checkout" ||
+      location.location.pathname === "/payment"
+    ) {
       setIsCheckout(true);
     } else {
       setIsCheckout(false);
     }
-  }, [path]);
+  }, [location]);
 
   return (
     <div className={cartView ? styles.noscroll : null}>
