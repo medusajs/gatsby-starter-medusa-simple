@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
   const path = globalHistory.location.pathname;
 
   useEffect(() => {
-    if (path == "/checkout" || path == "/payment") {
+    if (path === "/checkout" || path === "/payment") {
       setIsCheckout(true);
     } else {
       setIsCheckout(false);
