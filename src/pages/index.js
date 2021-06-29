@@ -1,240 +1,137 @@
-import React, { useEffect, useState } from "react";
-
-import Medusa from "../services/medusa";
-
-// styles
-const pageStyles = {
-  color: "#232129",
-  padding: 96,
-  fontFamily: "-apple-system, Roboto, sans-serif, serif",
-};
-const headingStyles = {
-  marginTop: 0,
-  marginBottom: 64,
-  maxWidth: 320,
-};
-const headingAccentStyles = {
-  color: "#663399",
-};
-const paragraphStyles = {
-  marginBottom: 48,
-};
-const codeStyles = {
-  color: "#8A6534",
-  padding: 4,
-  backgroundColor: "#FFF4DB",
-  fontSize: "1.25rem",
-  borderRadius: 4,
-};
-const listStyles = {
-  marginBottom: 96,
-  paddingLeft: 0,
-};
-const listItemStyles = {
-  fontWeight: 300,
-  fontSize: 24,
-  maxWidth: 560,
-  marginBottom: 30,
-};
-
-const linkStyle = {
-  color: "#8954A8",
-  fontWeight: "bold",
-  fontSize: 16,
-  verticalAlign: "5%",
-};
-
-const docLinkStyle = {
-  ...linkStyle,
-  listStyleType: "none",
-  marginBottom: 24,
-};
-
-const descriptionStyle = {
-  color: "#232129",
-  fontSize: 14,
-  marginTop: 10,
-  marginBottom: 0,
-  lineHeight: 1.25,
-};
-
-const docLink = {
-  text: "Documentation",
-  url: "https://www.gatsbyjs.com/docs/",
-  color: "#8954A8",
-};
-
-const badgeStyle = {
-  color: "#fff",
-  backgroundColor: "#088413",
-  border: "1px solid #088413",
-  fontSize: 11,
-  fontWeight: "bold",
-  letterSpacing: 1,
-  borderRadius: 4,
-  padding: "4px 6px",
-  display: "inline-block",
-  position: "relative",
-  top: -2,
-  marginLeft: 10,
-  lineHeight: 1,
-};
-
-// data
-const links = [
-  {
-    text: "Tutorial",
-    url: "https://www.gatsbyjs.com/docs/tutorial/",
-    description:
-      "A great place to get started if you're new to web development. Designed to guide you through setting up your first Gatsby site.",
-    color: "#E95800",
-  },
-  {
-    text: "How to Guides",
-    url: "https://www.gatsbyjs.com/docs/how-to/",
-    description:
-      "Practical step-by-step guides to help you achieve a specific goal. Most useful when you're trying to get something done.",
-    color: "#1099A8",
-  },
-  {
-    text: "Reference Guides",
-    url: "https://www.gatsbyjs.com/docs/reference/",
-    description:
-      "Nitty-gritty technical descriptions of how Gatsby works. Most useful when you need detailed information about Gatsby's APIs.",
-    color: "#BC027F",
-  },
-  {
-    text: "Conceptual Guides",
-    url: "https://www.gatsbyjs.com/docs/conceptual/",
-    description:
-      "Big-picture explanations of higher-level Gatsby concepts. Most useful for building understanding of a particular topic.",
-    color: "#0D96F2",
-  },
-  {
-    text: "Plugin Library",
-    url: "https://www.gatsbyjs.com/plugins",
-    description:
-      "Add functionality and customize your Gatsby site or app with thousands of plugins built by our amazing developer community.",
-    color: "#8EB814",
-  },
-  {
-    text: "Build and Host",
-    url: "https://www.gatsbyjs.com/cloud",
-    badge: true,
-    description:
-      "Now you’re ready to show the world! Give your Gatsby site superpowers: Build and host on Gatsby Cloud. Get started for free!",
-    color: "#663399",
-  },
-];
-
-const contentStyles = {
-  display: "flex",
-  justifyContent: "space-between",
-};
-
-const cartStyles = {
-  display: "flex",
-  flexDirection: "column",
-  flex: 1,
-};
-
-const productListStyles = {
-  flex: 1,
-};
+import React, { useContext } from "react";
+import { FaGithub } from "react-icons/fa";
+import StoreContext from "../context/store-context";
+import { graphql } from "gatsby";
+import * as styles from "../styles/home.module.css";
+import { Link } from "gatsby";
 
 // markup
-const IndexPage = () => {
-  const [products, setProducts] = useState([]);
-
-  const [cart, setCart] = useState({});
-
-  useEffect(() => {
-    let cartId;
-    if (localStorage) {
-      cartId = localStorage.getItem("cart_id");
-    }
-
-    if (cartId) {
-      Medusa.cart.retrieve(cartId).then(({ data }) => {
-        setCart(data.cart);
-      });
-    } else {
-      Medusa.cart.create(cartId).then(({ data }) => {
-        setCart(data.cart);
-        if (localStorage) {
-          localStorage.setItem("cart_id", data.cart.id);
-        }
-      });
-    }
-
-    Medusa.products.list().then(({ data }) => {
-      setProducts(data.products);
-    });
-  }, []);
-
-  const handleAddToCart = (variantId) => {
-    if (cart && cart.id) {
-      Medusa.cart.lineItems
-        .create(cart.id, {
-          variant_id: variantId,
-          quantity: 1,
-        })
-        .then(({ data }) => {
-          setCart(data.cart);
-        });
-    }
-  };
-  const handleRemoveFromCart = (lineId) => {
-    if (cart && cart.id) {
-      Medusa.cart.lineItems.delete(cart.id, lineId).then(({ data }) => {
-        setCart(data.cart);
-      });
-    }
-  };
+const IndexPage = ({ data }) => {
+  const { products } = useContext(StoreContext);
 
   return (
-    <main style={pageStyles}>
-      <title>Medusa Home</title>
-      <h1 style={headingStyles}>Welcome to Medusa!</h1>
-      <p style={paragraphStyles}></p>
-      <div style={contentStyles}>
-        <div style={productListStyles}>
-          <h2>Products</h2>
-          {products.map((p) => {
-            return (
-              <div key={p.id}>
-                <strong>{p.title}</strong>
-                <p>{p.description}</p>
-                <button onClick={() => handleAddToCart(p.variants[0].id)}>
-                  Add to cart
-                </button>
+    <div className={styles.container}>
+      <main className={styles.main}>
+        <div className={styles.hero}>
+          <h1 className={styles.title}>
+            Medusa + Gatsby Starter{" "}
+            <span role="img" aria-label="Rocket emoji">
+              🚀
+            </span>
+          </h1>
+          <p className={styles.description}>
+            Build blazing-fast client applications on top of a modular headless
+            commerce engine. Integrate seamlessly with any 3rd party tools for a
+            best-in-breed commerce stack.
+          </p>
+          <div className={styles.tags}>
+            <div className={styles.tag} style={{ background: "lightgrey" }}>
+              v{data.site.siteMetadata.version}
+            </div>
+            <a
+              href="https://www.medusa-commerce.com/"
+              arget="_blank"
+              rel="noreferrer"
+              role="button"
+            >
+              <div
+                className={styles.tag}
+                style={{ background: "var(--logo-color-900)", color: "white" }}
+              >
+                Medusa
               </div>
-            );
-          })}
-        </div>
-        <div style={cartStyles}>
-          <h2>Cart</h2>
-
-          <div>
-            {cart.items?.map((i) => {
-              return (
-                <div key={i.id}>
-                  <strong>{i.title}</strong>
-                  <p>
-                    {i.quantity} x {(i.unit_price / 100).toFixed(2)}{" "}
-                    {cart.region.currency_code?.toUpperCase()}
-                  </p>
-                  <button onClick={() => handleRemoveFromCart(i.id)}>
-                    Remove
-                  </button>
-                </div>
-              );
-            })}
+            </a>
+            <a
+              href="https://www.gatsbyjs.com/docs/"
+              target="_blank"
+              rel="noreferrer"
+              role="button"
+            >
+              <div
+                className={styles.tag}
+                style={{ background: "#5e3a94", color: "white" }}
+              >
+                Gatsby
+              </div>
+            </a>
+            <a
+              href="https://stripe.com/docs"
+              target="_blank"
+              rel="noreferrer"
+              role="button"
+            >
+              <div
+                className={styles.tag}
+                style={{ background: "#4379FF", color: "white" }}
+              >
+                Stripe
+              </div>
+            </a>
+          </div>
+          <div className={styles.links}>
+            <a
+              href="https://docs.medusa-commerce.com/"
+              target="_blank"
+              rel="noreferrer"
+              role="button"
+              className={styles.btn}
+            >
+              Read the docs
+              <svg
+                stroke="currentColor"
+                fill="currentColor"
+                strokeWidth="0"
+                viewBox="0 0 24 24"
+                height="1em"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+              </svg>
+            </a>
+            <a
+              href="https://github.com/medusajs/nextjs-starter-medusa"
+              target="_blank"
+              rel="noreferrer"
+              role="button"
+              className={styles.btn}
+            >
+              View on GitHub
+              <FaGithub />
+            </a>
           </div>
         </div>
-      </div>
-    </main>
+        <div className={styles.products}>
+          <h2>Demo Products</h2>
+          <div className={styles.grid}>
+            {products &&
+              products.map((p) => {
+                return (
+                  <div key={p.id} className={styles.card}>
+                    <Link to={`/product/${p.id}`}>
+                      <div>
+                        <h2>{p.title}</h2>
+                        <p>19.50 EUR</p>
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      </main>
+    </div>
   );
 };
+
+export const query = graphql`
+  query VersionQuery {
+    site {
+      siteMetadata {
+        version
+      }
+    }
+  }
+`;
 
 export default IndexPage;

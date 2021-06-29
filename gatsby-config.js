@@ -1,6 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: "gatsby-starter-medusa",
+    version: "1.0.0",
   },
   plugins: [
     "gatsby-plugin-image",
