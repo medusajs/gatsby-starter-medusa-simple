@@ -5,6 +5,8 @@
   <img alt="GitHub package.json version" src="https://img.shields.io/github/package-json/v/medusajs/gatsby-starter-medusa?label=Version">
 </div>
 
+> **Prerequisites**: To use the starter you should have a Medusa server running locally on port 4000. Check out [medusa-starter-default](https://github.com/medusajs/medusa-starter-default) for a quick setup.
+
 ## Quick start
 
 1. **Setting up the enviroment variables**
