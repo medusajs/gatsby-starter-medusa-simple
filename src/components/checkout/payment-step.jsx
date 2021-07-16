@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { navigate } from "gatsby";
 import { Elements } from "@stripe/react-stripe-js";
 import StoreContext from "../../context/store-context";
