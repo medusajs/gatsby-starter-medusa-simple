@@ -96,6 +96,17 @@ export const StoreProvider = ({ children }) => {
     });
   };
 
+  const setPaymentSession = async (provider) => {
+    client.carts
+      .setPaymentSession(state.cart.id, {
+        provider_id: provider,
+      })
+      .then(({ data }) => {
+        dispatch({ type: "setCart", payload: data.cart });
+        return data;
+      });
+  };
+
   const addVariantToCart = async ({ variantId, quantity }) => {
     client.carts.lineItems
       .create(state.cart.id, {
@@ -146,6 +157,7 @@ export const StoreProvider = ({ children }) => {
   const createPaymentSession = () => {
     client.carts.createPaymentSessions(state.cart.id).then(({ data }) => {
       dispatch({ type: "setCart", payload: data.cart });
+      return data;
     });
   };
 
@@ -193,6 +205,7 @@ export const StoreProvider = ({ children }) => {
         updateLineItem,
         getShippingOptions,
         setShippingMethod,
+        setPaymentSession,
         createPaymentSession,
         updateAddress,
         completeCart,
