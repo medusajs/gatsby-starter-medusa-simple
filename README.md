@@ -9,9 +9,9 @@
 
 ## Quick start
 
-1. **Setting up the enviroment variables**
+1. **Setting up the environment variables**
 
-   Get your enviroment variables ready:
+   Get your environment variables ready:
 
    ```shell
    mv .env.template .env.development
