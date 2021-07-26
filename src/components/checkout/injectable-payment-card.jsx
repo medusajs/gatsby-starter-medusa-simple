@@ -6,14 +6,13 @@ import DisplayContext from "../../context/display-context";
 import * as styles from "../../styles/injectable-payment-card.module.css";
 import { BiLeftArrowAlt } from "react-icons/bi";
 
-const InjectablePaymentCard = () => {
+const InjectablePaymentCard = ({ session, onSetPaymentSession }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState("");
   const [disabled, setDisabled] = useState(true);
-  const { cart } = useContext(StoreContext);
   const { updateCheckoutStep } = useContext(DisplayContext);
 
   const handleChange = async (event) => {
@@ -24,8 +23,11 @@ const InjectablePaymentCard = () => {
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     setProcessing(true);
+
+    await onSetPaymentSession();
+
     const payload = await stripe.confirmCardPayment(
-      cart.payment_session.data.client_secret,
+      session.data.client_secret,
       {
         payment_method: {
           card: elements.getElement(CardElement),

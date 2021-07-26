@@ -17,7 +17,7 @@
     mv .env.template .env.development
     ```
 
-    Add your Stripe API key to your `.env.development`
+    If using Stripe add your Stripe API key to your `.env.development`
 
     ```
     GATSBY_STRIPE_KEY=pk_test_something
