@@ -15,15 +15,15 @@ export const defaultStoreContext = {
    * @param {*} quantity
    * @returns
    */
-  addVariantToCart: () => {},
-  createCart: () => {},
-  removeLineItem: () => {},
-  updateLineItem: () => {},
-  setShippingMethod: () => {},
-  updateAddress: () => {},
-  createPaymentSession: () => {},
-  completeCart: () => {},
-  retrieveOrder: () => {},
+  addVariantToCart: async () => {},
+  createCart: async () => {},
+  removeLineItem: async () => {},
+  updateLineItem: async () => {},
+  setShippingMethod: async () => {},
+  updateAddress: async () => {},
+  createPaymentSession: async () => {},
+  completeCart: async () => {},
+  retrieveOrder: async () => {},
   dispatch: () => {},
 };
 
@@ -144,21 +144,24 @@ export const StoreProvider = ({ children }) => {
     }
   };
 
-  const setShippingMethod = (id) => {
-    client.carts
+  const setShippingMethod = async (id) => {
+    return await client.carts
       .addShippingMethod(state.cart.id, {
         option_id: id,
       })
       .then(({ data }) => {
         dispatch({ type: "setCart", payload: data.cart });
+        return data;
       });
   };
 
-  const createPaymentSession = () => {
-    client.carts.createPaymentSessions(state.cart.id).then(({ data }) => {
-      dispatch({ type: "setCart", payload: data.cart });
-      return data;
-    });
+  const createPaymentSession = async () => {
+    return await client.carts
+      .createPaymentSessions(state.cart.id)
+      .then(({ data }) => {
+        dispatch({ type: "setCart", payload: data.cart });
+        return data;
+      });
   };
 
   const completeCart = async () => {

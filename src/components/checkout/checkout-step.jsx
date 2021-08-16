@@ -23,7 +23,7 @@ const CheckoutStep = () => {
   const handleShippingSubmit = async (address, email) => {
     setIsProcessingInfo(true);
 
-    updateAddress(address, email);
+    await updateAddress(address, email);
 
     setIsProcessingInfo(false);
     updateCheckoutStep(2);
@@ -31,9 +31,13 @@ const CheckoutStep = () => {
 
   const handleDeliverySubmit = async (option) => {
     setIsProcessingShipping(true);
-    setShippingMethod(option.id);
-    setIsProcessingShipping(false);
-    updateCheckoutStep(3);
+    await setShippingMethod(option.id)
+      .then(() => {
+        updateCheckoutStep(3);
+      })
+      .finally(() => {
+        setIsProcessingShipping(false);
+      });
   };
 
   const handleStep = () => {
