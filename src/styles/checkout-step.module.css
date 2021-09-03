@@ -14,22 +14,6 @@
   scrollbar-color: var(--logo-color-400) transparent;
 }
 
-/* .steps::-webkit-scrollbar {
-  width: 12px;
-  border-radius: 12px;
-}
-
-.steps::-webkit-scrollbar-track {
-  background: transparent;
-  border-radius: 12px;
-}
-
-.steps::-webkit-scrollbar-thumb {
-  background-color: var(--logo-color-400);
-  border-radius: 20px;
-  border: 1px solid var(--bg);
-} */
-
 .summary {
   width: 40%;
   display: flex;
