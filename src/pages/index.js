@@ -4,10 +4,11 @@ import StoreContext from "../context/store-context";
 import { graphql } from "gatsby";
 import * as styles from "../styles/home.module.css";
 import { Link } from "gatsby";
+import { formatPrices } from "../utils/format-price";
 
 // markup
 const IndexPage = ({ data }) => {
-  const { products } = useContext(StoreContext);
+  const { cart, products } = useContext(StoreContext);
 
   return (
     <div className={styles.container}>
@@ -111,7 +112,7 @@ const IndexPage = ({ data }) => {
                     <Link to={`/product/${p.id}`}>
                       <div>
                         <h2>{p.title}</h2>
-                        <p>19.50 EUR</p>
+                        <p>{formatPrices(cart, p.variants[0])}</p>
                       </div>
                     </Link>
                   </div>
