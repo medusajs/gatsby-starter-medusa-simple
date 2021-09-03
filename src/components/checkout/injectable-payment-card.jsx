@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { navigate } from "gatsby";
-import StoreContext from "../../context/store-context";
 import DisplayContext from "../../context/display-context";
 import * as styles from "../../styles/injectable-payment-card.module.css";
 import { BiLeftArrowAlt } from "react-icons/bi";

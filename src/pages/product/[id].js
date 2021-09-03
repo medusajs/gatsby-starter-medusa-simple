@@ -1,11 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { BiShoppingBag } from "react-icons/bi";
 import StoreContext from "../../context/store-context";
-import {
-  formatPrice,
-  getSlug,
-  resetOptions,
-} from "../../utils/helper-functions";
+import { getSlug, resetOptions } from "../../utils/helper-functions";
 import * as styles from "../../styles/product.module.css";
 import { createClient } from "../../utils/client";
 import { formatPrices } from "../../utils/format-price";
@@ -75,6 +71,7 @@ const Product = ({ location }) => {
           <img
             style={{ height: "100%", width: "100%", objectFit: "cover" }}
             src={product.thumbnail}
+            alt={`${product.title}`}
           />
         </div>
       </figure>

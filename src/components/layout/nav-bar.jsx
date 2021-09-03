@@ -14,7 +14,7 @@ const NavBar = ({ isCheckout }) => {
   return (
     <div className={styles.container}>
       <Link to="/" style={{ width: "125px" }}>
-        <img src={MedusaLogo} style={{ maxHeight: "40px" }} />
+        <img src={MedusaLogo} style={{ maxHeight: "40px" }} alt="logo" />
       </Link>
       {!isCheckout ? (
         <button className={styles.btn} onClick={() => updateCartViewDisplay()}>

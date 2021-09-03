@@ -45,7 +45,17 @@ const CheckoutSummary = ({ cart }) => {
                 <figure>
                   <Link to={`/product/${i.variant.product.id}`}>
                     {/* Replace with a product thumbnail/image */}
-                    <div className={itemStyles.placeholder} />
+                    <div className={itemStyles.placeholder}>
+                      <img
+                        style={{
+                          height: "100%",
+                          width: "100%",
+                          objectFit: "cover",
+                        }}
+                        src={i.variant.product.thumbnail}
+                        alt={`${i.title}`}
+                      />
+                    </div>
                   </Link>
                 </figure>
                 <div className={itemStyles.controls}>

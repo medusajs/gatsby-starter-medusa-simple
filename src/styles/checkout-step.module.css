@@ -14,7 +14,7 @@
   scrollbar-color: var(--logo-color-400) transparent;
 }
 
-.steps::-webkit-scrollbar {
+/* .steps::-webkit-scrollbar {
   width: 12px;
   border-radius: 12px;
 }
@@ -28,7 +28,7 @@
   background-color: var(--logo-color-400);
   border-radius: 20px;
   border: 1px solid var(--bg);
-}
+} */
 
 .summary {
   width: 40%;
@@ -81,17 +81,14 @@
   .container {
     flex-direction: column;
   }
-
   .steps {
     padding: 0px 22px;
     width: 100%;
     height: 100%;
   }
-
   .breadcrumbs {
     margin-top: 6rem;
   }
-
   .orderBtn {
     margin-bottom: 2rem;
     display: block;

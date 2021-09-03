@@ -6,7 +6,6 @@ import * as styles from "../../styles/information-step.module.css";
 import InputField from "./input-field";
 import StoreContext from "../../context/store-context";
 import SelectField from "./select-field";
-import { useEffect } from "react";
 
 const InformationStep = ({ handleSubmit, savedValues, isProcessing }) => {
   const { cart } = useContext(StoreContext);
