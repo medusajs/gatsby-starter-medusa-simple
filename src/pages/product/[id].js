@@ -1,12 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
 import { BiShoppingBag } from "react-icons/bi";
 import StoreContext from "../../context/store-context";
-import { getSlug, resetOptions } from "../../utils/helper-functions";
+import {
+  formatPrice,
+  getSlug,
+  resetOptions,
+} from "../../utils/helper-functions";
 import * as styles from "../../styles/product.module.css";
 import { createClient } from "../../utils/client";
+import { formatPrices } from "../../utils/format-price";
 
 const Product = ({ location }) => {
-  const { addVariantToCart } = useContext(StoreContext);
+  const { cart, addVariantToCart } = useContext(StoreContext);
   const [options, setOptions] = useState({
     variantId: "",
     quantity: 0,
@@ -33,7 +38,6 @@ const Product = ({ location }) => {
   }, [product]);
 
   const handleQtyChange = (action) => {
-    console.log(product);
     if (action === "inc") {
       if (
         options.quantity <
@@ -64,10 +68,15 @@ const Product = ({ location }) => {
     if (product) setOptions(resetOptions(product));
   };
 
-  return product ? (
+  return product && cart.id ? (
     <div className={styles.container}>
       <figure className={styles.image}>
-        <div className={styles.placeholder}></div>
+        <div className={styles.placeholder}>
+          <img
+            style={{ height: "100%", width: "100%", objectFit: "cover" }}
+            src={product.thumbnail}
+          />
+        </div>
       </figure>
       <div className={styles.info}>
         <span />
@@ -75,7 +84,7 @@ const Product = ({ location }) => {
           <div className="title">
             <h1>{product.title}</h1>
           </div>
-          <p className="price">19.50 EUR</p>
+          <p className="price">{formatPrices(cart, product.variants[0])}</p>
           <div className={styles.selection}>
             <p>Select Size</p>
             <div className="selectors">
