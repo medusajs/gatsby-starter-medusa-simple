@@ -9,12 +9,8 @@ import ShippingStep from "./shipping-step";
 import StepOverview from "./step-overview";
 
 const CheckoutStep = () => {
-  const {
-    checkoutStep,
-    orderSummary,
-    updateCheckoutStep,
-    updateOrderSummaryDisplay,
-  } = useContext(DisplayContext);
+  const { checkoutStep, updateCheckoutStep, updateOrderSummaryDisplay } =
+    useContext(DisplayContext);
   const { cart, updateAddress, setShippingMethod } = useContext(StoreContext);
 
   const [isProcessingInfo, setIsProcessingInfo] = useState(false);

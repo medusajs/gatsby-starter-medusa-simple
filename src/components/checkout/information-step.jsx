@@ -40,7 +40,10 @@ const InformationStep = ({ handleSubmit, savedValues, isProcessing }) => {
           email: savedValues.email || "",
           address_1: savedValues.address_1 || "",
           address_2: savedValues.address_2 || "",
-          country_code: savedValues.country_code || "",
+          country_code:
+            savedValues.country_code ||
+            cart?.region?.countries?.[0].iso_2 ||
+            "",
           postal_code: savedValues.postal_code || "",
           city: savedValues.city || "",
           phone: savedValues.phone || "",
@@ -51,9 +54,9 @@ const InformationStep = ({ handleSubmit, savedValues, isProcessing }) => {
           handleSubmit(rest, email);
         }}
       >
-        {({ errors, touched, values }) => (
+        {({ errors, touched, values, setFieldValue }) => (
           <Form className={styles.styledform}>
-            {isProcessing ? (
+            {isProcessing || !cart ? (
               <div className={styles.spinner}>
                 <PuffLoader loading={true} size={60} />
               </div>
