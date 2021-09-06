@@ -30,9 +30,10 @@ Medusa is an open-source headless commerce engine that enables developers to cre
 
 1. **Setting up the environment variables**
 
-   Get your environment variables ready:
+   Navigate into your projects directory and get your environment variables ready:
 
    ```shell
+   cd gatsby-starter-medusa/
    mv .env.template .env.development
    ```
 
@@ -44,10 +45,9 @@ Medusa is an open-source headless commerce engine that enables developers to cre
 
 2. **Install dependencies**
 
-   Navigate into your projects directory and use Yarn to install all dependencies.
+   Use Yarn to install all dependencies.
 
    ```shell
-   cd gatsby-starter-medusa/
    yarn
    ```
 
