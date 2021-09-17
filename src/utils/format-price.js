@@ -1,27 +1,37 @@
-function getTaxRate(cart) {
-  if ("tax_rate" in cart) {
-    return cart.tax_rate / 100;
+function getCartCurrency(cart) {
+  if ('currency_code' in cart) {
+    return cart.currency_code;
   } else if (cart.region) {
-    return cart.region && cart.region.tax_rate / 100;
+    return cart.region.currency_code;
+  }
+  return null;
+}
+
+function getTaxRate(cart) {
+  if ('tax_rate' in cart) {
+    return cart.tax_rate;
+  } else if (cart.region) {
+    return cart.region && cart.region.tax_rate;
   }
   return 0;
 }
 
 export function formatMoneyAmount(moneyAmount, digits, taxRate = 0) {
-  let locale = "en-US";
+  let locale = 'en-US';
 
   return new Intl.NumberFormat(locale, {
-    style: "currency",
+    style: 'currency',
     currency: moneyAmount.currencyCode,
     minimumFractionDigits: digits,
-  }).format(moneyAmount.amount * (1 + taxRate / 100));
+  }).format((moneyAmount.amount / 100) * (1 + taxRate / 100));
 }
 
 export function getVariantPrice(cart, variant) {
   let taxRate = getTaxRate(cart);
 
+  const cartCurrency = getCartCurrency(cart);
   let moneyAmount = variant.prices.find(
-    (p) => p.currency_code.toLowerCase() === cart.currency_code.toLowerCase()
+    p => p.currency_code.toLowerCase() === cartCurrency,
   );
 
   if (moneyAmount && moneyAmount.amount) {
@@ -39,6 +49,6 @@ export function formatPrices(cart, variant, digits = 2) {
       currencyCode: cart.region.currency_code,
       amount: getVariantPrice(cart, variant),
     },
-    digits
+    digits,
   );
 }
