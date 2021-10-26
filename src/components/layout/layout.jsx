@@ -23,10 +23,12 @@ const Layout = ({ location, children }) => {
 
   return (
     <div className={cartView ? styles.noscroll : null}>
-      <CartView />
-      <Blur />
-      <NavBar isCheckout={isCheckout} />
-      <main>{children}</main>
+      <main>
+        <CartView />
+        <Blur />
+        <NavBar isCheckout={isCheckout} />
+        {children}
+      </main>
     </div>
   );
 };
