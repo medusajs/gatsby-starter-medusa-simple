@@ -1,0 +1,15 @@
+export const colors = {
+  text: "#000",
+  background: "#fff",
+  medusaGreen: "#56FBB1",
+  royalBlue: "#0A3149",
+  fuccia: "#EEF0F5",
+  eggBlue: "#8DEBFF",
+  hazyPurple: "#ACB4FF",
+  salmon: "#FFBB95",
+  pinkSalmon: "#FF9B9B",
+  ui400: "#89959C",
+  ui300: "#D9DFE8",
+  ui200: "#EEF0F5",
+  ui100: "#F7F7F",
+};

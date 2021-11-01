@@ -3,7 +3,7 @@ import { BiShoppingBag } from "react-icons/bi";
 import StoreContext from "../../context/store-context";
 import { getSlug, resetOptions } from "../../utils/helper-functions";
 import * as styles from "../../styles/product.module.css";
-import { createClient } from "../../utils/client";
+import { client } from "../../utils/client";
 import { formatPrices } from "../../utils/format-price";
 
 const Product = ({ location }) => {
@@ -15,7 +15,6 @@ const Product = ({ location }) => {
   });
 
   const [product, setProduct] = useState(undefined);
-  const client = createClient();
 
   useEffect(() => {
     const getProduct = async () => {

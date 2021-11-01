@@ -1,5 +1,5 @@
 import React, { useReducer, useEffect, useRef } from "react";
-import { createClient } from "../utils/client";
+import { client } from "../utils/client";
 
 export const defaultStoreContext = {
   adding: false,
@@ -52,8 +52,6 @@ const reducer = (state, action) => {
       return state;
   }
 };
-
-const client = createClient();
 
 export const StoreProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, defaultStoreContext);

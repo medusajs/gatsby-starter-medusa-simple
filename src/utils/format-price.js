@@ -14,7 +14,7 @@ export function formatMoneyAmount(moneyAmount, digits, taxRate = 0) {
     style: "currency",
     currency: moneyAmount.currencyCode,
     minimumFractionDigits: digits,
-  }).format(moneyAmount.amount * (1 + taxRate / 100));
+  }).format((moneyAmount.amount / 100) * (1 + taxRate / 100));
 }
 
 export function getVariantPrice(cart, variant) {

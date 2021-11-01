@@ -16,5 +16,20 @@ module.exports = {
       },
       __key: "images",
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `blog`,
+        path: `${__dirname}/src/markdown-pages`,
+      },
+    },
+    `gatsby-transformer-remark`,
+    {
+      resolve: "gatsby-source-medusa",
+      options: {
+        storeUrl: "http://localhost:9000",
+      },
+    },
+    "gatsby-plugin-theme-ui",
   ],
 };
