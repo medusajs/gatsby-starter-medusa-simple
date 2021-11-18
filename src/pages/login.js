@@ -71,9 +71,7 @@ const Login = () => {
           maxWidth: "500px",
         }}
       >
-        <Text as="h1" sx={{}}>
-          Welcome back
-        </Text>
+        <Text as="h1">Welcome back</Text>
         <Text
           sx={{
             my: 2,

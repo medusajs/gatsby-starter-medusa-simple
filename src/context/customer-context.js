@@ -1,8 +1,10 @@
 import React from "react";
 import { client } from "../utils/client";
+import { navigate } from "gatsby-link";
 
 const defaultCustomerContext = {
   customer: undefined,
+  orders: [],
 };
 
 const CustomerContext = React.createContext(defaultCustomerContext);
@@ -11,6 +13,7 @@ export default CustomerContext;
 const ACTIONS = {
   UPDATE_CUSTOMER: "UPDATE_CUSTOMER",
   CLEAR_CUSTOMER: "CLEAR_CUSTOMER",
+  UPDATE_ORDERS: "UPDATE_ORDERS",
 };
 
 const reducer = (state, action) => {
@@ -24,6 +27,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         customer: undefined,
+      };
+    case ACTIONS.UPDATE_ORDERS:
+      return {
+        ...state,
+        orders: action.payload,
       };
     default:
       break;
@@ -169,6 +177,7 @@ export const CustomerProvider = (props) => {
 
     if (customer) {
       updateCustomer(customer);
+      await fetchOrders();
       setLoading(false);
       return true;
     }
@@ -177,6 +186,20 @@ export const CustomerProvider = (props) => {
     setLoading(false);
     return false;
   }, []);
+
+  const logoutCustomer = async () => {
+    await client.auth.deleteSession();
+    navigate("/");
+    clearCustomer();
+  };
+
+  const fetchOrders = async () => {
+    const orders = await client.customers
+      .listOrders()
+      .then(({ data: { orders } }) => orders)
+      .catch((_) => []);
+    dispatch({ type: ACTIONS.UPDATE_ORDERS, payload: orders });
+  };
 
   React.useEffect(() => {
     me();
@@ -191,6 +214,7 @@ export const CustomerProvider = (props) => {
         actions: {
           createCustomer,
           loginCustomer,
+          logoutCustomer,
           addShippingAddress,
           updateCustomerDetails,
           updateShippingAddress,

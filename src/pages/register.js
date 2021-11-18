@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@theme-ui/components";
+import { Button, Flex, Text } from "@theme-ui/components";
 import Field from "../components/forms/field";
 import React from "react";
 import { useFormik } from "formik";
@@ -44,41 +44,60 @@ const Register = () => {
     formik.submitForm();
   };
   return (
-    <Box as="form">
+    <Flex
+      as="form"
+      sx={{
+        height: "calc(100vh - 80px)",
+        justifyContent: "center",
+        width: "100%",
+      }}
+    >
       <Flex
         sx={{
           flexDirection: "column",
+          justifyContent: "center",
+          height: "100%",
+          flexGrow: 1,
+          maxWidth: "500px",
         }}
       >
-        <Text>
-          Create
-          <br />
-          Account
-        </Text>
-        <ErrorSummary errors={formik.errors} status={formik.status} />
+        <Text as="h1">Create account</Text>
+        {/* <ErrorSummary errors={formik.errors} status={formik.status} /> */}
         <Field
           formik={formik}
           name="first_name"
           value={formik.values.first_name}
           placeholder="First name"
+          sx={{
+            variant: "forms.underlined",
+          }}
         />
         <Field
           formik={formik}
           name="last_name"
           value={formik.values.last_name}
           placeholder="Last name"
+          sx={{
+            variant: "forms.underlined",
+          }}
         />
         <Field
           formik={formik}
           name="email"
           value={formik.values.email}
           placeholder="Email"
+          sx={{
+            variant: "forms.underlined",
+          }}
         />
         <Field
           formik={formik}
           name="phone"
           value={formik.values.phone}
           placeholder="Phone (optional)"
+          sx={{
+            variant: "forms.underlined",
+          }}
         />
         <Field
           formik={formik}
@@ -86,10 +105,13 @@ const Register = () => {
           value={formik.values.password}
           placeholder="Password"
           type="password"
+          sx={{
+            variant: "forms.underlined",
+          }}
         />
         <Button onClick={handleSubmit}>Sign up</Button>
       </Flex>
-    </Box>
+    </Flex>
   );
 };
 

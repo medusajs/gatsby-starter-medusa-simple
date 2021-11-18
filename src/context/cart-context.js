@@ -1,5 +1,6 @@
 import React from "react";
 import { client } from "../utils/client";
+import RegionContext from "./region-context";
 
 const defaultCartContext = {
   cart: {
@@ -39,6 +40,7 @@ const CART_ID = "cart_id";
 export const CartProvider = (props) => {
   const [state, dispatch] = React.useReducer(reducer, defaultCartContext);
   const cartId = React.useRef();
+  const { region } = React.useContext(RegionContext);
 
   React.useEffect(() => {
     if (state.cart.id) {
@@ -86,50 +88,126 @@ export const CartProvider = (props) => {
   }, []);
 
   const addItem = async (item) => {
-    const cart = await client.carts.lineItems
-      .create(cartId.current, item)
-      .then(({ data: { cart } }) => cart);
+    const response = { cart: undefined, error: undefined };
 
-    dispatch({ type: ACTIONS.UPDATE_CART, payload: cart });
+    response.cart = await client.carts.lineItems
+      .create(cartId.current, item)
+      .then(({ data: { cart } }) => cart)
+      .catch((err) => {
+        response.error = err.response.data;
+        return undefined;
+      });
+
+    if (!response.error) {
+      dispatch({ type: ACTIONS.UPDATE_CART, payload: response.cart });
+    }
+
+    return response;
   };
 
   const updateItem = async (item) => {
-    const cart = await client.carts.lineItems
-      .update(cartId, item.id, {
+    const response = { cart: undefined, error: undefined };
+
+    response.cart = await client.carts.lineItems
+      .update(cartId.current, item.id, {
         quantity: item.quantity,
       })
-      .then(({ data: { cart } }) => cart);
+      .then(({ data: { cart } }) => cart)
+      .catch((err) => {
+        response.error = err.response.data;
+        return undefined;
+      });
 
-    dispatch({ type: ACTIONS.UPDATE_CART, payload: cart });
+    if (!response.error) {
+      dispatch({ type: ACTIONS.UPDATE_CART, payload: response.cart });
+    }
+
+    return response;
   };
 
   const deleteItem = async (item) => {
-    const cart = await client.carts.lineItems
-      .delete(cartId, item.id)
-      .then(({ data: { cart } }) => cart);
+    const response = { cart: undefined, error: undefined };
 
-    dispatch({ type: ACTIONS.UPDATE_CART, payload: cart });
+    response.cart = await client.carts.lineItems
+      .delete(cartId.current, item.id)
+      .then(({ data: { cart } }) => cart)
+      .catch((err) => {
+        response.error = err.response.data;
+        return undefined;
+      });
+
+    if (!response.error) {
+      dispatch({ type: ACTIONS.UPDATE_CART, payload: response.cart });
+    }
+
+    return response;
   };
 
-  /**
-   * Updates the current cart with
-   * @param {CartUpdateResource} update
-   */
   const updateCart = async (update) => {
-    const cart = await client.carts
-      .update(cartId, update)
-      .then(({ cart }) => cart);
-    dispatch({ type: ACTIONS.UPDATE_CART, payload: cart });
+    const response = { cart: undefined, error: undefined };
+
+    response.cart = await client.carts
+      .update(cartId.current, update)
+      .then(({ data: { cart } }) => cart)
+      .catch((err) => {
+        response.error = err.response.data;
+        return undefined;
+      });
+
+    if (!response.error) {
+      dispatch({ type: ACTIONS.UPDATE_CART, payload: response.cart });
+    }
+
+    return response;
   };
+
+  const removeDiscount = async (code) => {
+    const response = { cart: undefined, error: undefined };
+
+    response.cart = await client.carts
+      .deleteDiscount(cartId.current, code)
+      .then(({ data: { cart } }) => cart)
+      .catch((err) => {
+        response.error = err.response.data;
+        return undefined;
+      });
+
+    if (!response.error) {
+      dispatch({ type: ACTIONS.UPDATE_CART, payload: response.cart });
+    }
+
+    console.log(response);
+
+    return response;
+  };
+
+  React.useEffect(() => {
+    const updateCartRegion = async () => {
+      const cart = await client.carts
+        .update(cartId.current, { region_id: region.id })
+        .then(({ data: { cart } }) => cart);
+
+      dispatch({ type: ACTIONS.UPDATE_CART, payload: cart });
+    };
+
+    if (cartId.current && region?.id) {
+      updateCartRegion();
+    }
+  }, [region?.id, cartId.current]);
 
   return (
     <CartContext.Provider
       {...props}
-      value={{ ...state, addItem, updateItem, deleteItem, updateCart }}
+      value={{
+        ...state,
+        actions: {
+          addItem,
+          updateItem,
+          deleteItem,
+          updateCart,
+          removeDiscount,
+        },
+      }}
     />
   );
 };
-
-/**
- * @typedef {{billing_address: any, shipping_address: any}} CartUpdateResource
- */

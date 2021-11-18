@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Box, Flex, Text } from "@theme-ui/components";
+import { Grid, Box, Text, Flex } from "@theme-ui/components";
 import Link from "../link/nav-link";
 import { useStaticQuery, graphql } from "gatsby";
 
@@ -22,11 +22,17 @@ const Footer = () => {
   `);
 
   return (
-    <Box as="footer">
+    <Box
+      sx={{
+        position: "relative",
+        fontFamily: "body",
+      }}
+      as="footer"
+    >
       <Grid
         sx={{
           display: "grid",
-          gridTemplateRows: "repeat(4, 32px)",
+          gridTemplateRows: "repeat(3, 32px)",
           gridTemplateColumns: ["repeat(2, 1fr)", "repeat(4, 1fr)"],
           gridAutoFlow: "column",
           px: 4,

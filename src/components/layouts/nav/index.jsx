@@ -1,4 +1,4 @@
-import { Box, Flex, Image } from "@theme-ui/components";
+import { Box, Flex, Image, Text } from "@theme-ui/components";
 import Logo from "../../../images/logo-icon.svg";
 import React from "react";
 import RegionSelector from "./region-selector";
@@ -6,19 +6,23 @@ import NavLink from "../../link/nav-link";
 import styled from "@emotion/styled";
 import CartSelector from "./cart-selector";
 import { useCustomer } from "../../../hooks/useCustomer";
+import { useCheckout } from "../../../hooks/useCheckout";
+import BreadCrumbs from "../../checkout2/checkout-steps/bread-crumbs";
+import Link from "../../link/link";
 
 const CollectionLinks = styled(Flex)`
   a {
     margin-right: 1rem;
   }
 
-  a:last-child {
+  a:last-of-type {
     margin: 0;
   }
 `;
 
 const Nav = () => {
   const { customer } = useCustomer();
+  const { isCheckout } = useCheckout();
   return (
     <Box
       as="nav"
@@ -50,36 +54,62 @@ const Nav = () => {
             alt=""
           />
         </NavLink>
-        <Flex
-          sx={{
-            width: "100%",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <CollectionLinks>
-            <NavLink to={"/products"}>All</NavLink>
-            <NavLink to={"/collections/apparel"}>Apparel</NavLink>
-            <NavLink to={"/collections/merch"}>Merch</NavLink>
-          </CollectionLinks>
+        {!isCheckout ? (
           <Flex
             sx={{
+              width: "100%",
+              justifyContent: "space-between",
               alignItems: "center",
             }}
           >
-            <RegionSelector
+            <CollectionLinks>
+              <NavLink to={"/products"}>Products</NavLink>
+            </CollectionLinks>
+            <Flex
               sx={{
-                mr: 3,
+                alignItems: "center",
               }}
-            />
-            {customer ? (
-              <NavLink to={"/customer"}>My page</NavLink>
-            ) : (
-              <NavLink to={"/login"}>Sign in</NavLink>
-            )}
-            <CartSelector />
+            >
+              <RegionSelector
+                sx={{
+                  mr: 3,
+                }}
+              />
+              {customer ? (
+                <NavLink
+                  to={"/customer"}
+                >{`${customer.first_name} ${customer.last_name}`}</NavLink>
+              ) : (
+                <NavLink to={"/login"}>Sign in</NavLink>
+              )}
+              <CartSelector />
+            </Flex>
           </Flex>
-        </Flex>
+        ) : (
+          <Flex
+            sx={{
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <BreadCrumbs />
+            <Link
+              to={"/"}
+              sx={{
+                color: "faded",
+                textDecoration: "none",
+                fontSize: 1,
+                transition: "color .2s linear",
+                "&:hover": {
+                  color: "text",
+                },
+              }}
+            >
+              BACK TO STORE
+            </Link>
+          </Flex>
+        )}
       </Flex>
     </Box>
   );

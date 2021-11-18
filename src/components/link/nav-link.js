@@ -9,6 +9,7 @@ export default (props) => (
     sx={{
       variant: "nav",
       color: "black",
+      textDecoration: "none",
       "&.active": {
         color: "medusaGreen",
       },

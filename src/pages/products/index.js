@@ -25,6 +25,12 @@ export const query = graphql`
               gatsbyImageData
             }
           }
+          variants {
+            prices {
+              amount
+              currency_code
+            }
+          }
           images {
             image {
               childImageSharp {

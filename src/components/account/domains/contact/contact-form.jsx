@@ -1,18 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { useCustomer } from "../../../../hooks/useCustomer";
 
-import { Box, Flex, Grid, Label, Text, Button } from "@theme-ui/components";
-import Field from "../../../forms/field";
+import { Box, Flex, Text, Button } from "@theme-ui/components";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import FieldWrapper from "../../../forms/field-wrapper";
 
 const ContactForm = () => {
-  const [editable, setEditable] = useState(false);
   const {
     customer,
     actions: { updateCustomerDetails },
   } = useCustomer();
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
       first_name: customer?.first_name || "",
       last_name: customer?.last_name || "",
@@ -32,136 +32,68 @@ const ContactForm = () => {
         setStatus(response.error);
         return;
       }
-
-      setEditable(false);
     },
   });
   return (
     <Flex
       sx={{
         flexDirection: "column",
-        maxWidth: "800px",
       }}
     >
-      <Text
-        as="h1"
-        sx={{
-          fontWeight: 400,
-          fontSize: [3, 4, 5],
-          mb: 3,
-        }}
-      >
-        Contact Information
-      </Text>
       <Box
+        variant="layouts.form"
         as="form"
         onSubmit={(e) => {
           e.preventDefault();
           formik.submitForm();
         }}
       >
-        <Grid
+        <Text variant="accountDomain" as="h2">
+          Account information
+        </Text>
+        <Flex
           sx={{
-            gridTemplateColumns: "1fr 1fr",
-            gridTemplateRows: "1fr 1fr",
-            gap: [4],
+            flexDirection: "column",
           }}
         >
-          <Box>
-            <Label
-              sx={{
-                mb: 2,
-              }}
-            >
-              First name
-            </Label>
-            <Field
-              formik={formik}
-              name="first_name"
-              defaultValue={formik.values.first_name}
-              placeholder="First name"
-              readOnly={!editable}
-              sx={{
-                flexGrow: "1",
-              }}
-            />
-          </Box>
-          <Box>
-            <Label
-              sx={{
-                mb: 2,
-              }}
-            >
-              Last name
-            </Label>
-            <Field
-              formik={formik}
-              name="last_name"
-              defaultValue={formik.values.last_name}
-              placeholder="Last name"
-              readOnly={!editable}
-              sx={{
-                flexGrow: 1,
-              }}
-            />
-          </Box>
-          <Box>
-            <Label
-              sx={{
-                mb: 2,
-              }}
-            >
-              Email
-            </Label>
-            <Field
-              formik={formik}
-              name="email"
-              defaultValue={formik.values.email}
-              placeholder="Email"
-              readOnly={!editable}
-              sx={{
-                flexGrow: 1,
-              }}
-            />
-          </Box>
-          <Box>
-            <Label
-              sx={{
-                mb: 2,
-              }}
-            >
-              Phone
-            </Label>
-            <Field
-              formik={formik}
-              name="phone"
-              defaultValue={formik.values.phone}
-              placeholder="Phone"
-              readOnly={!editable}
-              sx={{
-                flexGrow: 1,
-              }}
-            />
-          </Box>
-        </Grid>
+          <FieldWrapper
+            formik={formik}
+            name="first_name"
+            defaultValue={formik.values.first_name}
+            placeholder="First name"
+            label="First name"
+          />
+          <FieldWrapper
+            formik={formik}
+            name="last_name"
+            defaultValue={formik.values.last_name}
+            placeholder="Last name"
+            label="Last name"
+          />
+          <FieldWrapper
+            formik={formik}
+            name="email"
+            defaultValue={formik.values.email}
+            placeholder="Email"
+            label="Email"
+          />
+          <FieldWrapper
+            formik={formik}
+            name="phone"
+            defaultValue={formik.values.phone}
+            placeholder="Phone"
+            label="Phone"
+          />
+        </Flex>
         <Flex
           sx={{
             justifyContent: "flex-end",
-            my: 2,
+            mt: 3,
           }}
         >
-          {editable ? (
-            <Button>Save</Button>
-          ) : (
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                setEditable(true);
-              }}
-            >
-              Edit
-            </Button>
-          )}
+          <Button variant="save" type="submit" disabled={!formik.dirty}>
+            Save
+          </Button>
         </Flex>
       </Box>
     </Flex>

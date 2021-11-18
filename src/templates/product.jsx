@@ -55,9 +55,16 @@ const Product = ({ data, pageContext }) => {
     variant,
     options,
     quantity,
-    actions: { updateOptions, increaseQuantity, decreaseQuantity },
+    actions: {
+      updateOptions,
+      increaseQuantity,
+      decreaseQuantity,
+      resetOptions,
+    },
   } = useProduct(product);
-  const { addItem } = useCart();
+  const {
+    actions: { addItem },
+  } = useCart();
   const { region } = useRegion();
 
   useEffect(() => {
@@ -72,6 +79,7 @@ const Product = ({ data, pageContext }) => {
 
   const handleAdd = async () => {
     await addItem({ variant_id: variant.id, quantity: quantity });
+    resetOptions();
   };
 
   return (
@@ -98,6 +106,7 @@ const Product = ({ data, pageContext }) => {
               variant="price"
               sx={{
                 fontSize: [3, 4],
+                fontWeight: 300,
               }}
             >
               {formatMoneyAmount(
@@ -184,7 +193,6 @@ const Product = ({ data, pageContext }) => {
             </Button>
           </Flex>
           <Button
-            variant="addToCart"
             sx={{
               ml: 2,
             }}

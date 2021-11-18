@@ -7,7 +7,6 @@ const Field = ({
   name,
   placeholder,
   type = "text",
-  readOnly = false,
   sx = {},
 }) => {
   const [error, setError] = useState(false);
@@ -28,16 +27,8 @@ const Field = ({
       onBlur={formik.handleBlur}
       onChange={formik.handleChange}
       placeholder={placeholder}
-      readOnly={readOnly}
       sx={{
-        borderColor: error
-          ? "pinkSalmon"
-          : readOnly
-          ? "medusaGreen"
-          : "royalBlue",
-        transition: "all .2s linear",
-        borderRadius: "8px",
-        minHeight: "40px",
+        variant: "forms.underlined",
         ...sx,
       }}
     />

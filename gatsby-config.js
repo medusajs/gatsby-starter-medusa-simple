@@ -30,6 +30,5 @@ module.exports = {
         storeUrl: "http://localhost:9000",
       },
     },
-    "gatsby-plugin-theme-ui",
   ],
 };

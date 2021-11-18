@@ -56,6 +56,15 @@ export const useProduct = (product = { options: [], variants: [] }) => {
     }
   };
 
+  const resetOptions = () => {
+    const optionObj = {};
+    for (const option of product.options) {
+      Object.assign(optionObj, { [option.id]: option.values[0].value });
+    }
+    setOptions(optionObj);
+    setQuantity(1);
+  };
+
   return {
     variant,
     options,
@@ -64,6 +73,7 @@ export const useProduct = (product = { options: [], variants: [] }) => {
       updateOptions,
       increaseQuantity,
       decreaseQuantity,
+      resetOptions,
     },
   };
 };

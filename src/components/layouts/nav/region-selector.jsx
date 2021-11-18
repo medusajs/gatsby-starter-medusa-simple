@@ -13,6 +13,8 @@ const RegionSelector = (props) => {
           node {
             id
             name
+            currency_code
+            tax_rate
             countries {
               iso_2
               display_name
@@ -51,7 +53,7 @@ const RegionSelector = (props) => {
         {edges.map((edge) => {
           return (
             <option value={edge.node.id} key={edge.node.id}>
-              {edge.node.name}
+              {edge.node.name} / {edge.node.currency_code.toUpperCase()}
             </option>
           );
         })}

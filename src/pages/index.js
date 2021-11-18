@@ -1,14 +1,19 @@
 import React from "react";
 import { graphql } from "gatsby";
 import ProductGrid from "../components/product/product-grid";
+import { Box } from "@theme-ui/components";
 
-// markup
-const IndexPage = ({ data }) => {
+const Index = ({ data }) => {
   const {
     allMedusaProducts: { edges },
   } = data;
   const products = edges.map((e) => e.node);
-  return <ProductGrid products={products} />;
+  // return <ProductGrid products={products} />;
+  return (
+    <Box>
+      <ProductGrid products={products} />
+    </Box>
+  );
 };
 
 export const query = graphql`
@@ -26,6 +31,12 @@ export const query = graphql`
               gatsbyImageData
             }
           }
+          variants {
+            prices {
+              amount
+              currency_code
+            }
+          }
           images {
             image {
               childImageSharp {
@@ -39,4 +50,4 @@ export const query = graphql`
   }
 `;
 
-export default IndexPage;
+export default Index;

@@ -1,10 +1,16 @@
 import { Flex, Grid, Text } from "@theme-ui/components";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import React from "react";
+import { usePrice } from "../../../hooks/usePrice";
 
 const Listing = ({ product }) => {
   console.log(product);
   const thumbnail = getImage(product.thumbnail);
+  const {
+    actions: { getFromPrice },
+  } = usePrice();
+
+  const fromPrice = getFromPrice(product);
   return (
     <Flex
       sx={{
@@ -42,13 +48,15 @@ const Listing = ({ product }) => {
         >
           {product.title}
         </Text>
-        <Text
-          sx={{
-            fontSize: [2],
-          }}
-        >
-          from €19.5
-        </Text>
+        {fromPrice ? (
+          <Text
+            sx={{
+              fontSize: 2,
+            }}
+          >
+            from {fromPrice}
+          </Text>
+        ) : null}
       </Flex>
     </Flex>
   );

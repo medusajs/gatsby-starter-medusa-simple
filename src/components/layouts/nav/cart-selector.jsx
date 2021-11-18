@@ -1,9 +1,13 @@
 import { Button } from "@theme-ui/components";
-import React, { useContext } from "react";
-import CartContext from "../../../context/cart-context";
+import React from "react";
+import { useCart } from "../../../hooks/useCart";
+import { useDisplay } from "../../../hooks/useDisplay";
 
 const CartSelector = () => {
-  const { cart } = useContext(CartContext);
+  const { cart } = useCart();
+  const {
+    actions: { updateCartViewDisplay },
+  } = useDisplay();
   return (
     <Button
       sx={{
@@ -12,12 +16,10 @@ const CartSelector = () => {
         p: 0,
         color: "black",
         alignItems: "center",
+        cursor: "pointer",
       }}
-    >{`Cart ${
-      cart.items.length
-        ? cart.items.reduce((sum, item) => sum + item.quantity, 0)
-        : 0
-    }`}</Button>
+      onClick={() => updateCartViewDisplay()}
+    >{`Cart ${cart.items.length}`}</Button>
   );
 };
 

@@ -4,6 +4,8 @@ import { Box, Grid, Text } from "@theme-ui/components";
 import { getImage } from "gatsby-plugin-image";
 import { GatsbyImage } from "gatsby-plugin-image";
 import ProductLink from "../../link/product-link";
+import { usePrice } from "../../../hooks/usePrice";
+import { useRegion } from "../../../hooks/useRegion";
 
 const GridArea = styled(Grid)`
   grid-template-columns: 2fr 1fr;
@@ -17,22 +19,34 @@ const GridArea = styled(Grid)`
 const ProductGrid = ({ products }) => {
   const toDisplay = [products[0], products[0], products[0]];
 
+  const {
+    actions: { getFromPrice },
+  } = usePrice();
+
+  const { region } = useRegion();
+
   return (
-    <GridArea
+    <Grid
       sx={{
-        height: "calc(100vh - 100px)",
+        gridTemplateColumns: ["1fr", "1fr", "2fr 1fr"],
+        gridTemplateRows: ["1fr 1fr 1fr", "1fr 1fr 1fr", "1fr 1fr"],
+        gap: "16px 16px",
+        gridTemplateAreas: `"product-0 product-1"
+                            "product-0 product-2"`,
+        height: "calc(100vh - 120px)",
       }}
     >
       {toDisplay.map((product, i) => {
         const image = getImage(product.thumbnail);
+        const fromPrice = getFromPrice(product);
         return (
           <Box
             sx={{
               gridArea: `product-${i}`,
               bg: "ui200",
               overflow: "hidden",
-              borderRadius: "8px",
               position: "relative",
+              flexGrow: [1, 1, 0],
             }}
             key={i}
           >
@@ -47,22 +61,38 @@ const ProductGrid = ({ products }) => {
                   height: "100%",
                 }}
               />
-              <Text
-                as="h2"
+              <Box
                 sx={{
                   position: "absolute",
-                  bottom: "2rem",
-                  left: "2rem",
-                  fontSize: i < 1 ? [5, 6, 7] : [3, 4, 5],
+                  bottom: 3,
+                  left: 3,
+                  color: "royalBlue",
                 }}
               >
-                {product.title}
-              </Text>
+                <Text
+                  as="h2"
+                  sx={{
+                    fontSize: i < 1 ? [4, 5, 6] : [3, 4, 5],
+                    fontWeight: 500,
+                  }}
+                >
+                  {product.title}
+                </Text>
+                {fromPrice ? (
+                  <Text
+                    sx={{
+                      fontSize: 2,
+                    }}
+                  >
+                    from {fromPrice}
+                  </Text>
+                ) : null}
+              </Box>
             </ProductLink>
           </Box>
         );
       })}
-    </GridArea>
+    </Grid>
   );
 };
 

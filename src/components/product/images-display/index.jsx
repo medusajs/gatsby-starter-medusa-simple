@@ -23,11 +23,10 @@ const ImageDisplay = ({ images = [], productTitle }) => {
     <Box
       sx={{
         maxWidth: "50%",
-        maxHeight: "calc(100vh - 100px)",
+        maxHeight: "calc(100vh - 120px)",
         minHeight: "500px",
         position: "relative",
         overflow: "hidden",
-        borderRadius: "8px",
         bg: "ui200",
       }}
     >

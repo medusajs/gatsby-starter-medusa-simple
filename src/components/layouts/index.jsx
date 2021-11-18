@@ -2,14 +2,23 @@ import { Box } from "@theme-ui/components";
 import Footer from "./footer";
 import Nav from "./nav";
 import React from "react";
+import ShoppingCart from "../shopping-cart";
+import { useCheckout } from "../../hooks/useCheckout";
 
 const Layout = ({ children }) => {
+  const { isCheckout } = useCheckout();
+
   return (
     <Box
       sx={{
         position: "relative",
+        fontFamily: "body",
+        button: {
+          fontFamily: "body",
+        },
       }}
     >
+      <ShoppingCart />
       <Nav />
       <Box
         sx={{
@@ -20,7 +29,7 @@ const Layout = ({ children }) => {
       >
         {children}
       </Box>
-      <Footer />
+      {!isCheckout && <Footer />}
     </Box>
   );
 };

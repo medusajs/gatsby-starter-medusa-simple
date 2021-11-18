@@ -1,6 +1,9 @@
 export const colors = {
   text: "#000",
+  faded: "#9f9f9f",
+  smoke: "#F6F6F6",
   background: "#fff",
+  warning: "#F9C846",
   medusaGreen: "#56FBB1",
   royalBlue: "#0A3149",
   fuccia: "#EEF0F5",
