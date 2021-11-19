@@ -1,8 +1,8 @@
+import { Link } from "gatsby";
 import React, { useContext, useEffect, useState } from "react";
 import StoreContext from "../context/store-context";
 import * as itemStyles from "../styles/cart-view.module.css";
 import * as styles from "../styles/payment.module.css";
-import { Link } from "gatsby";
 import { formatPrice } from "../utils/helper-functions";
 
 const style = {
