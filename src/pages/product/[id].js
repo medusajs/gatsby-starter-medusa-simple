@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BiShoppingBag } from "react-icons/bi";
 import StoreContext from "../../context/store-context";
-import { getSlug, resetOptions } from "../../utils/helper-functions";
 import * as styles from "../../styles/product.module.css";
 import { createClient } from "../../utils/client";
 import { formatPrices } from "../../utils/format-price";
+import { getSlug, resetOptions } from "../../utils/helper-functions";
 
 const Product = ({ location }) => {
   const { cart, addVariantToCart } = useContext(StoreContext);
@@ -21,7 +21,7 @@ const Product = ({ location }) => {
     const getProduct = async () => {
       const slug = getSlug(location.pathname);
       const response = await client.products.retrieve(slug);
-      setProduct(response.data.product);
+      setProduct(response.product);
     };
 
     getProduct();

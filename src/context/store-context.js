@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useRef } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import { createClient } from "../utils/client";
 
 export const defaultStoreContext = {
@@ -70,11 +70,11 @@ export const StoreProvider = ({ children }) => {
     }
 
     if (cartId) {
-      client.carts.retrieve(cartId).then(({ data }) => {
+      client.carts.retrieve(cartId).then((data) => {
         dispatch({ type: "setCart", payload: data.cart });
       });
     } else {
-      client.carts.create(cartId).then(({ data }) => {
+      client.carts.create(cartId).then((data) => {
         dispatch({ type: "setCart", payload: data.cart });
         if (localStorage) {
           localStorage.setItem("cart_id", data.cart.id);
@@ -82,7 +82,7 @@ export const StoreProvider = ({ children }) => {
       });
     }
 
-    client.products.list().then(({ data }) => {
+    client.products.list().then((data) => {
       dispatch({ type: "setProducts", payload: data.products });
     });
   }, []);
@@ -91,7 +91,7 @@ export const StoreProvider = ({ children }) => {
     if (localStorage) {
       localStorage.removeItem("cart_id");
     }
-    client.carts.create().then(({ data }) => {
+    client.carts.create().then((data) => {
       dispatch({ type: "setCart", payload: data.cart });
     });
   };
@@ -101,7 +101,7 @@ export const StoreProvider = ({ children }) => {
       .setPaymentSession(state.cart.id, {
         provider_id: provider,
       })
-      .then(({ data }) => {
+      .then((data) => {
         dispatch({ type: "setCart", payload: data.cart });
         return data;
       });
@@ -113,13 +113,13 @@ export const StoreProvider = ({ children }) => {
         variant_id: variantId,
         quantity: quantity,
       })
-      .then(({ data }) => {
+      .then((data) => {
         dispatch({ type: "setCart", payload: data.cart });
       });
   };
 
   const removeLineItem = async (lineId) => {
-    client.carts.lineItems.delete(state.cart.id, lineId).then(({ data }) => {
+    client.carts.lineItems.delete(state.cart.id, lineId).then((data) => {
       dispatch({ type: "setCart", payload: data.cart });
     });
   };
@@ -127,15 +127,15 @@ export const StoreProvider = ({ children }) => {
   const updateLineItem = async ({ lineId, quantity }) => {
     client.carts.lineItems
       .update(state.cart.id, lineId, { quantity: quantity })
-      .then(({ data }) => {
+      .then((data) => {
         dispatch({ type: "setCart", payload: data.cart });
       });
   };
 
   const getShippingOptions = async () => {
     const data = await client.shippingOptions
-      .list(state.cart.id)
-      .then(({ data }) => data);
+      .listCartOptions(state.cart.id)
+      .then((data) => data);
 
     if (data) {
       return data.shipping_options;
@@ -149,7 +149,7 @@ export const StoreProvider = ({ children }) => {
       .addShippingMethod(state.cart.id, {
         option_id: id,
       })
-      .then(({ data }) => {
+      .then((data) => {
         dispatch({ type: "setCart", payload: data.cart });
         return data;
       });
@@ -158,7 +158,7 @@ export const StoreProvider = ({ children }) => {
   const createPaymentSession = async () => {
     return await client.carts
       .createPaymentSessions(state.cart.id)
-      .then(({ data }) => {
+      .then((data) => {
         dispatch({ type: "setCart", payload: data.cart });
         return data;
       });
@@ -167,7 +167,7 @@ export const StoreProvider = ({ children }) => {
   const completeCart = async () => {
     const data = await client.carts
       .complete(state.cart.id)
-      .then(({ data }) => data);
+      .then((data) => data);
 
     if (data) {
       return data.data;
@@ -177,7 +177,7 @@ export const StoreProvider = ({ children }) => {
   };
 
   const retrieveOrder = async (orderId) => {
-    const data = await client.orders.retrieve(orderId).then(({ data }) => data);
+    const data = await client.orders.retrieve(orderId).then((data) => data);
 
     if (data) {
       return data.order;
@@ -193,7 +193,7 @@ export const StoreProvider = ({ children }) => {
         billing_address: address,
         email: email,
       })
-      .then(({ data }) => {
+      .then((data) => {
         dispatch({ type: "setCart", payload: data.cart });
       });
   };
