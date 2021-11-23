@@ -24,3 +24,6 @@ export const resetOptions = (product) => {
     size: size,
   };
 };
+
+export const pluralize = (noun, quantity) =>
+  quantity > 1 || quantity === 0 ? `${noun}s` : noun;

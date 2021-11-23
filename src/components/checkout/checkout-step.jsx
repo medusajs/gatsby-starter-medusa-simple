@@ -1,6 +1,6 @@
-import React, { useContext, useState } from "react";
+import { useServerCart } from "@medusajs/medusa-hooks";
+import React, { useContext } from "react";
 import DisplayContext from "../../context/display-context";
-import StoreContext from "../../context/store-context";
 import * as styles from "../../styles/checkout-step.module.css";
 import CheckoutSummary from "./checkout-summary";
 import InformationStep from "./information-step";
@@ -8,32 +8,21 @@ import PaymentStep from "./payment-step";
 import ShippingStep from "./shipping-step";
 import StepOverview from "./step-overview";
 
+
 const CheckoutStep = () => {
   const { checkoutStep, updateCheckoutStep, updateOrderSummaryDisplay } =
     useContext(DisplayContext);
-  const { cart, updateAddress, setShippingMethod } = useContext(StoreContext);
-
-  const [isProcessingInfo, setIsProcessingInfo] = useState(false);
-  const [isProcessingShipping, setIsProcessingShipping] = useState(false);
+  const { cart, updateAddress, addShippingMethod } = useServerCart()
 
   const handleShippingSubmit = async (address, email) => {
-    setIsProcessingInfo(true);
-
-    await updateAddress(address, email);
-
-    setIsProcessingInfo(false);
-    updateCheckoutStep(2);
+    return updateAddress(address, email).then(() => updateCheckoutStep(2))
   };
 
   const handleDeliverySubmit = async (option) => {
-    setIsProcessingShipping(true);
-    await setShippingMethod(option.id)
+    return addShippingMethod({ option_id: option.id })
       .then(() => {
         updateCheckoutStep(3);
       })
-      .finally(() => {
-        setIsProcessingShipping(false);
-      });
   };
 
   const handleStep = () => {
@@ -41,7 +30,6 @@ const CheckoutStep = () => {
       case 1:
         return (
           <InformationStep
-            isProcessing={isProcessingInfo}
             savedValues={{
               ...cart.shipping_address,
               email: cart.email,
@@ -55,7 +43,6 @@ const CheckoutStep = () => {
       case 2:
         return (
           <ShippingStep
-            isProcessing={isProcessingShipping}
             cart={cart}
             handleDeliverySubmit={handleDeliverySubmit}
             savedMethods={cart.shipping_methods}
@@ -75,11 +62,11 @@ const CheckoutStep = () => {
           <p className={checkoutStep === 1 ? styles.activeStep : ""}>
             Information
           </p>
-          <p>/</p>
+          <p>&gt;</p>
           <p className={checkoutStep === 2 ? styles.activeStep : ""}>
             Delivery
           </p>
-          <p>/</p>
+          <p>&gt;</p>
           <p className={checkoutStep === 3 ? styles.activeStep : ""}>Payment</p>
         </div>
         {checkoutStep !== 1 ? <StepOverview /> : null}

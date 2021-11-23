@@ -1,21 +1,21 @@
 import React, { useEffect, useContext } from "react";
 import { navigate } from "gatsby";
 import { Elements } from "@stripe/react-stripe-js";
-import StoreContext from "../../context/store-context";
 import InjectablePaymentCard from "./injectable-payment-card";
 import * as styles from "../../styles/injectable-payment-card.module.css";
 import getStripe from "../../utils/stripe";
+import { useServerCart } from "@medusajs/medusa-hooks";
 
 const PaymentStep = () => {
   const { cart, createPaymentSession, setPaymentSession } =
-    useContext(StoreContext);
+    useServerCart()
 
   useEffect(() => {
     createPaymentSession();
   }, []);
 
   const handlePayment = async () => {
-    await setPaymentSession("manual").then(() => {
+    await setPaymentSession({ provider_id: "manual" }).then(() => {
       navigate(`/payment`);
     });
   };
@@ -32,7 +32,7 @@ const PaymentStep = () => {
                   <h2>Stripe Payment</h2>
                   <InjectablePaymentCard
                     session={ps}
-                    onSetPaymentSession={() => setPaymentSession("stripe")}
+                    onSetPaymentSession={() => setPaymentSession({ provider_id: "stripe" })}
                   />
                 </Elements>
               );

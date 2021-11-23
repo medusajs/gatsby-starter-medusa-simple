@@ -1,11 +1,12 @@
+import { useServerCart } from "@medusajs/medusa-hooks";
 import React, { useContext } from "react";
 import DisplayContext from "../../context/display-context";
-import StoreContext from "../../context/store-context";
 import * as styles from "../../styles/step-overview.module.css";
 
 const StepOverview = () => {
-  const { cart } = useContext(StoreContext);
+  const { cart } = useServerCart()
   const { checkoutStep, updateCheckoutStep } = useContext(DisplayContext);
+  
   return (
     <div>
       <h2>Steps</h2>

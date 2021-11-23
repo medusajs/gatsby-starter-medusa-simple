@@ -3,8 +3,7 @@ import { PuffLoader } from "react-spinners";
 import * as styles from "../../styles/checkout-summary.module.css";
 import * as itemStyles from "../../styles/cart-view.module.css";
 import { Link } from "gatsby";
-import { formatPrice } from "../../utils/helper-functions";
-import { sum, quantity } from "../../utils/helper-functions";
+import { formatPrice, pluralize } from "../../utils/helper-functions";
 import DisplayContext from "../../context/display-context";
 
 const CheckoutSummary = ({ cart }) => {
@@ -17,10 +16,8 @@ const CheckoutSummary = ({ cart }) => {
           <strong>Order Summary</strong>
         </p>
         <p>
-          {cart.items.length > 0 ? cart.items.map(quantity).reduce(sum) : 0}{" "}
-          {cart.items.length > 0 && cart.items.map(quantity).reduce(sum) === 1
-            ? "item"
-            : "items"}
+          {cart.totalItems}{" "}
+          {pluralize('item', cart.totalItems)}
         </p>
         <button
           className={styles.closeBtn}

@@ -1,70 +1,39 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useProduct, useServerCart } from "@medusajs/medusa-hooks";
+import React, { useEffect, useState } from "react";
 import { BiShoppingBag } from "react-icons/bi";
-import StoreContext from "../../context/store-context";
-import { getSlug, resetOptions } from "../../utils/helper-functions";
 import * as styles from "../../styles/product.module.css";
-import { createClient } from "../../utils/client";
 import { formatPrices } from "../../utils/format-price";
+import { getSlug } from "../../utils/helper-functions";
 
 const Product = ({ location }) => {
-  const { cart, addVariantToCart } = useContext(StoreContext);
-  const [options, setOptions] = useState({
-    variantId: "",
-    quantity: 0,
-    size: "",
-  });
+  const slug = getSlug(location.pathname);
+  const {
+    product,
+    reactQueryUtils: { isFetching },
+  } = useProduct(slug);
+  const { cart, createLineItem } = useServerCart();
+  const [selectedVariant, setSelectedVariant] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
-  const [product, setProduct] = useState(undefined);
-  const client = createClient();
-
-  useEffect(() => {
-    const getProduct = async () => {
-      const slug = getSlug(location.pathname);
-      const response = await client.products.retrieve(slug);
-      setProduct(response.data.product);
-    };
-
-    getProduct();
-  }, [location.pathname]);
+  const selectVariant = (variant) => {
+    setSelectedVariant(variant);
+    setQuantity(1);
+  };
 
   useEffect(() => {
     if (product) {
-      setOptions(resetOptions(product));
+      setSelectedVariant(product?.variants[0]);
     }
   }, [product]);
 
-  const handleQtyChange = (action) => {
-    if (action === "inc") {
-      if (
-        options.quantity <
-        product.variants.find(({ id }) => id === options.variantId)
-          .inventory_quantity
-      )
-        setOptions({
-          variantId: options.variantId,
-          quantity: options.quantity + 1,
-          size: options.size,
-        });
-    }
-    if (action === "dec") {
-      if (options.quantity > 1)
-        setOptions({
-          variantId: options.variantId,
-          quantity: options.quantity - 1,
-          size: options.size,
-        });
-    }
-  };
-
   const handleAddToBag = () => {
-    addVariantToCart({
-      variantId: options.variantId,
-      quantity: options.quantity,
+    createLineItem({
+      variant_id: selectedVariant.id,
+      quantity,
     });
-    if (product) setOptions(resetOptions(product));
   };
 
-  return product && cart.id ? (
+  return !isFetching ? (
     <div className={styles.container}>
       <figure className={styles.image}>
         <div className={styles.placeholder}>
@@ -81,7 +50,9 @@ const Product = ({ location }) => {
           <div className="title">
             <h1>{product.title}</h1>
           </div>
-          <p className="price">{formatPrices(cart, product.variants[0])}</p>
+          <p className="price">
+            {formatPrices(cart.region, product.variants[0])}
+          </p>
           <div className={styles.selection}>
             <p>Select Size</p>
             <div className="selectors">
@@ -93,15 +64,9 @@ const Product = ({ location }) => {
                     <button
                       key={v.id}
                       className={`${styles.sizebtn} ${
-                        v.title === options.size ? styles.selected : null
+                        selectedVariant?.id === v.id ? styles.selected : null
                       }`}
-                      onClick={() =>
-                        setOptions({
-                          variantId: v.id,
-                          quantity: options.quantity,
-                          size: v.title,
-                        })
-                      }
+                      onClick={() => selectVariant(v)}
                     >
                       {v.title}
                     </button>
@@ -114,14 +79,20 @@ const Product = ({ location }) => {
             <div className={styles.qty}>
               <button
                 className={styles.qtybtn}
-                onClick={() => handleQtyChange("dec")}
+                onClick={() =>
+                  setQuantity((quantity) => Math.max(quantity - 1, 1))
+                }
               >
                 -
               </button>
-              <span className={styles.ticker}>{options.quantity}</span>
+              <span className={styles.ticker}>{quantity}</span>
               <button
                 className={styles.qtybtn}
-                onClick={() => handleQtyChange("inc")}
+                onClick={() =>
+                  setQuantity((quantity) =>
+                    Math.min(quantity + 1, selectedVariant?.inventory_quantity)
+                  )
+                }
               >
                 +
               </button>

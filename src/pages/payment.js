@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
-import StoreContext from "../context/store-context";
+import React, { useEffect, useState } from "react";
 import * as itemStyles from "../styles/cart-view.module.css";
 import * as styles from "../styles/payment.module.css";
 import { Link } from "gatsby";
 import { formatPrice } from "../utils/helper-functions";
+import { useServerCart } from "@medusajs/medusa-hooks";
 
 const style = {
   height: "100vh",
@@ -17,12 +17,12 @@ const style = {
 
 const Payment = () => {
   const [order, setOrder] = useState();
-  const { cart, completeCart, createCart } = useContext(StoreContext);
+  const { cart, completeCart, createCart } = useServerCart();
 
   useEffect(() => {
     if (cart.items.length > 0) {
-      completeCart().then((order) => {
-        setOrder(order);
+      completeCart().then(({ data }) => {
+        setOrder(data);
         createCart();
       });
     }

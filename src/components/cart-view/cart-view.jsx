@@ -1,25 +1,23 @@
 import React, { useContext } from "react";
 import DisplayContext from "../../context/display-context";
-import StoreContext from "../../context/store-context";
 import { Link, navigate } from "gatsby";
 import * as styles from "../../styles/cart-view.module.css";
-import { quantity, sum, formatPrice } from "../../utils/helper-functions";
+import { pluralize, formatPrice } from "../../utils/helper-functions";
+import { useServerCart } from '@medusajs/medusa-hooks'
 
 const CartView = () => {
   const { cartView, updateCartViewDisplay, updateCheckoutStep } =
     useContext(DisplayContext);
-  const { cart, currencyCode, updateLineItem, removeLineItem } =
-    useContext(StoreContext);
+  const { cart, totalItems, updateLineItem, deleteLineItem } = useServerCart()
+  const currencyCode = cart?.region?.currency_code
 
   return (
     <div className={`${styles.container} ${cartView ? styles.active : null}`}>
       <div className={styles.top}>
         <p>Bag</p>
         <p>
-          {cart.items.length > 0 ? cart.items.map(quantity).reduce(sum) : 0}{" "}
-          {cart.items.length > 0 && cart.items.map(quantity).reduce(sum) === 1
-            ? "item"
-            : "items"}
+          {totalItems}{" "}
+          {pluralize('item', totalItems)}
         </p>
         <button
           className={styles.closebtn}
@@ -102,7 +100,7 @@ const CartView = () => {
                   </div>
                   <button
                     className={styles.remove}
-                    onClick={() => removeLineItem(i.id)}
+                    onClick={() => deleteLineItem({lineId: i.id })}
                   >
                     Remove
                   </button>
@@ -125,7 +123,7 @@ const CartView = () => {
             updateCartViewDisplay();
             navigate("/checkout");
           }}
-          disabled={cart.items.length < 1 ? true : false}
+          disabled={totalItems < 1}
         >
           Checkout
         </button>

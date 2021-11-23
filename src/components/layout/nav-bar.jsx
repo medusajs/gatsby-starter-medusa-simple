@@ -1,15 +1,14 @@
+import { useServerCart } from "@medusajs/medusa-hooks";
 import { Link } from "gatsby";
 import React, { useContext } from "react";
-import DisplayContext from "../../context/display-context";
-import StoreContext from "../../context/store-context";
-import { quantity, sum } from "../../utils/helper-functions";
 import { BiShoppingBag } from "react-icons/bi";
-import * as styles from "../../styles/nav-bar.module.css";
+import DisplayContext from "../../context/display-context";
 import MedusaLogo from "../../images/medusa-logo.svg";
+import * as styles from "../../styles/nav-bar.module.css";
 
 const NavBar = ({ isCheckout }) => {
   const { updateCartViewDisplay } = useContext(DisplayContext);
-  const { cart } = useContext(StoreContext);
+  const { totalItems } = useServerCart()
 
   return (
     <div className={styles.container}>
@@ -21,7 +20,7 @@ const NavBar = ({ isCheckout }) => {
           <span>Cart</span>
           <BiShoppingBag />{" "}
           <span>
-            {cart.items.length > 0 ? cart.items.map(quantity).reduce(sum) : 0}
+            {totalItems}
           </span>
         </button>
       ) : null}

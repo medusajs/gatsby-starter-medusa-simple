@@ -1,34 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import PuffLoader from "react-spinners/PuffLoader";
 import * as styles from "../../styles/information-step.module.css";
 import InputField from "./input-field";
-import StoreContext from "../../context/store-context";
 import SelectField from "./select-field";
+import { useServerCart } from "@medusajs/medusa-hooks";
+import { useState } from "react";
 
-const InformationStep = ({ handleSubmit, savedValues, isProcessing }) => {
-  const { cart } = useContext(StoreContext);
-  let Schema = Yup.object().shape({
-    first_name: Yup.string()
-      .min(2, "Too short")
-      .max(50, "Too long")
-      .required("Required"),
-    last_name: Yup.string()
-      .min(2, "Too short")
-      .max(50, "Too long")
-      .required("Required"),
-    email: Yup.string().email("Invalid email").required("Required"),
-    address_1: Yup.string()
-      .required("Required")
-      .max(45, "Limit on 45 characters"),
-    address_2: Yup.string().nullable(true).max(45, "Limit on 45 characters"),
-    country_code: Yup.string().required("Required"),
-    city: Yup.string().required("Required"),
-    postal_code: Yup.string().required("Required"),
-    province: Yup.string().nullable(true),
-    phone: Yup.string().required("Required"),
-  });
+const InformationStep = ({ handleSubmit, savedValues }) => {
+  const { cart } = useServerCart()
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <div style={{ flexGrow: "1" }}>
@@ -51,12 +33,15 @@ const InformationStep = ({ handleSubmit, savedValues, isProcessing }) => {
         validationSchema={Schema}
         onSubmit={(values) => {
           const { email, ...rest } = values;
-          handleSubmit(rest, email);
+          setIsLoading(true)
+          handleSubmit(rest, email).then(() => {
+            setIsLoading(false)
+          })
         }}
       >
         {({ errors, touched, values, setFieldValue }) => (
           <Form className={styles.styledform}>
-            {isProcessing || !cart ? (
+            {isLoading || !cart ? (
               <div className={styles.spinner}>
                 <PuffLoader loading={true} size={60} />
               </div>
@@ -144,3 +129,24 @@ const InformationStep = ({ handleSubmit, savedValues, isProcessing }) => {
 };
 
 export default InformationStep;
+
+const Schema = Yup.object().shape({
+  first_name: Yup.string()
+    .min(2, "Too short")
+    .max(50, "Too long")
+    .required("Required"),
+  last_name: Yup.string()
+    .min(2, "Too short")
+    .max(50, "Too long")
+    .required("Required"),
+  email: Yup.string().email("Invalid email").required("Required"),
+  address_1: Yup.string()
+    .required("Required")
+    .max(45, "Limit on 45 characters"),
+  address_2: Yup.string().nullable(true).max(45, "Limit on 45 characters"),
+  country_code: Yup.string().required("Required"),
+  city: Yup.string().required("Required"),
+  postal_code: Yup.string().required("Required"),
+  province: Yup.string().nullable(true),
+  phone: Yup.string().required("Required"),
+});

@@ -4,32 +4,23 @@ import ShippingMethod from "./shipping-method";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import DisplayContext from "../../context/display-context";
 import { isEmpty } from "lodash";
-import StoreContext from "../../context/store-context";
 import { MdError } from "react-icons/md";
+import { useCartShippingOptions } from "@medusajs/medusa-hooks";
 
-const ShippingStep = ({ handleDeliverySubmit, isProcessing, cart }) => {
-  const [shippingOptions, setShippingOptions] = useState([]);
+const ShippingStep = ({ handleDeliverySubmit, cart }) => {
+  const [isLoading, setIsLoading] = useState(false)
   const [selectedOption, setSelectedOption] = useState();
   const [error, setError] = useState(false);
-
-  const { getShippingOptions } = useContext(StoreContext);
   const { updateCheckoutStep } = useContext(DisplayContext);
 
+  const { shipping_options: shippingOptions } = useCartShippingOptions(cart.id)
+
   useEffect(() => {
-    // Wait until the customer has entered their address information
-    if (!cart.shipping_address?.country_code) {
-      return;
-    }
-
-    getShippingOptions().then((partitioned) => {
-      setShippingOptions(partitioned);
-    });
-
     //if method is already selected, then preselect
     if (cart.shipping_methods.length > 0) {
       setSelectedOption(cart.shipping_methods[0].shipping_option);
     }
-  }, [cart, setSelectedOption, getShippingOptions]);
+  }, [cart, setSelectedOption]);
 
   const handleSelectOption = (o) => {
     setSelectedOption(o);
@@ -43,16 +34,17 @@ const ShippingStep = ({ handleDeliverySubmit, isProcessing, cart }) => {
     if (!selectedOption) {
       setError(true);
     } else {
-      handleDeliverySubmit(selectedOption);
+      setIsLoading(true)
+      handleDeliverySubmit(selectedOption).then(() => setIsLoading(false))
     }
   };
 
   return (
     <div className={styles.container}>
       <h2>Delivery</h2>
-      {isEmpty(shippingOptions) || isProcessing ? (
+      {isEmpty(shippingOptions) ? (
         <div>loading...</div>
-      ) : (
+    ) : isLoading ? <div>loading...</div> : (
         <div>
           {shippingOptions.map((so) => {
             return (
