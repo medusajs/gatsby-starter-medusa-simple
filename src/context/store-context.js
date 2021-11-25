@@ -74,7 +74,7 @@ export const StoreProvider = ({ children }) => {
         dispatch({ type: "setCart", payload: data.cart });
       });
     } else {
-      client.carts.create(cartId).then((data) => {
+      client.carts.create().then((data) => {
         dispatch({ type: "setCart", payload: data.cart });
         if (localStorage) {
           localStorage.setItem("cart_id", data.cart.id);
