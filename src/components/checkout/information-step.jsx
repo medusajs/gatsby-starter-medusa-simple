@@ -1,16 +1,30 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import PuffLoader from "react-spinners/PuffLoader";
 import * as styles from "../../styles/information-step.module.css";
 import InputField from "./input-field";
 import SelectField from "./select-field";
-import { useServerCart } from "@medusajs/medusa-hooks";
-import { useState } from "react";
+import { useCart } from "@medusajs/medusa-hooks";
+import DisplayContext from "../../context/display-context";
 
-const InformationStep = ({ handleSubmit, savedValues }) => {
-  const { cart } = useServerCart()
-  const [isLoading, setIsLoading] = useState(false)
+const InformationStep = ({ savedValues }) => {
+  const { cart, updateCart } = useCart()
+
+  const { updateCheckoutStep } =
+    useContext(DisplayContext);
+
+  const handleSubmit = async (address, email) => {
+    const req = {
+      id: cart?.id,
+      shipping_address: address,
+      billing_address: address,
+      email: email
+    }
+    updateCart.mutate(req, {
+      onSuccess: () => updateCheckoutStep(2)
+    })
+  };
 
   return (
     <div style={{ flexGrow: "1" }}>
@@ -33,15 +47,12 @@ const InformationStep = ({ handleSubmit, savedValues }) => {
         validationSchema={Schema}
         onSubmit={(values) => {
           const { email, ...rest } = values;
-          setIsLoading(true)
-          handleSubmit(rest, email).then(() => {
-            setIsLoading(false)
-          })
+          handleSubmit(rest, email)
         }}
       >
         {({ errors, touched, values, setFieldValue }) => (
           <Form className={styles.styledform}>
-            {isLoading || !cart ? (
+            {updateCart.isLoading || !cart ? (
               <div className={styles.spinner}>
                 <PuffLoader loading={true} size={60} />
               </div>

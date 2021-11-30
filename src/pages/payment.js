@@ -1,9 +1,8 @@
+import { formatAmount, useBag, useCart } from "@medusajs/medusa-hooks";
+import { Link } from "gatsby";
 import React, { useEffect, useState } from "react";
 import * as itemStyles from "../styles/cart-view.module.css";
 import * as styles from "../styles/payment.module.css";
-import { Link } from "gatsby";
-import { formatPrice } from "../utils/helper-functions";
-import { useServerCart } from "@medusajs/medusa-hooks";
 
 const style = {
   height: "100vh",
@@ -17,14 +16,20 @@ const style = {
 
 const Payment = () => {
   const [order, setOrder] = useState();
-  const { cart, completeCart, createCart } = useServerCart();
+  const { resetBag } = useBag();
+  const { cart, completeCheckout } = useCart();
 
   useEffect(() => {
-    if (cart.items.length > 0) {
-      completeCart().then(({ data }) => {
-        setOrder(data);
-        createCart();
-      });
+    if (cart?.items.length > 0) {
+      completeCheckout.mutate(
+        {},
+        {
+          onSuccess: ({ data }) => {
+            resetBag();
+            setOrder(data);
+          },
+        }
+      );
     }
   }, []);
 
@@ -78,8 +83,7 @@ const Payment = () => {
                           Size: {i.variant.title}
                         </p>
                         <p className={itemStyles.size}>
-                          Price:{" "}
-                          {formatPrice(i.unit_price, order.currency_code)}
+                          Price: {formatAmount(i.unit_price, order.region)}
                         </p>
                         <p className={itemStyles.size}>
                           Quantity: {i.quantity}
@@ -95,17 +99,15 @@ const Payment = () => {
       <div>
         <div className={styles.price}>
           <div>Subtotal</div>
-          <div>{formatPrice(order.subtotal, order.region.currency_code)}</div>
+          <div>{formatAmount(order.subtotal, order.region)}</div>
         </div>
         <div className={styles.price}>
           <div>Shipping</div>
-          <div>
-            {formatPrice(order.shipping_total, order.region.currency_code)}
-          </div>
+          <div>{formatAmount(order.shipping_total, order.region)}</div>
         </div>
         <div className={`${styles.price} ${styles.total}`}>
           <div>Total</div>
-          <div>{formatPrice(order.total, order.region.currency_code)}</div>
+          <div>{formatAmount(order.total, order.region)}</div>
         </div>
       </div>
       <div>

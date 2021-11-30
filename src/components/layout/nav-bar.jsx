@@ -1,4 +1,4 @@
-import { useServerCart } from "@medusajs/medusa-hooks";
+import { useBag } from "@medusajs/medusa-hooks";
 import { Link } from "gatsby";
 import React, { useContext } from "react";
 import { BiShoppingBag } from "react-icons/bi";
@@ -8,7 +8,7 @@ import * as styles from "../../styles/nav-bar.module.css";
 
 const NavBar = ({ isCheckout }) => {
   const { updateCartViewDisplay } = useContext(DisplayContext);
-  const { totalItems } = useServerCart()
+  const { totalItems } = useBag()
 
   return (
     <div className={styles.container}>

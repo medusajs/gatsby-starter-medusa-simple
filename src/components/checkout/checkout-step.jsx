@@ -1,4 +1,4 @@
-import { useServerCart } from "@medusajs/medusa-hooks";
+import { useCart } from "@medusajs/medusa-hooks";
 import React, { useContext } from "react";
 import DisplayContext from "../../context/display-context";
 import * as styles from "../../styles/checkout-step.module.css";
@@ -10,20 +10,9 @@ import StepOverview from "./step-overview";
 
 
 const CheckoutStep = () => {
-  const { checkoutStep, updateCheckoutStep, updateOrderSummaryDisplay } =
+  const { checkoutStep, updateOrderSummaryDisplay } =
     useContext(DisplayContext);
-  const { cart, updateAddress, addShippingMethod } = useServerCart()
-
-  const handleShippingSubmit = async (address, email) => {
-    return updateAddress(address, email).then(() => updateCheckoutStep(2))
-  };
-
-  const handleDeliverySubmit = async (option) => {
-    return addShippingMethod({ option_id: option.id })
-      .then(() => {
-        updateCheckoutStep(3);
-      })
-  };
+  const { cart } = useCart()
 
   const handleStep = () => {
     switch (checkoutStep) {
@@ -35,16 +24,12 @@ const CheckoutStep = () => {
               email: cart.email,
               country: cart.shipping_address?.country_code,
             }}
-            handleSubmit={(submittedAddr, submittedEmail) =>
-              handleShippingSubmit(submittedAddr, submittedEmail)
-            }
           />
         );
       case 2:
         return (
           <ShippingStep
             cart={cart}
-            handleDeliverySubmit={handleDeliverySubmit}
             savedMethods={cart.shipping_methods}
           />
         );
@@ -79,7 +64,7 @@ const CheckoutStep = () => {
         </button>
       </div>
       <div className={styles.summary}>
-        <CheckoutSummary cart={cart} />
+        <CheckoutSummary />
       </div>
     </div>
   );

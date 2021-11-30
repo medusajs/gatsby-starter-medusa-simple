@@ -5,15 +5,27 @@ import { BiLeftArrowAlt } from "react-icons/bi";
 import DisplayContext from "../../context/display-context";
 import { isEmpty } from "lodash";
 import { MdError } from "react-icons/md";
-import { useCartShippingOptions } from "@medusajs/medusa-hooks";
+import {
+  useCart,
+  useCartShippingOptions,
+} from "@medusajs/medusa-hooks";
 
-const ShippingStep = ({ handleDeliverySubmit, cart }) => {
-  const [isLoading, setIsLoading] = useState(false)
+const ShippingStep = ({ cart }) => {
+  const { addShippingMethod } = useCart()
+  const { shipping_options: shippingOptions } = useCartShippingOptions(cart.id);
+
   const [selectedOption, setSelectedOption] = useState();
   const [error, setError] = useState(false);
   const { updateCheckoutStep } = useContext(DisplayContext);
 
-  const { shipping_options: shippingOptions } = useCartShippingOptions(cart.id)
+  const handleDeliverySubmit = async (option) => {
+    return addShippingMethod.mutate(
+      { option_id: option.id },
+      {
+        onSuccess: () => updateCheckoutStep(3),
+      }
+    );
+  };
 
   useEffect(() => {
     //if method is already selected, then preselect
@@ -34,8 +46,7 @@ const ShippingStep = ({ handleDeliverySubmit, cart }) => {
     if (!selectedOption) {
       setError(true);
     } else {
-      setIsLoading(true)
-      handleDeliverySubmit(selectedOption).then(() => setIsLoading(false))
+      handleDeliverySubmit(selectedOption);
     }
   };
 
@@ -44,7 +55,9 @@ const ShippingStep = ({ handleDeliverySubmit, cart }) => {
       <h2>Delivery</h2>
       {isEmpty(shippingOptions) ? (
         <div>loading...</div>
-    ) : isLoading ? <div>loading...</div> : (
+      ) : addShippingMethod.isLoading ? (
+        <div>loading...</div>
+      ) : (
         <div>
           {shippingOptions.map((so) => {
             return (

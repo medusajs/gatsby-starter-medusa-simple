@@ -1,17 +1,20 @@
-import { useProduct, useServerCart } from "@medusajs/medusa-hooks";
+import {
+  useProduct,
+  useBag,
+  convertToLocale,
+  calculateVariantPrice,
+} from "@medusajs/medusa-hooks";
 import React, { useEffect, useState } from "react";
 import { BiShoppingBag } from "react-icons/bi";
 import * as styles from "../../styles/product.module.css";
-import { formatPrices } from "../../utils/format-price";
 import { getSlug } from "../../utils/helper-functions";
+import { isEmpty } from "lodash";
 
 const Product = ({ location }) => {
   const slug = getSlug(location.pathname);
-  const {
-    product,
-    reactQueryUtils: { isFetching },
-  } = useProduct(slug);
-  const { cart, createLineItem } = useServerCart();
+  const { addItem, region } = useBag();
+  const { product, isFetching } = useProduct(slug);
+
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [quantity, setQuantity] = useState(1);
 
@@ -27,13 +30,16 @@ const Product = ({ location }) => {
   }, [product]);
 
   const handleAddToBag = () => {
-    createLineItem({
-      variant_id: selectedVariant.id,
+    addItem({
+      variant: {
+        ...selectedVariant,
+        product,
+      },
       quantity,
     });
   };
 
-  return !isFetching ? (
+  return !isFetching && !isEmpty(region) ? (
     <div className={styles.container}>
       <figure className={styles.image}>
         <div className={styles.placeholder}>
@@ -51,7 +57,10 @@ const Product = ({ location }) => {
             <h1>{product.title}</h1>
           </div>
           <p className="price">
-            {formatPrices(cart.region, product.variants[0])}
+            {convertToLocale({
+              amount: calculateVariantPrice(product.variants[0], region),
+              currency_code: region.currency_code,
+            })}
           </p>
           <div className={styles.selection}>
             <p>Select Size</p>

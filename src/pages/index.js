@@ -1,17 +1,18 @@
+import {
+  calculateVariantPrice,
+  convertToLocale,
+  useBag,
+  useProducts,
+} from "@medusajs/medusa-hooks";
+import { graphql, Link } from "gatsby";
+import { isEmpty } from "lodash";
 import React from "react";
 import { FaGithub } from "react-icons/fa";
-import { graphql } from "gatsby";
 import * as styles from "../styles/home.module.css";
-import { Link } from "gatsby";
-import {
-  useProducts,
-  useServerCart,
-  formatPrices,
-} from "@medusajs/medusa-hooks";
 
 // markup
 const IndexPage = ({ data }) => {
-  const { cart } = useServerCart();
+  const { region } = useBag();
   const { products } = useProducts();
 
   return (
@@ -109,14 +110,22 @@ const IndexPage = ({ data }) => {
         <div className={styles.products}>
           <h2>Demo Products</h2>
           <div className={styles.grid}>
-            {products &&
-              products.map((p) => {
+            {!isEmpty(region) &&
+              products?.map((p) => {
                 return (
                   <div key={p.id} className={styles.card}>
                     <Link to={`/product/${p.id}`}>
                       <div>
                         <h2>{p.title}</h2>
-                        <p>{formatPrices(cart.region, p.variants[0])}</p>
+                        <p>
+                          {convertToLocale({
+                            amount: calculateVariantPrice(
+                              p.variants[0],
+                              region
+                            ),
+                            currency_code: region.currency_code,
+                          })}
+                        </p>
                       </div>
                     </Link>
                   </div>

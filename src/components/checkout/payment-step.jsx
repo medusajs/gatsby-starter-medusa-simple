@@ -1,21 +1,17 @@
-import React, { useEffect, useContext } from "react";
-import { navigate } from "gatsby";
+import { useCart } from "@medusajs/medusa-hooks";
 import { Elements } from "@stripe/react-stripe-js";
-import InjectablePaymentCard from "./injectable-payment-card";
+import { navigate } from "gatsby";
+import React from "react";
 import * as styles from "../../styles/injectable-payment-card.module.css";
 import getStripe from "../../utils/stripe";
-import { useServerCart } from "@medusajs/medusa-hooks";
+import InjectablePaymentCard from "./injectable-payment-card";
 
 const PaymentStep = () => {
-  const { cart, createPaymentSession, setPaymentSession } =
-    useServerCart()
-
-  useEffect(() => {
-    createPaymentSession();
-  }, []);
+  const { cart, pay } =
+    useCart()
 
   const handlePayment = async () => {
-    await setPaymentSession({ provider_id: "manual" }).then(() => {
+    await pay.mutateAsync({ provider_id: 'manual' }).then(() => {
       navigate(`/payment`);
     });
   };
@@ -32,7 +28,7 @@ const PaymentStep = () => {
                   <h2>Stripe Payment</h2>
                   <InjectablePaymentCard
                     session={ps}
-                    onSetPaymentSession={() => setPaymentSession({ provider_id: "stripe" })}
+                    onSetPaymentSession={() => pay.mutate({ provider_id: 'stripe' })}
                   />
                 </Elements>
               );
@@ -56,5 +52,7 @@ const PaymentStep = () => {
     </div>
   );
 };
+
+
 
 export default PaymentStep;

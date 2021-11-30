@@ -2,22 +2,23 @@ import React, { useContext } from "react";
 import DisplayContext from "../../context/display-context";
 import { Link, navigate } from "gatsby";
 import * as styles from "../../styles/cart-view.module.css";
-import { pluralize, formatPrice } from "../../utils/helper-functions";
-import { useServerCart } from '@medusajs/medusa-hooks'
+import { pluralize } from "../../utils/helper-functions";
+import { formatAmount, useBag, useCart } from "@medusajs/medusa-hooks";
+import { isEmpty } from "lodash";
 
 const CartView = () => {
   const { cartView, updateCartViewDisplay, updateCheckoutStep } =
     useContext(DisplayContext);
-  const { cart, totalItems, updateLineItem, deleteLineItem } = useServerCart()
-  const currencyCode = cart?.region?.currency_code
+  const { items, totalItems, bagTotal, updateItemQuantity, removeItem, region } =
+    useBag();
+  const { startCheckout } = useCart();
 
   return (
     <div className={`${styles.container} ${cartView ? styles.active : null}`}>
       <div className={styles.top}>
         <p>Bag</p>
         <p>
-          {totalItems}{" "}
-          {pluralize('item', totalItems)}
+          {totalItems} {pluralize("item", totalItems)}
         </p>
         <button
           className={styles.closebtn}
@@ -27,98 +28,81 @@ const CartView = () => {
         </button>
       </div>
       <div className={styles.overview}>
-        {cart.items
-          .sort((a, b) => {
-            const createdAtA = new Date(a.created_at),
-              createdAtB = new Date(b.created_at);
-
-            if (createdAtA < createdAtB) return -1;
-            if (createdAtA > createdAtB) return 1;
-            return 0;
-          })
-          .map((i) => {
-            return (
-              <div key={i.id} className={styles.product}>
-                <figure onClick={() => updateCartViewDisplay()}>
-                  <Link to={`/product/${i.variant.product.id}`}>
-                    {/* Replace with a product thumbnail/image */}
-                    <div className={styles.placeholder}>
-                      <img
-                        style={{
-                          height: "100%",
-                          width: "100%",
-                          objectFit: "cover",
-                        }}
-                        src={i.variant.product.thumbnail}
-                        alt={`${i.title}`}
-                      />
-                    </div>
-                  </Link>
-                </figure>
-                <div className={styles.controls}>
-                  <div>
-                    <div>
-                      <Link to={`/product/${i.variant.product.id}`}>
-                        {i.title}
-                      </Link>
-                      <p className={styles.size}>Size: {i.variant.title}</p>
-                      <p className={styles.size}>
-                        Price:{" "}
-                        {formatPrice(i.unit_price, cart.region.currency_code)}
-                      </p>
-                    </div>
-                    <div>
-                      <div className={styles.mid}>
-                        <div className={styles.selector}>
-                          <button
-                            className={styles.qtybtn}
-                            onClick={() =>
-                              updateLineItem({
-                                lineId: i.id,
-                                quantity: i.quantity - 1,
-                              })
-                            }
-                          >
-                            {"–"}
-                          </button>
-                          <p className={styles.ticker}>{i.quantity}</p>
-                          <button
-                            className={styles.qtybtn}
-                            onClick={() =>
-                              updateLineItem({
-                                lineId: i.id,
-                                quantity: i.quantity + 1,
-                              })
-                            }
-                          >
-                            {"+"}
-                          </button>
-                        </div>
-                      </div>
-                      <p>{}</p>
-                    </div>
+        {items.map(({ variant, total, quantity }) => {
+          return (
+            <div key={variant.id} className={styles.product}>
+              <figure onClick={() => updateCartViewDisplay()}>
+                <Link to={`/product/${variant.product_id}`}>
+                  {/* Replace with a product thumbnail/image */}
+                  <div className={styles.placeholder}>
+                    <img
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        objectFit: "cover",
+                      }}
+                      src={variant.product.thumbnail}
+                      alt={`${variant.title}`}
+                    />
                   </div>
-                  <button
-                    className={styles.remove}
-                    onClick={() => deleteLineItem({lineId: i.id })}
-                  >
-                    Remove
-                  </button>
+                </Link>
+              </figure>
+              <div className={styles.controls}>
+                <div>
+                  <div>
+                    <Link to={`/product/${variant.product.id}`}>
+                      {variant.title}
+                    </Link>
+                    <p className={styles.size}>Size: {variant.title}</p>
+                    <p className={styles.size}>Price: {formatAmount(total, region)}</p>
+                  </div>
+                  <div>
+                    <div className={styles.mid}>
+                      <div className={styles.selector}>
+                        <button
+                          className={styles.qtybtn}
+                          onClick={() => updateItemQuantity(variant.id, quantity - 1)}
+                        >
+                          {"–"}
+                        </button>
+                        <p className={styles.ticker}>{quantity}</p>
+                        <button
+                          className={styles.qtybtn}
+                          onClick={() => updateItemQuantity(variant.id, quantity + 1)}
+                        >
+                          {"+"}
+                        </button>
+                      </div>
+                    </div>
+                    <p>{}</p>
+                  </div>
                 </div>
+                <button
+                  className={styles.remove}
+                  onClick={() => removeItem(variant.id)}
+                >
+                  Remove
+                </button>
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
       </div>
       <div className={styles.subtotal}>
         <p>Subtotal (incl. taxes)</p>
-        <span>
-          {cart.region ? formatPrice(cart.subtotal, currencyCode) : 0}
-        </span>
+        <span>{!isEmpty(region) ? formatAmount(bagTotal, region) : 0}</span>
       </div>
       <div className={styles.bottom}>
         <button
           className={styles.checkoutbtn}
           onClick={() => {
+            startCheckout.mutate({
+              region_id: region.id,
+              items: items.map(({ variant, quantity }) => ({
+                variant_id: variant.id,
+                quantity,
+              })),
+            });
             updateCheckoutStep(1);
             updateCartViewDisplay();
             navigate("/checkout");

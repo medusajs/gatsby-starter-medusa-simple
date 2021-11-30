@@ -3,21 +3,25 @@ import { PuffLoader } from "react-spinners";
 import * as styles from "../../styles/checkout-summary.module.css";
 import * as itemStyles from "../../styles/cart-view.module.css";
 import { Link } from "gatsby";
-import { formatPrice, pluralize } from "../../utils/helper-functions";
+import { pluralize } from "../../utils/helper-functions";
 import DisplayContext from "../../context/display-context";
+import { formatAmount, useCart } from "@medusajs/medusa-hooks";
 
-const CheckoutSummary = ({ cart }) => {
+const CheckoutSummary = () => {
   const { orderSummary, updateOrderSummaryDisplay } =
     useContext(DisplayContext);
-  return cart ? (
+
+  const { cart, totalItems, startCheckout } = useCart()
+
+  return !startCheckout.isLoading ? (
     <div className={`${styles.container} ${orderSummary ? styles.active : ""}`}>
       <div className={itemStyles.top}>
         <p>
           <strong>Order Summary</strong>
         </p>
         <p>
-          {cart.totalItems}{" "}
-          {pluralize('item', cart.totalItems)}
+          {totalItems}{" "}
+          {pluralize('item', totalItems)}
         </p>
         <button
           className={styles.closeBtn}
@@ -27,15 +31,7 @@ const CheckoutSummary = ({ cart }) => {
         </button>
       </div>
       <div className={itemStyles.overview}>
-        {cart.items
-          .sort((a, b) => {
-            const createdAtA = new Date(a.created_at),
-              createdAtB = new Date(b.created_at);
-
-            if (createdAtA < createdAtB) return -1;
-            if (createdAtA > createdAtB) return 1;
-            return 0;
-          })
+        {cart?.items
           .map((i) => {
             return (
               <div key={i.id} className={itemStyles.product}>
@@ -64,7 +60,7 @@ const CheckoutSummary = ({ cart }) => {
                       <p className={itemStyles.size}>Size: {i.variant.title}</p>
                       <p className={itemStyles.size}>
                         Price:{" "}
-                        {formatPrice(i.unit_price, cart.region.currency_code)}
+                        {formatAmount(i.unit_price, cart.region)}
                       </p>
                       <p className={itemStyles.size}>Quantity: {i.quantity}</p>
                     </div>
@@ -77,23 +73,19 @@ const CheckoutSummary = ({ cart }) => {
       <div className={styles.breakdown}>
         <p>Subtotal (incl. taxes)</p>
         <span>
-          {cart.region
-            ? formatPrice(cart.subtotal, cart.region.currency_code)
-            : 0}
+          {formatAmount(cart.subtotal, cart.region)}
         </span>
       </div>
       <div className={styles.breakdown}>
         <p>Shipping</p>
         <span>
-          {cart.region
-            ? formatPrice(cart.shipping_total, cart.region.currency_code)
-            : 0}
+          {formatAmount(cart.shipping_total, cart.region)}
         </span>
       </div>
       <div className={styles.total}>
         <p>Total</p>
         <span>
-          {cart.region ? formatPrice(cart.total, cart.region.currency_code) : 0}
+          {formatAmount(cart.total, cart.region)}
         </span>
       </div>
     </div>
