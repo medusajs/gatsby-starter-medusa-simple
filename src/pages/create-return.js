@@ -3,6 +3,7 @@ import Field from "../components/domains/forms/field"
 import SplitField from "../components/domains/forms/split-field"
 import OrderBulletin from "../components/domains/orders/order-bulletin"
 import ReturnSummary from "../components/domains/returns/return-summary"
+import SelectExchangeItem from "../components/domains/returns/select-exchange-item"
 import SelectReturnItem from "../components/domains/returns/select-return-item"
 import SelectReturnQuantity from "../components/domains/returns/select-return-quantity"
 import DeliveryMethod from "../components/domains/shipping/delivery-method"
@@ -126,10 +127,17 @@ const CreateReturn = ({ location }) => {
               <Divider />
               <div>
                 <h3>Exchanges</h3>
-                <p>
+                <p className="mt-1">
                   If you wish to exchange an item, select the quantity of the
                   item aswell as the variant you wish to receive instead.
                 </p>
+                {selectedItems.map(item => {
+                  return (
+                    <div key={item.id} className="mt-4">
+                      <SelectExchangeItem item={item} />
+                    </div>
+                  )
+                })}
               </div>
               <Divider />
               <div>

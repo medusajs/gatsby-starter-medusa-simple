@@ -1,10 +1,14 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { classNames } from "../../utils/class-names"
 
 const Banner = () => {
-  const [isHidden, setIsHidden] = React.useState(
-    localStorage?.getItem("hideBannerMsg") === "true"
-  )
+  const [isHidden, setIsHidden] = useState(true)
+
+  useEffect(() => {
+    if (localStorage) {
+      setIsHidden(localStorage.getItem("hideBannerMsg") === "true")
+    }
+  }, [])
 
   const hideBanner = () => {
     localStorage.setItem("hideBannerMsg", "true")

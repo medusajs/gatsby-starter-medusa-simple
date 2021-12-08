@@ -20,7 +20,7 @@ const ProductListItem = ({ product }) => {
       <div key={product.id} className="group relative">
         <div className="w-full min-h-auto bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
           <GatsbyImage
-            image={product.thumbnail.childImageSharp.gatsbyImageData}
+            image={product.thumbnail?.childImageSharp?.gatsbyImageData}
             alt={product.title}
             className="w-auto h-full object-center object-cover"
           />
