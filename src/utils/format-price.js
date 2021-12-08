@@ -13,7 +13,7 @@ export const formatPrice = (
   taxRate = 0
 ) => {
   return (
-    parseFloat(((amount * (1 + taxRate) * quantity) / 100).toFixed(2)) +
+    parseFloat(((amount / 100) * quantity * 1).toFixed(2)) +
     " " +
     currencyCode.toUpperCase()
   )

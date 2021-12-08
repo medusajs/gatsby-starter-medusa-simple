@@ -55,7 +55,11 @@ const Checkout = () => {
           <Payment setupCheckout={setupCheckout} />
         </div>
         <div className="lg:sticky lg:top-28">
-          <CheckoutSummary cart={cart} hidden={hideSummary} />
+          <CheckoutSummary
+            cart={cart}
+            shippingOption={selectedShippingMethod}
+            hidden={hideSummary}
+          />
         </div>
       </CheckoutLayout>
     </Fragment>

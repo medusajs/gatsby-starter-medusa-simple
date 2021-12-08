@@ -12,7 +12,7 @@ const Totals = ({
 }) => {
   const { estimatedShipping } = useShipping(cartId)
 
-  const totalPrice = shipping ? total : total + estimatedShipping
+  const totalPrice = shipping ? total + shipping : total + estimatedShipping
 
   return (
     <div className="font-light text-sm">

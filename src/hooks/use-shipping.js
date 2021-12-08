@@ -1,9 +1,9 @@
-import React, { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useMedusa } from "./use-medusa"
 import { useRegion } from "./use-region"
 
 export const useShipping = cartId => {
-  const [estimatedShipping, setEstimatedShipping] = React.useState(null)
+  const [estimatedShipping, setEstimatedShipping] = useState(null)
 
   const { region } = useRegion()
   const client = useMedusa()

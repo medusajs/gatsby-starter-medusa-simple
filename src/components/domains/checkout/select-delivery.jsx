@@ -21,7 +21,6 @@ const SelectDelivery = ({
     }
 
     getShippingOptions(cart.id).then(options => {
-      console.log(options)
       if (_.isEmpty(options)) {
         setError("No shipping options available")
         return
@@ -33,6 +32,10 @@ const SelectDelivery = ({
 
       setShippingOptions(options)
     })
+
+    return () => {
+      setShippingOptions([])
+    }
   }, [cart?.id, setSelectedShippingMethod, getShippingOptions])
 
   return (
@@ -46,8 +49,8 @@ const SelectDelivery = ({
                 key={shippingOption.id}
                 method={shippingOption}
                 currencyCode={cart?.region?.currency_code}
-                isSelected={selectedShippingMethod === shippingOption.id}
-                onSelect={() => setSelectedShippingMethod(shippingOption.id)}
+                isSelected={selectedShippingMethod?.id === shippingOption.id}
+                onSelect={() => setSelectedShippingMethod(shippingOption)}
               />
             )
           })}

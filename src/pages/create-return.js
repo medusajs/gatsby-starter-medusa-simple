@@ -1,17 +1,59 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import Field from "../components/domains/forms/field"
+import SplitField from "../components/domains/forms/split-field"
 import OrderBulletin from "../components/domains/orders/order-bulletin"
 import ReturnSummary from "../components/domains/returns/return-summary"
 import SelectReturnItem from "../components/domains/returns/select-return-item"
+import SelectReturnQuantity from "../components/domains/returns/select-return-quantity"
 import DeliveryMethod from "../components/domains/shipping/delivery-method"
+import Divider from "../components/domains/utility/divider"
 import Grid from "../components/domains/utility/grid"
 import SearchEngineOptimization from "../components/seo"
 import { useReturn } from "../hooks/use-return"
 
-const CreateReturn = () => {
-  const order = null
-  const shipping_options = null
-  const { fetchOrderForm } = useReturn()
+const CreateReturn = ({ location }) => {
+  const [order, setOrder] = useState(null)
+  const [returnOptions, setReturnOptions] = useState([])
+  const [selectedItems, setSelectedItems] = useState([])
+  const [selectedShipping, setSelectedShipping] = useState(null)
+  const [initialValues, setInitialValues] = useState(null)
+
+  useEffect(() => {
+    if (location.state && location.state.order) {
+      const { order: res } = location.state
+      setInitialValues({ display_id: res.display_id, email: res.email })
+      setOrder(res)
+    }
+  }, [location.state])
+
+  const {
+    fetchOrderForm,
+    actions: { getReturnShippingOptions },
+  } = useReturn(initialValues)
+
+  useEffect(() => {
+    const getOptions = async () => {
+      if (order) {
+        const response = await getReturnShippingOptions(order.region.id)
+
+        if (response) {
+          setReturnOptions(response)
+        }
+      }
+    }
+
+    getOptions()
+  }, [order, getReturnShippingOptions])
+
+  const handleSelectItem = item => {
+    setSelectedItems(prevState => [...prevState, item])
+  }
+
+  const handleDeselectItem = item => {
+    const tmp = selectedItems.filter(i => i.id !== item.id)
+    setSelectedItems(tmp)
+  }
+
   return (
     <div className="layout-base">
       <SearchEngineOptimization title="Create Return" />
@@ -22,28 +64,29 @@ const CreateReturn = () => {
             Use this form to create returns and exchange items
           </p>
         </div>
-        <div className="flex flex-col mt-4 lg:mt-0 lg:flex-row lg:items-center lg:w-1/2">
-          <Field
-            placeholder="Order number"
-            formik={fetchOrderForm}
-            name="display_id"
-            defaultValue={fetchOrderForm.values.display_id}
-          />
-          <div className="my-2 lg:my-0 lg:mx-2" />
-          <Field
-            placeholder="Email"
-            formik={fetchOrderForm}
-            name="email"
-            autocomplete="email"
-            defaultValue={fetchOrderForm.values.email}
-          />
+        <div className="flex flex-col mt-4 lg:mt-0 lg:flex-row lg:items-baseline lg:w-1/2">
+          <SplitField>
+            <Field
+              placeholder="Order number"
+              formik={fetchOrderForm}
+              name="display_id"
+              defaultValue={fetchOrderForm.values.display_id}
+            />
+            <Field
+              placeholder="Email"
+              formik={fetchOrderForm}
+              name="email"
+              autocomplete="email"
+              defaultValue={fetchOrderForm.values.email}
+            />
+          </SplitField>
           <div className="my-3 lg:my-0 lg:mx-2" />
           <button className="btn-ui">Retrieve</button>
         </div>
       </div>
       {order ? (
-        <div className="flex">
-          <div className="w-1/2">
+        <div className="flex flex-col lg:flex-row">
+          <div className="lg:w-1/2">
             <div className="mt-8">
               <OrderBulletin order={order} cta={false} />
               <div className="mt-8">
@@ -57,39 +100,64 @@ const CreateReturn = () => {
                           key={item.id}
                           item={item}
                           currencyCode={order.currency_code}
+                          onSelect={handleSelectItem}
+                          onDeselect={handleDeselectItem}
                         />
                       )
                     })}
                   </Grid>
                 </div>
               </div>
-              <div className="mt-8">
-                <h3>Exchanges</h3>
+              <Divider />
+              <div>
+                <h3>Quantity</h3>
+                <p>
+                  Select the quantity of each item you wish to return. You can
+                  only return up to the quantity of the item you purchased.
+                </p>
+                {selectedItems.map(item => {
+                  return (
+                    <div key={item.id} className="mt-4">
+                      <SelectReturnQuantity item={item} />
+                    </div>
+                  )
+                })}
               </div>
-              <div className="mt-8">
+              <Divider />
+              <div>
+                <h3>Exchanges</h3>
+                <p>
+                  If you wish to exchange an item, select the quantity of the
+                  item aswell as the variant you wish to receive instead.
+                </p>
+              </div>
+              <Divider />
+              <div>
                 <h3>Return method</h3>
                 <p>
                   We recommend purchasing a shipping label to ensure there is a
                   tracking code and safe means for returning your product(s).
                 </p>
                 <div className="flex items-center mt-4">
-                  {shipping_options.map(option => {
-                    return (
-                      <div key={option.id} className="mr-3 last:mr-0">
-                        <DeliveryMethod
-                          method={option}
-                          isSelected={option.name === "Return shipping"}
-                        />
-                      </div>
-                    )
-                  })}
+                  {returnOptions.length &&
+                    returnOptions.map(option => {
+                      return (
+                        <div key={option.id} className="mr-3 last:mr-0">
+                          <DeliveryMethod
+                            method={option}
+                            isSelected={option.name === "Return shipping"}
+                          />
+                        </div>
+                      )
+                    })}
                 </div>
               </div>
             </div>
           </div>
-          <div className="pl-16 w-1/2 mt-8">
+          <div className="lg:pl-16 lg:w-1/2 mt-8">
             <ReturnSummary
-              items={order.items}
+              items={selectedItems}
+              shipping={selectedShipping}
               currencyCode={order.currency_code}
             />
           </div>

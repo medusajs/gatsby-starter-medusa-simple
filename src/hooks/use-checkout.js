@@ -101,7 +101,7 @@ export const useCheckout = (sameBilling = true) => {
 
     await client.carts
       .addShippingMethod(cart.id, {
-        option_id: selectedShippingMethod,
+        option_id: selectedShippingMethod.id,
       })
       .then(({ cart }) => updateCart(cart))
       .catch(_err => {

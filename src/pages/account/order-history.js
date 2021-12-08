@@ -40,7 +40,7 @@ const OrderHistory = () => {
         <div>
           {orders.map(order => {
             return (
-              <div key={order.display_number} className="mb-10 last:mb-0">
+              <div key={order.display_id} className="mb-10 last:mb-0">
                 <OrderHistoryEntry order={order} />
               </div>
             )

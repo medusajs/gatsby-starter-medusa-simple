@@ -1,3 +1,4 @@
+import { Link } from "gatsby"
 import React from "react"
 import { capitalize } from "../../../utils/capitalize"
 import { classNames } from "../../../utils/class-names"
@@ -5,7 +6,6 @@ import { formatPrice } from "../../../utils/format-price"
 import OrderBulletinInfo from "./order-bulletin-info"
 
 const OrderBulletin = ({ order, cta = true }) => {
-  console.log(order)
   return (
     <div className="bg-ui-light flex items-center justify-between p-4 rounded-md">
       <div
@@ -45,7 +45,11 @@ const OrderBulletin = ({ order, cta = true }) => {
           />
         </div>
       </div>
-      {cta && <button className="btn-ui">Create return</button>}
+      {cta && (
+        <Link to="/create-return" state={{ order: order }}>
+          <button className="btn-ui">Create return</button>
+        </Link>
+      )}
     </div>
   )
 }

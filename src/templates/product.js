@@ -131,7 +131,7 @@ const Product = ({ data, pageContext }) => {
 }
 
 export const query = graphql`
-  query ($handle: String!) {
+  query($handle: String!) {
     product: medusaProducts(handle: { eq: $handle }) {
       id
       title

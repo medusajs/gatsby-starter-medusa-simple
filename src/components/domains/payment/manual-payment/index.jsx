@@ -1,7 +1,7 @@
 import { navigate } from "gatsby"
 import React, { useEffect } from "react"
 import { useCart } from "../../../../hooks/use-cart"
-import { formatPrice } from "../../../../utils/format-price"
+import ErrorMessage from "../../utility/error-message"
 
 const ManualPayment = ({ setPaymentSession, prePayment }) => {
   const {
@@ -34,20 +34,13 @@ const ManualPayment = ({ setPaymentSession, prePayment }) => {
 
   return (
     <div className="py-4 flex flex-col">
-      <div
-        role="alert"
-        className="flex items-center text-gray-700 text-xs bg-red-300 px-4 py-2 rounded-md"
-      >
-        <div className="bg-red-400 text-white w-4 h-4 rounded-lg text-center mr-2">
-          !
-        </div>
-        <span>
-          This is for testing purposes only, and should not be used in a
-          production environment.
-        </span>
-      </div>
+      <ErrorMessage
+        error={
+          "This is for testing purposes only, and should not be used in a production environment."
+        }
+      />
       <button className="btn-ui mt-4" onClick={handleTestPayment}>
-        Pay {cart && formatPrice(cart.total, cart.region.currency_code)}
+        Pay
       </button>
     </div>
   )

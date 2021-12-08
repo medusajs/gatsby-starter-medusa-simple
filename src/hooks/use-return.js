@@ -1,8 +1,10 @@
 import { useFormik } from "formik"
 import * as Yup from "yup"
+import { useMedusa } from "./use-medusa"
 
 export const useReturn = (initialValues = null) => {
   const fetchOrderForm = useFormik({
+    enableReinitialize: true,
     initialValues: {
       email: initialValues?.email || "",
       display_id: initialValues?.display_id || "",
@@ -19,5 +21,16 @@ export const useReturn = (initialValues = null) => {
     },
   })
 
-  return { fetchOrderForm }
+  const client = useMedusa()
+
+  const getReturnShippingOptions = async regionId => {
+    const options = await client.shippingOptions
+      .list({ is_return: true, region_id: regionId })
+      .then(({ shipping_options }) => shipping_options)
+      .catch(_ => undefined)
+
+    return options
+  }
+
+  return { fetchOrderForm, actions: { getReturnShippingOptions } }
 }

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react"
 import { useRegion } from "../../../hooks/use-region"
 import Field from "../forms/field"
 import Select from "../forms/select"
+import SplitField from "../forms/split-field"
+import ErrorMessage from "../utility/error-message"
 
 const ShippingAddress = ({ controller }) => {
   const [countries, setCountries] = useState([])
@@ -16,7 +18,14 @@ const ShippingAddress = ({ controller }) => {
   return (
     <div>
       <h2>Shipping address</h2>
-      <div className="flex items-center mt-4">
+      {controller.status && (
+        <ErrorMessage
+          error={
+            "An error occured while processing your shipping address. Please try again."
+          }
+        />
+      )}
+      <SplitField>
         <Field
           label="First name"
           autocomplete="given_name"
@@ -24,7 +33,6 @@ const ShippingAddress = ({ controller }) => {
           formik={controller}
           defaultValue={controller.values.first_name}
         />
-        <div className="mx-2" />
         <Field
           label="Last name"
           autocomplete="family-name"
@@ -32,7 +40,7 @@ const ShippingAddress = ({ controller }) => {
           formik={controller}
           defaultValue={controller.values.last_name}
         />
-      </div>
+      </SplitField>
       <Field
         label="Company"
         className="mt-4"
@@ -57,7 +65,7 @@ const ShippingAddress = ({ controller }) => {
         formik={controller}
         defaultValue={controller.values.address_2}
       />
-      <div className="flex items-center mt-4">
+      <SplitField>
         <Select
           label="Country"
           autocomplete="country-code"
@@ -69,7 +77,6 @@ const ShippingAddress = ({ controller }) => {
             value: country.iso_2,
           }))}
         />
-        <div className="mx-2" />
         <Field
           label="City"
           autocomplete="city-code"
@@ -77,8 +84,8 @@ const ShippingAddress = ({ controller }) => {
           formik={controller}
           defaultValue={controller.values.city}
         />
-      </div>
-      <div className="flex items-center mt-4">
+      </SplitField>
+      <SplitField>
         <Field
           label="State / Province"
           autocomplete="address-level1"
@@ -86,7 +93,6 @@ const ShippingAddress = ({ controller }) => {
           formik={controller}
           defaultValue={controller.values.province}
         />
-        <div className="mx-2" />
         <Field
           label="ZIP / Postal Code"
           autocomplete="postal-code"
@@ -94,7 +100,7 @@ const ShippingAddress = ({ controller }) => {
           formik={controller}
           defaultValue={controller.values.postal_code}
         />
-      </div>
+      </SplitField>
       <Field
         label="Phone"
         className="mt-4"

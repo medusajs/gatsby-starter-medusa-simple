@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useRegion } from "../../../hooks/use-region"
 import Field from "../forms/field"
 import Select from "../forms/select"
+import ErrorMessage from "../utility/error-message"
 
 const BillingAddress = ({ controller }) => {
   const [countries, setCountries] = useState([])
@@ -15,6 +16,13 @@ const BillingAddress = ({ controller }) => {
   return (
     <div>
       <h2>Billing address</h2>
+      {controller.status && (
+        <ErrorMessage
+          error={
+            "An error occured while processing your billing address. Please try again."
+          }
+        />
+      )}
       <div className="flex items-center mt-4">
         <Field
           label="First name"

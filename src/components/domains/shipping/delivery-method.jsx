@@ -33,6 +33,7 @@ const DeliveryMethod = ({
               type="checkbox"
               name="delivery"
               checked={true}
+              readOnly
               className="rounded-xl text-ui-dark focus:ring-transparent w-5 h-5"
               tabIndex={-1}
             />
