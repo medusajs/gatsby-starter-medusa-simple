@@ -52,7 +52,6 @@ const OrderConfirmed = ({ location }) => {
           discount={order.discount_total}
         />
       </div>
-      {/* <pre>{JSON.stringify(order, null, 4)}</pre> */}
     </div>
   ) : (
     <div>

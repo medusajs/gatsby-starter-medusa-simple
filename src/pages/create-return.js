@@ -13,11 +13,25 @@ import SearchEngineOptimization from "../components/seo"
 import { useReturn } from "../hooks/use-return"
 
 const CreateReturn = ({ location }) => {
-  const [order, setOrder] = useState(null)
-  const [returnOptions, setReturnOptions] = useState([])
-  const [selectedItems, setSelectedItems] = useState([])
-  const [selectedShipping, setSelectedShipping] = useState(null)
   const [initialValues, setInitialValues] = useState(null)
+
+  const {
+    order,
+    fetchOrderForm,
+    returnOptions,
+    selectedItems,
+    selectedShipping,
+    actions: {
+      setOrder,
+      selectItem,
+      deselectItem,
+      updateItemQuantity,
+      setSelectedShipping,
+      getExchangeOptions,
+      addExchangeItem,
+      removeExchangeItem,
+    },
+  } = useReturn(initialValues)
 
   useEffect(() => {
     if (location.state && location.state.order) {
@@ -25,35 +39,7 @@ const CreateReturn = ({ location }) => {
       setInitialValues({ display_id: res.display_id, email: res.email })
       setOrder(res)
     }
-  }, [location.state])
-
-  const {
-    fetchOrderForm,
-    actions: { getReturnShippingOptions },
-  } = useReturn(initialValues)
-
-  useEffect(() => {
-    const getOptions = async () => {
-      if (order) {
-        const response = await getReturnShippingOptions(order.region.id)
-
-        if (response) {
-          setReturnOptions(response)
-        }
-      }
-    }
-
-    getOptions()
-  }, [order, getReturnShippingOptions])
-
-  const handleSelectItem = item => {
-    setSelectedItems(prevState => [...prevState, item])
-  }
-
-  const handleDeselectItem = item => {
-    const tmp = selectedItems.filter(i => i.id !== item.id)
-    setSelectedItems(tmp)
-  }
+  }, [location.state, setOrder])
 
   return (
     <div className="layout-base">
@@ -82,7 +68,15 @@ const CreateReturn = ({ location }) => {
             />
           </SplitField>
           <div className="my-3 lg:my-0 lg:mx-2" />
-          <button className="btn-ui">Retrieve</button>
+          <button
+            className="btn-ui"
+            onClick={e => {
+              e.preventDefault()
+              fetchOrderForm.submitForm()
+            }}
+          >
+            Retrieve
+          </button>
         </div>
       </div>
       {order ? (
@@ -101,8 +95,8 @@ const CreateReturn = ({ location }) => {
                           key={item.id}
                           item={item}
                           currencyCode={order.currency_code}
-                          onSelect={handleSelectItem}
-                          onDeselect={handleDeselectItem}
+                          onSelect={selectItem}
+                          onDeselect={deselectItem}
                         />
                       )
                     })}
@@ -114,12 +108,15 @@ const CreateReturn = ({ location }) => {
                 <h3>Quantity</h3>
                 <p>
                   Select the quantity of each item you wish to return. You can
-                  only return up to the quantity of the item you purchased.
+                  only return up to the quantity you purchased.
                 </p>
                 {selectedItems.map(item => {
                   return (
                     <div key={item.id} className="mt-4">
-                      <SelectReturnQuantity item={item} />
+                      <SelectReturnQuantity
+                        item={item}
+                        updateQuantity={updateItemQuantity}
+                      />
                     </div>
                   )
                 })}
@@ -134,7 +131,12 @@ const CreateReturn = ({ location }) => {
                 {selectedItems.map(item => {
                   return (
                     <div key={item.id} className="mt-4">
-                      <SelectExchangeItem item={item} />
+                      <SelectExchangeItem
+                        item={item}
+                        getExchangeOptions={getExchangeOptions}
+                        removeExchangeItem={removeExchangeItem}
+                        addExchangeItem={addExchangeItem}
+                      />
                     </div>
                   )
                 })}

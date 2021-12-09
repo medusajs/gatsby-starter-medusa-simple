@@ -18,7 +18,7 @@ const AccountLayout = ({ children }) => {
         <div className="lg:mr-24 relative">
           <AccountNav />
         </div>
-        <div className="flex-grow mt-4 lg:mt-0">
+        <div className="flex-grow my-4 lg:my-0">
           {loading && !customer ? (
             <div className="flex justify-center items-center">
               <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>

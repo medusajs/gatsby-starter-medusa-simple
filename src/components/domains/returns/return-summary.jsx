@@ -2,7 +2,12 @@ import { Link } from "gatsby"
 import React, { useState } from "react"
 import { formatPrice } from "../../../utils/format-price"
 
-const ReturnSummary = ({ items, shipping = 0, currencyCode }) => {
+const ReturnSummary = ({
+  items,
+  additionalItems,
+  shipping = 0,
+  currencyCode,
+}) => {
   const [accepted, setAccepted] = useState(false)
 
   const refundAmount = items.reduce(
@@ -11,7 +16,7 @@ const ReturnSummary = ({ items, shipping = 0, currencyCode }) => {
   )
 
   return (
-    <div className="bg-white shadow p-8 rounded-lg">
+    <div className="bg-white shadow p-8 rounded-lg sticky top-28">
       <div className="flex flex-col">
         <h2 className="mb-3">Summary</h2>
         <div className="flex items-center justify-between mb-2">

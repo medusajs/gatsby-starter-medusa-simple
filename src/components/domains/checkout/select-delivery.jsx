@@ -1,7 +1,7 @@
 import _ from "lodash"
 import React, { useEffect, useState } from "react"
 import { useCart } from "../../../hooks/use-cart"
-import DeliveryMethod from "../shipping/delivery-method"
+import ShippingOptions from "../shipping/shipping-options"
 
 const SelectDelivery = ({
   selectedShippingMethod,
@@ -40,7 +40,7 @@ const SelectDelivery = ({
 
   return (
     <div>
-      <h2>Delivery method</h2>
+      {/* <h2>Delivery method</h2>
       <div className="flex items-center mt-4">
         {!error &&
           shippingOptions.map(shippingOption => {
@@ -59,7 +59,14 @@ const SelectDelivery = ({
             {error}
           </span>
         )}
-      </div>
+      </div> */}
+      {!error && shippingOptions && (
+        <ShippingOptions
+          title="Delivery method"
+          options={shippingOptions}
+          currencyCode={cart?.region?.currency_code}
+        />
+      )}
     </div>
   )
 }

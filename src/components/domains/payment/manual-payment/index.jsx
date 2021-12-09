@@ -30,8 +30,6 @@ const ManualPayment = ({ setPaymentSession, prePayment }) => {
     )
   }, [])
 
-  const { cart } = useCart()
-
   return (
     <div className="py-4 flex flex-col">
       <ErrorMessage

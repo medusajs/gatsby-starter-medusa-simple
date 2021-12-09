@@ -8,18 +8,18 @@ const OrderHistoryItem = ({ item, currencyCode }) => {
   } = useCart()
 
   return (
-    <div className="flex my-4">
+    <div className="flex mt-8 mb-8 last:mb-0">
       <div className="h-64 w-72 bg-ui-light rounded-lg mr-6">
         <img
-          className="w-full h-auto object-contain object-center"
+          className="w-full h-auto object-cover object-center"
           src={item.thumbnail}
           alt={item.title}
         />
       </div>
-      <div className="flex justify-between w-full py-2">
-        <div className="flex flex-col justify-between">
+      <div className="flex flex-col justify-between w-full py-2">
+        <div className="flex items-baseline justify-between">
           <div>
-            <h3>{item.title}</h3>
+            <h3 className="text-sm lg:text-lg">{item.title}</h3>
             <div className="text-sm flex flex-col mt-2">
               <span className="mb-2">
                 <span className="text-ui-dark">Variant: </span>
@@ -31,6 +31,12 @@ const OrderHistoryItem = ({ item, currencyCode }) => {
               </span>
             </div>
           </div>
+          <span className="text-sm lg:text-lg font-semibold">
+            {((item.unit_price * item.quantity) / 100).toFixed(2)}{" "}
+            {currencyCode.toUpperCase()}
+          </span>
+        </div>
+        <div>
           <div className="flex items-center text-sm font-medium">
             <RegionalLink to={item.variant.product.handle}>
               View Product
@@ -48,12 +54,6 @@ const OrderHistoryItem = ({ item, currencyCode }) => {
               Buy Again
             </button>
           </div>
-        </div>
-        <div>
-          <span className="text-lg font-semibold">
-            {((item.unit_price * item.quantity) / 100).toFixed(2)}{" "}
-            {currencyCode.toUpperCase()}
-          </span>
         </div>
       </div>
     </div>

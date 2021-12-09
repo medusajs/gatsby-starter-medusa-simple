@@ -1,7 +1,7 @@
 import React from "react"
 import QuantitySelector from "../../quantity-selector"
 
-const SelectReturnQuantity = ({ item }) => {
+const SelectReturnQuantity = ({ item, updateQuantity }) => {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center">
@@ -17,7 +17,11 @@ const SelectReturnQuantity = ({ item }) => {
           </p>
         </div>
       </div>
-      <QuantitySelector quantity={1} />
+      <QuantitySelector
+        quantity={item.quantity}
+        increment={() => updateQuantity(item, item.quantity + 1)}
+        decrement={() => updateQuantity(item, item.quantity - 1)}
+      />
     </div>
   )
 }

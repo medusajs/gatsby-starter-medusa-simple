@@ -4,7 +4,7 @@ import OrderHistoryItem from "./order-history-item"
 
 const OrderHistoryEntry = ({ order }) => {
   return (
-    <div className="border-b border-ui-medium last:border-none mb-12 last:mb-0">
+    <div className="border-b border-ui-medium last:border-none mb-12">
       <OrderBulletin order={order} />
       <div>
         {order.items.map((item, i) => {

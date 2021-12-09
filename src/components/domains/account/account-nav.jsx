@@ -5,8 +5,9 @@ import AccountNavLink from "./account-nav-link"
 
 const AccountNav = () => {
   return (
-    <div className="flex items-start lg:items-center lg:flex-col text-sm sticky top-28">
+    <div className="flex items-start lg:items-center lg:flex-col text-sm mt-8 lg:mt-0 lg:sticky lg:top-28">
       <AccountNavLink svg={User} label="Account" to="/account" />
+      <div className="mx-1 lg:mx-0" />
       <AccountNavLink
         svg={Package}
         label="Order History"

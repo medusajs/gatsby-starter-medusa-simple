@@ -7,7 +7,12 @@ const CartPopoverItem = ({ item, currencyCode }) => {
         <img className="w-16 h-auto" src={item.thumbnail} alt={item.title} />
       </div>
       <div className="flex flex-col justify-between py-2">
-        <p className="font-medium text-sm">{item.title}</p>
+        <div>
+          <p className="font-medium text-sm">{item.title}</p>
+          <p className="text-xs mt-1">
+            <span className="text-ui-dark">Variant:</span> {item.description}
+          </p>
+        </div>
         <div className="flex items-center font-light text-xs">
           <p>
             <span className="text-ui-dark">Quantity</span>{" "}
