@@ -7,17 +7,21 @@ const ShippingOptions = ({
   title,
   description = null,
   currencyCode = "eur",
+  onSelect,
 }) => {
   const [selected, setSelected] = useState(options[0] ?? null)
 
+  const handleChange = option => {
+    setSelected(option)
+    onSelect(option)
+  }
+
   return (
     <div>
-      <RadioGroup value={selected} onChange={setSelected}>
+      <RadioGroup value={selected} onChange={handleChange}>
         <RadioGroup.Label as="h3">{title}</RadioGroup.Label>
         {description && (
-          <RadioGroup.Description className="mt-4" as="p">
-            {description}
-          </RadioGroup.Description>
+          <RadioGroup.Description as="p">{description}</RadioGroup.Description>
         )}
         <div className="space-y-2 mt-4">
           {options.map(option => {

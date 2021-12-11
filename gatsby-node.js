@@ -1,3 +1,5 @@
+const Medusa = require("@medusajs/medusa-js").default
+
 const toKebabCase = str =>
   str &&
   str

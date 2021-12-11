@@ -15,6 +15,8 @@ const ProductImages = ({ images = [] }) => {
     }
   }
 
+  console.log(images)
+
   return (
     <div className="flex">
       <div className="hidden lg:flex flex-col items-center mr-4">
@@ -44,7 +46,7 @@ const ProductImages = ({ images = [] }) => {
       <div className="relative h-auto w-full flex rounded-lg overflow-hidden">
         <span className="text-sm absolute right-4 top-3 z-10">{`${
           current + 1
-        } / ${images.length}`}</span>
+        } / ${images?.length}`}</span>
         <div className="absolute flex items-center justify-between h-full px-4 my-auto left-0 right-0 lg:hidden z-10">
           <button onClick={() => handleInfiniteChange(-1)}>{`<`}</button>
           <button onClick={() => handleInfiniteChange(1)}>{`>`}</button>

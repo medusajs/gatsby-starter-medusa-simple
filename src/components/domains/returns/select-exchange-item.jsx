@@ -30,6 +30,12 @@ const SelectExchangeItem = ({
     setVariantId(id)
   }
 
+  const handleQuantityChange = quantityUpdate => {
+    if (quantityUpdate > 0) {
+      setQuantity(quantityUpdate)
+    }
+  }
+
   useEffect(() => {}, [variantId, quantity])
 
   return (
@@ -83,8 +89,8 @@ const SelectExchangeItem = ({
         </select>
         <QuantitySelector
           quantity={quantity}
-          increment={() => setQuantity(quantity + 1)}
-          decrement={() => setQuantity(quantity - 1)}
+          increment={() => handleQuantityChange(quantity + 1)}
+          decrement={() => handleQuantityChange(quantity - 1)}
         />
       </div>
     </div>

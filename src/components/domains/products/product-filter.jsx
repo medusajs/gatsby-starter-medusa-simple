@@ -23,7 +23,7 @@ const ProductFilter = ({ filterables, activeFilters, setActiveFilters }) => {
   }
 
   return (
-    <div className="lg:sticky lg:top-28">
+    <div className="lg:sticky lg:top-0">
       {Object.keys(filterables).map((key, index) => {
         const filterable = filterables[key]
         return (

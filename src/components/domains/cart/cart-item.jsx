@@ -31,10 +31,7 @@ const CartItem = ({ item, currencyCode, showDescription = true }) => {
               {item.variant?.product?.description}
             </p>
             <p>
-              Variant:{" "}
-              <span className="text-gray-700 font-normal">
-                {item.description}
-              </span>
+              <span className="text-ui-dark">Variant:</span> {item.description}
             </p>
           </div>
           <p className="font-semibold">

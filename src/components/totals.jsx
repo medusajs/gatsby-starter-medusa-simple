@@ -4,13 +4,15 @@ import { formatPrice } from "../utils/format-price"
 
 const Totals = ({
   subtotal = 0,
-  shipping,
+  shipping = null,
   discount = null,
   total = 0,
   currencyCode = "eur",
   cartId = null,
 }) => {
   const { estimatedShipping } = useShipping(cartId)
+
+  const appliedDiscount = discount?.length ? discount[0] : 0
 
   const totalPrice = shipping ? total + shipping : total + estimatedShipping
 
@@ -34,7 +36,7 @@ const Totals = ({
           </p>
         </div>
       )}
-      {discount && (
+      {appliedDiscount ? (
         <div className="flex items-center justify-between mb-2">
           <div className="inline-flex items-center">
             <p>Discount</p>
@@ -46,7 +48,7 @@ const Totals = ({
             {formatPrice(discount.amount, currencyCode)}
           </p>
         </div>
-      )}
+      ) : null}
       <div className="h-px w-full bg-ui-medium mb-2" />
       <div className="flex items-center justify-between">
         <p>Total</p>

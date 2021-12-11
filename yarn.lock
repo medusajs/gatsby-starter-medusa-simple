@@ -1801,10 +1801,10 @@
   resolved "https://registry.npmjs.org/@mdx-js/util/-/util-2.0.0-next.8.tgz"
   integrity sha512-T0BcXmNzEunFkuxrO8BFw44htvTPuAoKbLvTG41otyZBDV1Rs+JMddcUuaP5vXpTWtgD3grhcrPEwyx88RUumQ==
 
-"@medusajs/medusa-cli@^1.1.23":
-  version "1.1.23"
-  resolved "https://registry.yarnpkg.com/@medusajs/medusa-cli/-/medusa-cli-1.1.23.tgz#d7272a21c02f9fa3cbe1dc8f9e2840cdd0e1d2f9"
-  integrity sha512-rqjDFd8hM9Q3rvuxwetv28jp3xHzH5Nt5J129JPCk9Sd8Rj6x2lVbKPbULNwgQ6hk8OsXjOQF2hPEyRt+vJL3A==
+"@medusajs/medusa-cli@^1.1.24":
+  version "1.1.24"
+  resolved "https://registry.yarnpkg.com/@medusajs/medusa-cli/-/medusa-cli-1.1.24.tgz#3643298de414c176b2bac1c7ca6a353fe86bebc3"
+  integrity sha512-AweUesotywKM/l7eeNbU+b3JrV5w11uZPGJY/S8PRjbb8Zzi3NTjQj9w4Z+BlYef6QeXKK8vw5dyYcP443qUMA==
   dependencies:
     "@babel/polyfill" "^7.8.7"
     "@babel/runtime" "^7.9.6"
@@ -1823,7 +1823,7 @@
     joi-objectid "^3.0.1"
     meant "^1.0.1"
     medusa-core-utils "^0.1.27"
-    medusa-telemetry "^0.0.10"
+    medusa-telemetry "^0.0.11"
     netrc-parser "^3.1.6"
     open "^8.0.6"
     ora "^5.4.1"
@@ -1837,22 +1837,22 @@
     winston "^3.3.3"
     yargs "^15.3.1"
 
-"@medusajs/medusa-js@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@medusajs/medusa-js/-/medusa-js-1.0.5.tgz#715779c4e7391a8019943cdf2288955598b6bb0a"
-  integrity sha512-zmXo+krignec9HfSVjpMnruSR/lOqmGGgT8vqsPHLrlYYziBwe5bX7AmkzCL/Sepl1Zrwh7Mioetp4wIERV2Gg==
+"@medusajs/medusa-js@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@medusajs/medusa-js/-/medusa-js-1.0.7.tgz#f0a88471941f7d269d49809262c67f4d42bddbce"
+  integrity sha512-1byL/dXSSYCGMnMT28+eeJgME5DA/IhbILQOseAJ1YNVpiud8EEvVlP+QW7K8qlBRbEVvGnP20/IeQbLdyPTYw==
   dependencies:
-    "@medusajs/medusa" "^1.1.57"
+    "@medusajs/medusa" "^1.1.59"
     axios "^0.21.0"
     retry-axios "^2.6.0"
 
-"@medusajs/medusa@^1.1.57":
-  version "1.1.57"
-  resolved "https://registry.yarnpkg.com/@medusajs/medusa/-/medusa-1.1.57.tgz#0b6ca5ca9e5d33022247f87fca9bb6f66593cfd8"
-  integrity sha512-60hTYK+Tz84jrXGQVGkoplJ7aJkCYKNyEzlgklh6+1WBSfqthegOlDgcQpqzBnzqG403apug7FL/sj6xE8VYYg==
+"@medusajs/medusa@^1.1.59":
+  version "1.1.59"
+  resolved "https://registry.yarnpkg.com/@medusajs/medusa/-/medusa-1.1.59.tgz#d0dc4ea4bad669ea0efa72d34535318c214ac48a"
+  integrity sha512-DFdHeMxSmCi73Icu/6XUj6n3LwsTIIJDFYZqfIxAgfST46u3QjatvNzl6XWHvc5hntkoLxyUuTz5jp/qFxg46g==
   dependencies:
     "@hapi/joi" "^16.1.8"
-    "@medusajs/medusa-cli" "^1.1.23"
+    "@medusajs/medusa-cli" "^1.1.24"
     "@types/lodash" "^4.14.168"
     awilix "^4.2.3"
     body-parser "^1.19.0"
@@ -1876,8 +1876,8 @@
     joi "^17.3.0"
     joi-objectid "^3.0.1"
     jsonwebtoken "^8.5.1"
-    medusa-core-utils "^1.1.30"
-    medusa-test-utils "^1.1.33"
+    medusa-core-utils "^1.1.31"
+    medusa-test-utils "^1.1.34"
     morgan "^1.9.1"
     multer "^1.4.2"
     passport "^0.4.0"
@@ -3057,6 +3057,13 @@ axios@^0.21.0, axios@^0.21.1, axios@^0.21.4:
   dependencies:
     follow-redirects "^1.14.0"
 
+axios@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
+  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
+  dependencies:
+    follow-redirects "^1.14.4"
+
 axobject-query@^2.2.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/axobject-query/-/axobject-query-2.2.0.tgz"
@@ -3148,14 +3155,6 @@ babel-plugin-polyfill-regenerator@^0.2.3:
   dependencies:
     "@babel/helper-define-polyfill-provider" "^0.2.4"
 
-babel-plugin-remove-graphql-queries@^3.14.0:
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-remove-graphql-queries/-/babel-plugin-remove-graphql-queries-3.14.0.tgz#33b607cbc2824f72aa3d3b68f52912bf295b79c7"
-  integrity sha512-uRqbsHOcJ1kWn6IK6clZOGHBnQCddiz1LuoGIpv/hcGZCO1nCy16z9KMgEM8TdGG6L6cO31mNr1RcVmvGtcCEw==
-  dependencies:
-    "@babel/runtime" "^7.15.4"
-    gatsby-core-utils "^2.14.0"
-
 babel-plugin-remove-graphql-queries@^4.0.0, babel-plugin-remove-graphql-queries@^4.1.0:
   version "4.1.0"
   resolved "https://registry.npmjs.org/babel-plugin-remove-graphql-queries/-/babel-plugin-remove-graphql-queries-4.1.0.tgz"
@@ -3163,6 +3162,14 @@ babel-plugin-remove-graphql-queries@^4.0.0, babel-plugin-remove-graphql-queries@
   dependencies:
     "@babel/runtime" "^7.15.4"
     gatsby-core-utils "^3.1.0"
+
+babel-plugin-remove-graphql-queries@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-remove-graphql-queries/-/babel-plugin-remove-graphql-queries-4.3.0.tgz#f2f195c4ca525d9bbf15b2bf0683d15cc9d27825"
+  integrity sha512-YIH37ulNBHXCMZIME1sISke/0F/D7JFfVvzBHy1n+xKqx+o1gqQMbPabtIGvkA5dQhxfV1/2Pw/gx2+0lSpsRw==
+  dependencies:
+    "@babel/runtime" "^7.15.4"
+    gatsby-core-utils "^3.3.0"
 
 babel-plugin-transform-react-remove-prop-types@^0.4.24:
   version "0.4.24"
@@ -5945,6 +5952,11 @@ follow-redirects@^1.0.0, follow-redirects@^1.14.0:
   resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.14.4.tgz"
   integrity sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==
 
+follow-redirects@^1.14.4:
+  version "1.14.6"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.6.tgz#8cfb281bbc035b3c067d6cd975b0f6ade6e855cd"
+  integrity sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==
+
 for-each@^0.3.3:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/for-each/-/for-each-0.3.3.tgz#69b447e88a0a5d32c3e7084f3f1710034b21376e"
@@ -6163,22 +6175,6 @@ gatsby-cli@^4.1.0:
     yoga-layout-prebuilt "^1.10.0"
     yurnalist "^2.1.0"
 
-gatsby-core-utils@^2.13.0, gatsby-core-utils@^2.14.0:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/gatsby-core-utils/-/gatsby-core-utils-2.14.0.tgz#ad0030d11776073cdc6a119f4b81e150f3921aef"
-  integrity sha512-HDMb1XMqysup9raLYWB0wIQU568R9qPounF7iAwjf2esFUVV5mdBTvxEpune/7yG0RmwhNPhgrEZo2rBHeJf7A==
-  dependencies:
-    "@babel/runtime" "^7.15.4"
-    ci-info "2.0.0"
-    configstore "^5.0.1"
-    file-type "^16.5.3"
-    fs-extra "^10.0.0"
-    got "^11.8.2"
-    node-object-hash "^2.3.9"
-    proper-lockfile "^4.1.2"
-    tmp "^0.2.1"
-    xdg-basedir "^4.0.0"
-
 gatsby-core-utils@^3.0.0, gatsby-core-utils@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/gatsby-core-utils/-/gatsby-core-utils-3.1.0.tgz"
@@ -6249,25 +6245,6 @@ gatsby-page-utils@^2.1.0:
     lodash "^4.17.21"
     micromatch "^4.0.4"
 
-gatsby-plugin-image@^1.13.0:
-  version "1.14.2"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-image/-/gatsby-plugin-image-1.14.2.tgz#3955e370d8eb96cd3675001220f315a66ad8ea06"
-  integrity sha512-5kw7sAjqrNfMz7E1oMVfOz4CrG6AtIQNYVl1jTAI9sAuTLz/EJEHOM2z54pFUk/irNkrhXDZyEnDjY2d06U7rQ==
-  dependencies:
-    "@babel/code-frame" "^7.14.0"
-    "@babel/parser" "^7.15.5"
-    "@babel/runtime" "^7.15.4"
-    "@babel/traverse" "^7.15.4"
-    babel-jsx-utils "^1.1.0"
-    babel-plugin-remove-graphql-queries "^3.14.0"
-    camelcase "^5.3.1"
-    chokidar "^3.5.2"
-    common-tags "^1.8.0"
-    fs-extra "^10.0.0"
-    gatsby-core-utils "^2.14.0"
-    objectFitPolyfill "^2.3.5"
-    prop-types "^15.7.2"
-
 gatsby-plugin-image@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/gatsby-plugin-image/-/gatsby-plugin-image-2.0.0.tgz"
@@ -6284,6 +6261,25 @@ gatsby-plugin-image@^2.0.0:
     common-tags "^1.8.0"
     fs-extra "^10.0.0"
     gatsby-core-utils "^3.0.0"
+    objectFitPolyfill "^2.3.5"
+    prop-types "^15.7.2"
+
+gatsby-plugin-image@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-image/-/gatsby-plugin-image-2.3.0.tgz#126f7a0666016c8879b97246ce4f4e1dd62e3c47"
+  integrity sha512-oxG+oZ1kYboX/75jOxHZeV6Xzo5xHZ/8KUQpni58nI1+xaxZRFBthXg1SetSs8nWRsXR5Y+bq8FAf0R0iGjySg==
+  dependencies:
+    "@babel/code-frame" "^7.14.0"
+    "@babel/parser" "^7.15.5"
+    "@babel/runtime" "^7.15.4"
+    "@babel/traverse" "^7.15.4"
+    babel-jsx-utils "^1.1.0"
+    babel-plugin-remove-graphql-queries "^4.3.0"
+    camelcase "^5.3.1"
+    chokidar "^3.5.2"
+    common-tags "^1.8.0"
+    fs-extra "^10.0.0"
+    gatsby-core-utils "^3.3.0"
     objectFitPolyfill "^2.3.5"
     prop-types "^15.7.2"
 
@@ -6490,25 +6486,6 @@ gatsby-recipes@^1.1.0:
     xstate "^4.9.1"
     yoga-layout-prebuilt "^1.9.6"
 
-gatsby-source-filesystem@^3.13.0:
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/gatsby-source-filesystem/-/gatsby-source-filesystem-3.14.0.tgz#ae2b930091a932b33270cb9cc2d9caaf0abc1742"
-  integrity sha512-Gg5GGxiWXhjapWMYdXOGk7zp+ajYowS+xNmaDUkL1gH+IQLvE18XbvKh00B/HiFaHm4azJfS2QRrRI/mPTZX+w==
-  dependencies:
-    "@babel/runtime" "^7.15.4"
-    chokidar "^3.5.2"
-    fastq "^1.11.1"
-    file-type "^16.5.3"
-    fs-extra "^10.0.0"
-    gatsby-core-utils "^2.14.0"
-    got "^9.6.0"
-    md5-file "^5.0.0"
-    mime "^2.5.2"
-    pretty-bytes "^5.4.1"
-    progress "^2.0.3"
-    valid-url "^1.0.9"
-    xstate "^4.14.0"
-
 gatsby-source-filesystem@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/gatsby-source-filesystem/-/gatsby-source-filesystem-4.0.0.tgz"
@@ -6528,16 +6505,35 @@ gatsby-source-filesystem@^4.0.0:
     valid-url "^1.0.9"
     xstate "^4.14.0"
 
-gatsby-source-medusa@^0.0.36:
-  version "0.0.36"
-  resolved "https://registry.yarnpkg.com/gatsby-source-medusa/-/gatsby-source-medusa-0.0.36.tgz#5d9c6224ce295baec6930d5ac614a7a4120fbe39"
-  integrity sha512-2jSatxS3x4eGr4hhHFLswnUZg3+r2wQ/zYyrG1j5U8k8UZmY3g7I0aaW/CnSvGWRTvI4FfRNLgHSzvx+IlETzg==
+gatsby-source-filesystem@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/gatsby-source-filesystem/-/gatsby-source-filesystem-4.3.0.tgz#0a4f21cecc0cc942096c11c1b583a698f1edf2d8"
+  integrity sha512-vPYq1hcJ2FUc/o9QsMFC/nVLxXVPN/qInfCPWv/FePNfnL8A5EaKhQwSyfTqISeovMkLuJLv4wm+QTKgGVe6Nw==
   dependencies:
-    axios "^0.21.1"
+    "@babel/runtime" "^7.15.4"
+    chokidar "^3.5.2"
+    fastq "^1.13.0"
+    file-type "^16.5.3"
+    fs-extra "^10.0.0"
+    gatsby-core-utils "^3.3.0"
+    got "^9.6.0"
+    md5-file "^5.0.0"
+    mime "^2.5.2"
+    pretty-bytes "^5.4.1"
+    progress "^2.0.3"
+    valid-url "^1.0.9"
+    xstate "^4.25.0"
+
+gatsby-source-medusa@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/gatsby-source-medusa/-/gatsby-source-medusa-0.0.4.tgz#1057c0833c418f8903d3badd302c0fe31b8913e1"
+  integrity sha512-PLPUwQiBuCBqfhF46AlUspH8Gk45WOhavtGeravWy5VFQXo6RbeWt82lPXV/bPIIZMrIngW7ApjUOY5dRiL+bw==
+  dependencies:
+    axios "^0.24.0"
     babel-preset-gatsby-package "^2.0.0"
-    gatsby-core-utils "^2.13.0"
-    gatsby-plugin-image "^1.13.0"
-    gatsby-source-filesystem "^3.13.0"
+    gatsby-core-utils "^3.3.0"
+    gatsby-plugin-image "^2.3.0"
+    gatsby-source-filesystem "^4.3.0"
 
 gatsby-telemetry@^3.1.0:
   version "3.1.0"
@@ -9107,18 +9103,18 @@ medusa-core-utils@^0.1.27:
     "@hapi/joi" "^16.1.8"
     joi-objectid "^3.0.1"
 
-medusa-core-utils@^1.1.30:
-  version "1.1.30"
-  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.30.tgz#6fe670a9df1ddbbd786f7a3a89c167eb3596aea2"
-  integrity sha512-vWtSr2uZzRRv3HfUc9rclLxmMx+7lL+5qFZrgSZK5Wf19jO4Jp15wWgNsf3bp7Bf5ICaPfT96G1jbyqiMvI6HA==
+medusa-core-utils@^1.1.31:
+  version "1.1.31"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.31.tgz#6cfc89566c2107faedf0f9128f2643b34b201455"
+  integrity sha512-nMAmdjm2HoizOskSOyK/KK7dJ3ccC86+dPbT5Q4AeJ9bTJVCTOFnkUMEScuSM5pXx1y8k+yxXRBvrv/Thh2OTw==
   dependencies:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
 
-medusa-telemetry@^0.0.10:
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/medusa-telemetry/-/medusa-telemetry-0.0.10.tgz#86fb85048b9e41d0d91f156d590dd519a872077d"
-  integrity sha512-kskCT4YjCvv8C38qF+zJY9C/fARtHH5cpl2WlxHblBAQY3KXCGBSXLlsgPRT28VIkuDQOZGDjHLg3o+w2XqNPw==
+medusa-telemetry@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/medusa-telemetry/-/medusa-telemetry-0.0.11.tgz#1d80b0e3d73b456fae243027c65cd6c212584971"
+  integrity sha512-YZYGeG5SOOuP3lYM4g1yMoHUem1GK5ZfqRTeydDmZUGoA7zJvprqXQER6lcc+/FLv0kKr74K7MmtzBBlBRJl3g==
   dependencies:
     axios "^0.21.1"
     axios-retry "^3.1.9"
@@ -9130,13 +9126,13 @@ medusa-telemetry@^0.0.10:
     remove-trailing-slash "^0.1.1"
     uuid "^8.3.2"
 
-medusa-test-utils@^1.1.33:
-  version "1.1.33"
-  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.33.tgz#0c2f159f0cd5f3d3e79f5aabb30286a9bf839ef9"
-  integrity sha512-VM29+5h4NM3isIKh1AqssCbvj+aC/Meqqf+c3PNdhtK93+jNmahadpYtGPhT5i/8lMOqnleatAgfnhjq8a7X9A==
+medusa-test-utils@^1.1.34:
+  version "1.1.34"
+  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.34.tgz#fb8deb0dee7b7a4fc118273792ffde9fb15dbfbe"
+  integrity sha512-8FfXm3MtaOq70aUPpoHWXNB77Na85oZs46IUL4WVfK7tuV9df7UYOhSMMxQN13VLX9Izsf7KYKsknOYxquNV3Q==
   dependencies:
     "@babel/plugin-transform-classes" "^7.9.5"
-    medusa-core-utils "^1.1.30"
+    medusa-core-utils "^1.1.31"
     randomatic "^3.1.1"
 
 mem@^8.1.1:

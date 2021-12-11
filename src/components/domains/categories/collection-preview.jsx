@@ -5,7 +5,10 @@ import React, { useMemo } from "react"
 const CollectionPreview = ({ collection }) => {
   const randomThumbnail = useMemo(() => {
     const randomIndex = Math.floor(Math.random() * collection.thumbnails.length)
-    return collection.thumbnails[randomIndex].childImageSharp.gatsbyImageData
+    return (
+      collection?.thumbnails?.[randomIndex]?.childImageSharp?.gatsbyImageData ??
+      null
+    )
   }, [collection])
 
   return (

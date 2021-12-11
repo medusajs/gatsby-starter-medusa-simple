@@ -40,32 +40,18 @@ const SelectDelivery = ({
 
   return (
     <div>
-      {/* <h2>Delivery method</h2>
-      <div className="flex items-center mt-4">
-        {!error &&
-          shippingOptions.map(shippingOption => {
-            return (
-              <DeliveryMethod
-                key={shippingOption.id}
-                method={shippingOption}
-                currencyCode={cart?.region?.currency_code}
-                isSelected={selectedShippingMethod?.id === shippingOption.id}
-                onSelect={() => setSelectedShippingMethod(shippingOption)}
-              />
-            )
-          })}
-        {error && (
-          <span role="alert" className="text-red-500">
-            {error}
-          </span>
-        )}
-      </div> */}
       {!error && shippingOptions && (
         <ShippingOptions
           title="Delivery method"
           options={shippingOptions}
           currencyCode={cart?.region?.currency_code}
+          onSelect={setSelectedShippingMethod}
         />
+      )}
+      {error && (
+        <span role="alert" className="text-red-500">
+          {error}
+        </span>
       )}
     </div>
   )

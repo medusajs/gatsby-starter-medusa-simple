@@ -5,7 +5,7 @@ import { formatPrice } from "../../../utils/format-price"
 const ReturnSummary = ({
   items,
   additionalItems,
-  shipping = 0,
+  shipping = null,
   currencyCode,
 }) => {
   const [accepted, setAccepted] = useState(false)
@@ -14,6 +14,8 @@ const ReturnSummary = ({
     (acc, item) => acc + item.unit_price * item.quantity,
     0
   )
+
+  const shippingAmount = shipping ? shipping.amount : 0
 
   return (
     <div className="bg-white shadow p-8 rounded-lg sticky top-28">
@@ -25,12 +27,12 @@ const ReturnSummary = ({
         </div>
         <div className="flex items-center justify-between">
           <p>Shipping</p>
-          <p>– {formatPrice(shipping, currencyCode)}</p>
+          <p>– {formatPrice(shippingAmount, currencyCode)}</p>
         </div>
         <div className="h-px w-full bg-ui-medium my-2" />
         <div className="flex items-center justify-between">
           <p>Total</p>
-          <p>{formatPrice(refundAmount - shipping, currencyCode)}</p>
+          <p>{formatPrice(refundAmount - shippingAmount, currencyCode)}</p>
         </div>
         <label className="mt-3">
           <input

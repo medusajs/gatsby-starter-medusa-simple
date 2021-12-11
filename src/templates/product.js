@@ -131,7 +131,7 @@ const Product = ({ data, pageContext }) => {
 }
 
 export const query = graphql`
-  query($handle: String!) {
+  query ($handle: String!) {
     product: medusaProducts(handle: { eq: $handle }) {
       id
       title
@@ -159,9 +159,10 @@ export const query = graphql`
         }
       }
       images {
+        url
         image {
           childImageSharp {
-            gatsbyImageData(placeholder: DOMINANT_COLOR)
+            gatsbyImageData
           }
         }
       }

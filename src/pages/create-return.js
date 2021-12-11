@@ -6,7 +6,7 @@ import ReturnSummary from "../components/domains/returns/return-summary"
 import SelectExchangeItem from "../components/domains/returns/select-exchange-item"
 import SelectReturnItem from "../components/domains/returns/select-return-item"
 import SelectReturnQuantity from "../components/domains/returns/select-return-quantity"
-import DeliveryMethod from "../components/domains/shipping/delivery-method"
+import ShippingOptions from "../components/domains/shipping/shipping-options"
 import Divider from "../components/domains/utility/divider"
 import Grid from "../components/domains/utility/grid"
 import SearchEngineOptimization from "../components/seo"
@@ -142,25 +142,18 @@ const CreateReturn = ({ location }) => {
                 })}
               </div>
               <Divider />
-              <div>
-                <h3>Return method</h3>
-                <p>
-                  We recommend purchasing a shipping label to ensure there is a
-                  tracking code and safe means for returning your product(s).
-                </p>
-                <div className="flex items-center mt-4">
-                  {returnOptions.length &&
-                    returnOptions.map(option => {
-                      return (
-                        <div key={option.id} className="mr-3 last:mr-0">
-                          <DeliveryMethod
-                            method={option}
-                            isSelected={option.name === "Return shipping"}
-                          />
-                        </div>
-                      )
-                    })}
-                </div>
+              <div className="flex items-center mt-4">
+                {returnOptions.length && (
+                  <ShippingOptions
+                    options={returnOptions}
+                    title="Return method"
+                    description={
+                      " We recommend purchasing a shipping label to ensure there is a tracking code and safe means for returning your product(s)."
+                    }
+                    onSelect={setSelectedShipping}
+                    currencyCode={order.currency_code}
+                  />
+                )}
               </div>
             </div>
           </div>
