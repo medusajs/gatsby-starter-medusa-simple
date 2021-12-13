@@ -20,16 +20,13 @@ const CreateReturn = ({ location }) => {
     fetchOrderForm,
     returnOptions,
     selectedItems,
-    selectedShipping,
+    totals,
     actions: {
       setOrder,
       selectItem,
       deselectItem,
       updateItemQuantity,
       setSelectedShipping,
-      getExchangeOptions,
-      addExchangeItem,
-      removeExchangeItem,
     },
   } = useReturn(initialValues)
 
@@ -131,12 +128,7 @@ const CreateReturn = ({ location }) => {
                 {selectedItems.map(item => {
                   return (
                     <div key={item.id} className="mt-4">
-                      <SelectExchangeItem
-                        item={item}
-                        getExchangeOptions={getExchangeOptions}
-                        removeExchangeItem={removeExchangeItem}
-                        addExchangeItem={addExchangeItem}
-                      />
+                      <SelectExchangeItem item={item} />
                     </div>
                   )
                 })}
@@ -158,11 +150,7 @@ const CreateReturn = ({ location }) => {
             </div>
           </div>
           <div className="lg:pl-16 lg:w-1/2 mt-8">
-            <ReturnSummary
-              items={selectedItems}
-              shipping={selectedShipping}
-              currencyCode={order.currency_code}
-            />
+            <ReturnSummary total={totals} />
           </div>
         </div>
       ) : (

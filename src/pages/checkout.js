@@ -19,7 +19,12 @@ const Checkout = () => {
 
   const {
     forms: { contactForm, billingForm, shippingForm },
-    shippingMethod: { selectedShippingMethod, setSelectedShippingMethod },
+    shippingMethod: {
+      selectedShippingMethod,
+      setSelectedShippingMethod,
+      getShippingOptions,
+    },
+    loading,
     setupCheckout,
   } = useCheckout(hideBilling)
 
@@ -48,7 +53,7 @@ const Checkout = () => {
           )}
           <Divider />
           <SelectDelivery
-            selectedShippingMethod={selectedShippingMethod}
+            getShippingOptions={getShippingOptions}
             setSelectedShippingMethod={setSelectedShippingMethod}
           />
           <Divider />

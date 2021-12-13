@@ -12,6 +12,7 @@ const ShippingOptions = ({
   const [selected, setSelected] = useState(options[0] ?? null)
 
   const handleChange = option => {
+    console.log(option)
     setSelected(option)
     onSelect(option)
   }

@@ -1,5 +1,5 @@
 import { useFormik } from "formik"
-import { useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Validator from "../utils/validator"
 import { useCart } from "./use-cart"
 import { useCustomer } from "./use-customer"
@@ -8,11 +8,20 @@ import { useMedusa } from "./use-medusa"
 export const useCheckout = (sameBilling = true) => {
   const client = useMedusa()
   const [selectedShippingMethod, setSelectedShippingMethod] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [cartId, setCartId] = useState(null)
 
   const {
     cart,
     actions: { updateCart },
   } = useCart()
+
+  useEffect(() => {
+    if (cart.id !== cartId) {
+      console.log(cart.id, cartId)
+      setCartId(cart.id)
+    }
+  }, [cart, cartId])
 
   const { customer } = useCustomer()
 
@@ -116,15 +125,18 @@ export const useCheckout = (sameBilling = true) => {
   }
 
   const setupCheckout = async () => {
+    setLoading(true)
     const contactError = await contactForm.submitForm()
 
     if (contactError) {
+      setLoading(false)
       return false
     }
 
     const shippingError = await shippingForm.submitForm()
 
     if (shippingError) {
+      setLoading(false)
       return false
     }
 
@@ -132,22 +144,41 @@ export const useCheckout = (sameBilling = true) => {
       const billingError = await billingForm.submitForm()
 
       if (billingError) {
+        setLoading(false)
         return false
       }
     }
 
     if (!selectedShippingMethod) {
+      setLoading(false)
       return false
     }
 
     const shippingMethodError = await setShippingOption()
 
     if (shippingMethodError) {
+      setLoading(false)
       return false
     }
 
+    setLoading(false)
     return true
   }
+
+  const getShippingOptions = useCallback(async () => {
+    if (cartId) {
+      const options = await client.shippingOptions
+        .listCartOptions(cartId)
+        .then(({ shipping_options }) => shipping_options)
+        .catch(_err => {
+          return undefined
+        })
+
+      console.log(options)
+
+      return options
+    }
+  }, [cartId, client.shippingOptions])
 
   return {
     forms: {
@@ -156,10 +187,12 @@ export const useCheckout = (sameBilling = true) => {
       shippingForm,
     },
     shippingMethod: {
+      getShippingOptions,
       selectedShippingMethod,
       setSelectedShippingMethod,
       clearShippingMethod,
     },
     setupCheckout,
+    loading,
   }
 }

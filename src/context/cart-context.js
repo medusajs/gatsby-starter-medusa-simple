@@ -21,7 +21,6 @@ const defaultCartContext = {
     addItem: async () => {},
     removeItem: async () => {},
     updateQuantity: async () => {},
-    getShippingOptions: async () => {},
     addDiscount: async () => {},
     addCheckoutInfo: async () => {},
     createPaymentSession: async () => {},
@@ -216,18 +215,6 @@ export const CartProvider = props => {
     return response
   }
 
-  const getShippingOptions = async cartId => {
-    const options = await client.shippingOptions
-      .listCartOptions(cartId)
-      .then(({ shipping_options }) => shipping_options)
-      .catch(_err => {
-        console.log(_err)
-        return undefined
-      })
-
-    return options
-  }
-
   const addDiscount = async discount => {
     const response = { cart: undefined, error: undefined }
 
@@ -315,7 +302,6 @@ export const CartProvider = props => {
           addItem,
           removeItem,
           updateQuantity,
-          getShippingOptions,
           addDiscount,
           addCheckoutInfo,
           createPaymentSession,

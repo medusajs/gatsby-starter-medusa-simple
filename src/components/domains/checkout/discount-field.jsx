@@ -1,11 +1,14 @@
 import { useFormik } from "formik"
-import React from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import * as Yup from "yup"
 import { useCart } from "../../../hooks/use-cart"
 import Field from "../forms/field"
 
 const DiscountField = () => {
+  const [code, setCode] = useState()
+
   const {
+    cart,
     actions: { addDiscount },
   } = useCart()
 
@@ -16,10 +19,29 @@ const DiscountField = () => {
     validationSchema: Yup.object({
       discount_code: Yup.string().required("Discount code can't be empty"),
     }),
-    onSubmit: async values => {
-      console.log(values)
+    onSubmit: async (values, { setErrors }) => {
+      const response = await addDiscount(values.discount_code)
+
+      if (response.error) {
+        setErrors({ discount_code: "Invalid code" })
+        return
+      }
+
+      const codeResponse = response.cart.discounts[0].code
+
+      setCode(codeResponse)
     },
   })
+
+  useEffect(() => {
+    if (cart && cart.discounts?.length) {
+      const code = cart.discounts[0].code
+
+      if (code) {
+        setCode(code)
+      }
+    }
+  }, [cart])
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -30,15 +52,33 @@ const DiscountField = () => {
     <div>
       <p className="font-semibold text-sm mb-2">Discount code</p>
       <div className="flex items-start">
-        <Field
-          name={"discount_code"}
-          defaultValue={discountForm.values.discount_code}
-          formik={discountForm}
-        />
-        <div className="mx-2" />
-        <button className="btn-ui" onClick={handleSubmit}>
-          Apply
-        </button>
+        {!code ? (
+          <Fragment>
+            <Field
+              name={"discount_code"}
+              defaultValue={discountForm.values.discount_code}
+              formik={discountForm}
+            />
+            <div className="mx-2" />
+            <button className="btn-ui" onClick={handleSubmit}>
+              Apply
+            </button>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <div className="pointer-events-none w-full">
+              <Field
+                name={"discount_code"}
+                defaultValue={code}
+                formik={discountForm}
+              />
+            </div>
+            <div className="mx-2" />
+            <button className="btn-ui" onClick={handleSubmit}>
+              Remove
+            </button>
+          </Fragment>
+        )}
       </div>
     </div>
   )
