@@ -29,6 +29,63 @@ const getFilterables = products => {
   return filterables
 }
 
+const STORE_URL = process.env.STORE_URL || "http://localhost:9000"
+
+// This method should be deleted once you have added collections to your store
+exports.sourceNodes = async function ({
+  actions,
+  createNodeId,
+  createContentDigest,
+  reporter,
+}) {
+  const client = new Medusa({ baseUrl: STORE_URL })
+  const { createNode } = actions
+
+  const count = await client.collections
+    .list()
+    .then(({ count }) => count)
+    .catch(_ => 0)
+
+  if (count === 0) {
+    const dummyCollection = {
+      handle: "dummy-collection",
+      title: "Dummy Collection",
+    }
+
+    const nodeContent = JSON.stringify(dummyCollection)
+
+    const nodeMeta = {
+      id: createNodeId(`prodcol_dummy`),
+      parent: null,
+      children: [],
+      internal: {
+        type: "MedusaCollections",
+        content: nodeContent,
+        contentDigest: createContentDigest(dummyCollection),
+      },
+    }
+
+    const node = Object.assign({}, dummyCollection, nodeMeta)
+
+    reporter.warn(
+      "📣 Your store does not have any collections. This starter expects you to have defined atleast one collection in your store, as they are referenced in several GraphQL queries throughout the site. To allow for you to still checkout the starter without having to add a collection, we will add a dummy collection. In a production environment you should either add collections to your store, or if you don't wish to make use of collections then remove all references to them throughout the project."
+    )
+
+    createNode(node)
+  }
+}
+
+// This method can also be deleted once you have added collections to your store
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions
+  const typeDefs = `
+    type MedusaProducts implements Node {
+      collection_id: String
+    }
+  `
+  createTypes(typeDefs)
+}
+
 exports.createPages = async function ({ actions, graphql }) {
   const { data } = await graphql(`
     query {
@@ -128,21 +185,26 @@ exports.createPages = async function ({ actions, graphql }) {
     },
   })
 
-  data.allMedusaCollections.edges.forEach(({ node }) => {
-    const { id, handle, title } = node
+  const isDummyCollection =
+    data.allMedusaCollections.edges[0].node.id === "prodcol_dummy"
 
-    const productsInCollection = products.filter(
-      product => product.collection_id === id
-    )
+  if (!isDummyCollection) {
+    data.allMedusaCollections.edges.forEach(({ node }) => {
+      const { id, handle, title } = node
 
-    actions.createPage({
-      path: `collections/${handle}`,
-      component: require.resolve(`./src/templates/collection.js`),
-      context: {
-        title: title,
-        products: productsInCollection,
-        filterables: getFilterables(productsInCollection),
-      },
+      const productsInCollection = products.filter(
+        product => product.collection_id === id
+      )
+
+      actions.createPage({
+        path: `collections/${handle}`,
+        component: require.resolve(`./src/templates/collection.js`),
+        context: {
+          title: title,
+          products: productsInCollection,
+          filterables: getFilterables(productsInCollection),
+        },
+      })
     })
-  })
+  }
 }

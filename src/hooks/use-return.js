@@ -1,6 +1,6 @@
 import { useFormik } from "formik"
 import { graphql, useStaticQuery } from "gatsby"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import * as Yup from "yup"
 import { useMedusa } from "./use-medusa"
 
@@ -25,6 +25,10 @@ export const useReturn = (initialValues = null) => {
             variants {
               id
               title
+              prices {
+                amount
+                currency_code
+              }
               options {
                 value
                 option_id
@@ -137,10 +141,50 @@ export const useReturn = (initialValues = null) => {
     return []
   }
 
-  const addExchangeItem = item => {
+  // const getRegionalPrice = item => {
+  //   if (!order) {
+  //     return 0
+  //   }
+
+  //   const regionalPrice = item.prices.find(
+  //     p => p.currency_code === order.currency_code
+  //   )
+
+  //   return regionalPrice?.amount ?? 0
+  // }
+
+  const addExchangeItem = (item, replacement) => {
     const tmp = additionalItems.filter(i => i.id !== item.id)
-    setAdditionalItems([...tmp, item])
+
+    // const price = getRegionalPrice(replacement)
+
+    // delete replacement.prices
+
+    const replacementItem = { id: item.id, ...replacement }
+
+    setAdditionalItems([...tmp, replacementItem])
   }
+
+  const getAdditionalItemsTotal = useCallback(() => {
+    return additionalItems.reduce((sum, i) => sum + i.amount * i.quantity, 0)
+  }, [additionalItems])
+
+  const getReturnItemsTotal = useCallback(() => {
+    return selectedItems.reduce((sum, i) => sum + i.unit_price * i.quantity, 0)
+  }, [selectedItems])
+
+  const getShippingTotal = useCallback(() => {
+    return selectedShipping?.amount ?? 0
+  }, [selectedShipping])
+
+  const totals = useMemo(() => {
+    return {
+      returnItems: getReturnItemsTotal(),
+      additionalItems: getAdditionalItemsTotal(),
+      shipping: getShippingTotal(),
+      currencyCode: order?.currency_code ?? "eur",
+    }
+  }, [order, getAdditionalItemsTotal, getReturnItemsTotal, getShippingTotal])
 
   const removeExchangeItem = item => {
     const tmp = additionalItems.filter(i => i.id !== item.id)
@@ -153,6 +197,8 @@ export const useReturn = (initialValues = null) => {
     returnOptions,
     selectedItems,
     selectedShipping,
+    additionalItems,
+    totals,
     actions: {
       setOrder,
       selectItem,
