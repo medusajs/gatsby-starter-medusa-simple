@@ -1,138 +1,101 @@
-import React, { useContext } from "react";
-import { FaGithub } from "react-icons/fa";
-import StoreContext from "../context/store-context";
-import { graphql } from "gatsby";
-import * as styles from "../styles/home.module.css";
-import { Link } from "gatsby";
-import { formatPrices } from "../utils/format-price";
+import { graphql } from "gatsby"
+import { StaticImage } from "gatsby-plugin-image"
+import React from "react"
+import CollectionPreview from "../components/domains/categories/collection-preview"
+import ProductListItem from "../components/domains/products/product-list-item"
+import Grid from "../components/domains/utility/grid"
+import SearchEngineOptimization from "../components/seo"
+import { useCollections } from "../hooks/use-collections"
 
-// markup
 const IndexPage = ({ data }) => {
-  const { cart, products } = useContext(StoreContext);
+  const { products, collections } = data
+  const prods = data.products.edges.map(edge => edge.node)
+  const collectionPreviews = useCollections(collections, products)
 
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <div className={styles.hero}>
-          <h1 className={styles.title}>
-            Medusa + Gatsby Starter{" "}
-            <span role="img" aria-label="Rocket emoji">
-              🚀
-            </span>
-          </h1>
-          <p className={styles.description}>
-            Build blazing-fast client applications on top of a modular headless
-            commerce engine. Integrate seamlessly with any 3rd party tools for a
-            best-in-breed commerce stack.
-          </p>
-          <div className={styles.tags}>
-            <div className={styles.tag} style={{ background: "lightgrey" }}>
-              v{data.site.siteMetadata.version}
-            </div>
-            <a
-              href="https://www.medusa-commerce.com/"
-              arget="_blank"
-              rel="noreferrer"
-              role="button"
-            >
-              <div
-                className={styles.tag}
-                style={{ background: "var(--logo-color-900)", color: "white" }}
-              >
-                Medusa
-              </div>
-            </a>
-            <a
-              href="https://www.gatsbyjs.com/docs/"
-              target="_blank"
-              rel="noreferrer"
-              role="button"
-            >
-              <div
-                className={styles.tag}
-                style={{ background: "#5e3a94", color: "white" }}
-              >
-                Gatsby
-              </div>
-            </a>
-            <a
-              href="https://stripe.com/docs"
-              target="_blank"
-              rel="noreferrer"
-              role="button"
-            >
-              <div
-                className={styles.tag}
-                style={{ background: "#4379FF", color: "white" }}
-              >
-                Stripe
-              </div>
-            </a>
-          </div>
-          <div className={styles.links}>
-            <a
-              href="https://docs.medusa-commerce.com/"
-              target="_blank"
-              rel="noreferrer"
-              role="button"
-              className={styles.btn}
-            >
-              Read the docs
-              <svg
-                stroke="currentColor"
-                fill="currentColor"
-                strokeWidth="0"
-                viewBox="0 0 24 24"
-                height="1em"
-                width="1em"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
-              </svg>
-            </a>
-            <a
-              href="https://github.com/medusajs/nextjs-starter-medusa"
-              target="_blank"
-              rel="noreferrer"
-              role="button"
-              className={styles.btn}
-            >
-              View on GitHub
-              <FaGithub />
-            </a>
+    <div>
+      <SearchEngineOptimization title="Home" />
+      <div className="bg-ui-light pb-12 lg:pb-0 w-full px-4 sm:px-6 lg:px-12">
+        <div className="flex flex-col lg:flex-row items-center max-w-screen-2xl mx-auto">
+          <StaticImage
+            src="../images/hero-merch.png"
+            alt="A black Medusa hoodie and a white Medusa coffee mug"
+            placeholder="tracedSVG"
+            className="w-full lg:w-1/2 h-auto"
+          />
+          <div>
+            <h1 className="text-4xl">CLAIM YOUR MERCH</h1>
+            <p className="mt-2 text-lg font-normal">
+              Contribute to Medusa and receive free merch
+              <br />
+              as a token of our appreciation
+            </p>
+            <button className="btn-ui mt-4 min-w-full lg:min-w-0">
+              Learn more
+            </button>
           </div>
         </div>
-        <div className={styles.products}>
-          <h2>Demo Products</h2>
-          <div className={styles.grid}>
-            {products &&
-              products.map((p) => {
-                return (
-                  <div key={p.id} className={styles.card}>
-                    <Link to={`/product/${p.id}`}>
-                      <div>
-                        <h2>{p.title}</h2>
-                        <p>{formatPrices(cart, p.variants[0])}</p>
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })}
-          </div>
+      </div>
+      <div className="layout-base my-12 min-h-0">
+        <Grid
+          title={"Featured"}
+          cta={{ to: "/products", text: "Browse all products" }}
+        >
+          {prods.slice(0, 4).map(p => {
+            return <ProductListItem product={p} key={p.handle} />
+          })}
+        </Grid>
+        <div className="mt-12">
+          <Grid
+            title="Shop by collection"
+            cta={{ to: "/collections", text: "Browse all collections" }}
+          >
+            {collectionPreviews.slice(0, 4).map(collection => {
+              return (
+                <CollectionPreview
+                  key={collection.id}
+                  collection={collection}
+                />
+              )
+            })}
+          </Grid>
         </div>
-      </main>
+      </div>
     </div>
-  );
-};
-
+  )
+}
 export const query = graphql`
-  query VersionQuery {
-    site {
-      siteMetadata {
-        version
+  query {
+    products: allMedusaProducts {
+      edges {
+        node {
+          handle
+          title
+          collection_id
+          thumbnail {
+            childImageSharp {
+              gatsbyImageData
+            }
+          }
+          variants {
+            prices {
+              amount
+              currency_code
+            }
+          }
+        }
+      }
+    }
+    collections: allMedusaCollections {
+      edges {
+        node {
+          id
+          title
+          handle
+        }
       }
     }
   }
-`;
+`
 
-export default IndexPage;
+export default IndexPage
